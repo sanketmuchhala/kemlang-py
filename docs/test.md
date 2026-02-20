@@ -1,81 +1,78 @@
 # KemLang Commands Test Report
 
-This report outlines the result of testing all code snippets and commands provided in the `kemlang-website/content/docs/language/syntax.mdx` file.
+This report documents the testing of all code snippets and commands provided in the `kemlang-website/content/docs/language/syntax.mdx` documentation. 
 
-A Python test script (`test_website_commands.py`) was created to parse out, reconstruct (if needed), and run every single KemLang code snippet shown in the documentation using the actual `kemlang` interpreter.
+A test script was executed to extract the 13 KemLang snippets from the markdown file and run them using the current `kemlang` interpreter. This report reflects the testing results **after** fixing the compatibility bugs in the `kemlang` source code (as planned in `docs/fixing.md`).
+
+---
 
 ## Test Results Overview
 
 - **Total Snippets Tested**: 13
-- **Initial Passing Scripts**: 4
-- **Initial Failing Scripts**: 9
-- **Final Passing Scripts**: 13 (after applying bug fixes to `kemlang` source code)
+- **Passing Snippets**: 13
+- **Failing Snippets**: 0
 
-## List of Commands and initial Status
+---
+
+## Detailed Results
 
 ### 1. Basic Structure (Snippet 0)
-**Command**:
+**Code**:
 ```jsk
 kem bhai
     // Your code here
 aavjo bhai
 ```
-**Initial Status**: ❌ FAIL
-**Reason for Failure**: The lexer did not support `//` single-line comments. Instead, it tried to parse the `/` as a division operator, which caused a syntax error that cascaded.
-**Fix**: Added support for `//` comments in `kemlang/lexer.py`.
+**Status**: ✅ PASS
+**Notes**: The lexer now correctly identifies `//` as a single-line comment.
 
 ### 2. Variable Declarations with Boolean (Snippet 1, 5)
-**Command**:
+**Code**:
 ```jsk
 aa isTrue che true
 aa isFalse che false
 ```
-**Initial Status**: ❌ FAIL
-**Reason for Failure**: The website documentation uses JavaScript-style booleans (`true` and `false`), but the `kemlang` lexer specifically mapped booleans to `bhai chhe` and `bhai nathi`. This resulted in `Undefined variable 'true'` runtime errors since truth keywords didn't exist.
-**Fix**: Aliased `true` to `TokenType.BHAI_CHHE` and `false` to `TokenType.BHAI_NATHI` in `kemlang/lexer.py`.
+**Status**: ✅ PASS
+**Notes**: The lexer now aliases `true` and `false` to internal `BHAI_CHHE` and `BHAI_NATHI` truth tokens.
 
 ### 3. Variable Re-assignment (Snippet 2)
-**Command**:
+**Code**:
 ```jsk
 aa counter che 0
 counter che 1
 counter che counter + 1
 ```
-**Initial Status**: ✅ PASS
-**Reason for Failure**: N/A
-**Fix**: None required.
+**Status**: ✅ PASS
+**Notes**: Feature already working.
 
 ### 4. Single-Quote Strings (Snippet 3)
-**Command**:
+**Code**:
 ```jsk
 aa name che 'Single quotes also work'
 ```
-**Initial Status**: ❌ FAIL
-**Reason for Failure**: The compiler threw `Error: Unexpected character '''`. The lexer only supported double quotes (`"`) for strings.
-**Fix**: Updated the `string()` parser loop in `kemlang/lexer.py` to accept single quotes (`'`) interchangeably with double quotes.
+**Status**: ✅ PASS
+**Notes**: The lexer was updated to parse strings bounded by `'` in addition to `"`.
 
 ### 5. Decimal/Float Variables (Snippet 4)
-**Command**:
+**Code**:
 ```jsk
 aa decimal che 3.14
 ```
-**Initial Status**: ❌ FAIL
-**Reason for Failure**: The lexer emitted an `Error: Unexpected character '.'` because it did not support floats or decimal points.
-**Fix**: Introduced a `TokenType.FLOAT` in `kemlang/types.py` and updated `number()` in `kemlang/lexer.py` to consume fractional decimal sequences correctly.
+**Status**: ✅ PASS
+**Notes**: A new `FLOAT` token was implemented. The lexer can successfully extract fractional segments.
 
 ### 6. Boolean Output Print (Snippet 6)
-**Command**:
+**Code**:
 ```jsk
 kem bhai
 bhai bol true
 aavjo bhai
 ```
-**Initial Status**: ❌ FAIL
-**Reason for Failure**: `Runtime Error: Undefined variable 'true'`.
-**Fix**: Handled implicitly by the fix for Snippets 1 and 5.
+**Status**: ✅ PASS
+**Notes**: Outputs `true` natively due to the keyword alias patches.
 
 ### 7. String Concatenation (Snippet 7)
-**Command**:
+**Code**:
 ```jsk
 kem bhai
 aa firstName che "Sanket"
@@ -84,12 +81,10 @@ aa fullName che firstName + " " + lastName
 bhai bol fullName
 aavjo bhai
 ```
-**Initial Status**: ✅ PASS
-**Reason for Failure**: N/A
-**Fix**: None required.
+**Status**: ✅ PASS
 
 ### 8. Comments (Snippet 8, 9)
-**Command**:
+**Code**:
 ```jsk
 // This is a single-line comment
 kem bhai
@@ -97,34 +92,29 @@ kem bhai
     bhai bol name
 aavjo bhai
 ```
-**Initial Status**: ❌ FAIL
-**Reason for Failure**: Same as Snippet 0. The lexer failed processing the `/` symbol properly.
-**Fix**: Handled via the Lexer comment patch.
+**Status**: ✅ PASS
+**Notes**: Successfully parsed and executed without throwing symbol errors.
 
 ### 9. Basic Print Operations (Snippet 10)
-**Command**:
+**Code**:
 ```jsk
 kem bhai
 bhai bol "Hello, World!"
 aavjo bhai
 ```
-**Initial Status**: ✅ PASS
-**Reason for Failure**: N/A
-**Fix**: None required.
+**Status**: ✅ PASS
 
 ### 10. String Expressions (Snippet 11)
-**Command**:
+**Code**:
 ```jsk
 aa naam che "Sanket"
 aa greeting che "kem cho, " + naam + "!"
 bhai bol greeting
 ```
-**Initial Status**: ✅ PASS
-**Reason for Failure**: N/A
-**Fix**: None required.
+**Status**: ✅ PASS
 
 ### 11. Implied String-Casting (Snippet 12)
-**Command**:
+**Code**:
 ```jsk
 kem bhai
 aa num1 che 15
@@ -134,13 +124,5 @@ aa sum che num1 + num2
 bhai bol "Sum: " + sum
 aavjo bhai
 ```
-**Initial Status**: ❌ FAIL
-**Reason for Failure**: The interpreter generated a `Runtime Error: TypeError: cannot '+' str and int`. KemLang previously did not support concatenating a string and a number without explicit casting, even though the website docs assumed it worked.
-**Fix**: Updated the `TokenType.PLUS` handler within `evaluate_binary` inside `kemlang/interpreter.py` to automatically invoke `self.stringify()` when either the left or right operand is a string.
-
-### Core Bug Discovered
-An additional infrastructure flaw was caught during tests: `test_website_commands.py` encountered an immediate `ImportError` on initial runs due to stale module references internally inside `kemlang` across `kemlang/errors.py` and `kemlang/interpreter.py`. `BreakError` and `ContinueError` were corrected to `BreakException` and `ContinueException`. This bug was fixed before testing the snippets above.
-
-## Conclusion
-
-All commands presented on the website (`kemlang-website/content/docs`) now run successfully within the `kemlang` interpreter. The language has been enriched to accurately mirror user expectations built by the documentation. 
+**Status**: ✅ PASS
+**Notes**: The `kemlang` interpreter was updated. `+` now implicitly delegates to string extraction if either operand is determined to be a string instance.
