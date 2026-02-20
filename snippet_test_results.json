@@ -1,0 +1,119 @@
+[
+  {
+    "file": "language/syntax.mdx",
+    "index": 0,
+    "code": "kem bhai\n    // Your code here\naavjo bhai",
+    "status": "PASS",
+    "stdout": "",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 1,
+    "code": "aa naam che \"Sanket\"\naa age che 25\naa isStudent che true",
+    "status": "PASS",
+    "stdout": "",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 2,
+    "code": "aa counter che 0\ncounter che 1\ncounter che counter + 1",
+    "status": "PASS",
+    "stdout": "",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 3,
+    "code": "aa message che \"Hello, World!\"\naa name che 'Single quotes also work'",
+    "status": "PASS",
+    "stdout": "",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 4,
+    "code": "aa integer che 42\naa decimal che 3.14\naa negative che -10",
+    "status": "PASS",
+    "stdout": "",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 5,
+    "code": "aa isTrue che true\naa isFalse che false",
+    "status": "PASS",
+    "stdout": "",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 6,
+    "code": "kem bhai\nbhai bol \"Hello, World!\"\nbhai bol 42\nbhai bol true\naavjo bhai",
+    "status": "PASS",
+    "stdout": "Hello, World!\n42\ntrue\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 7,
+    "code": "kem bhai\naa firstName che \"Sanket\"\naa lastName che \"Patel\"\naa fullName che firstName + \" \" + lastName\nbhai bol fullName\naavjo bhai",
+    "status": "PASS",
+    "stdout": "Sanket Patel\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 8,
+    "code": "// This is a single-line comment\nkem bhai\n    aa name che \"KemLang\"  // Comment at end of line\n    bhai bol name\naavjo bhai",
+    "status": "PASS",
+    "stdout": "KemLang\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 9,
+    "code": "kem bhai\naa a che 10\naa b che 5\n\nbhai bol a + b    // Addition: 15\nbhai bol a - b    // Subtraction: 5\nbhai bol a * b    // Multiplication: 50\nbhai bol a / b    // Division: 2\naavjo bhai",
+    "status": "PASS",
+    "stdout": "15\n5\n50\n2\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 10,
+    "code": "kem bhai\nbhai bol \"Hello, World!\"\naavjo bhai",
+    "status": "PASS",
+    "stdout": "Hello, World!\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 11,
+    "code": "kem bhai\naa naam che \"Sanket\"\naa greeting che \"kem cho, \" + naam + \"!\"\nbhai bol greeting\naavjo bhai",
+    "status": "PASS",
+    "stdout": "kem cho, Sanket!\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  {
+    "file": "language/syntax.mdx",
+    "index": 12,
+    "code": "kem bhai\naa num1 che 15\naa num2 che 25\naa sum che num1 + num2\n\nbhai bol \"First number: \" + num1\nbhai bol \"Second number: \" + num2\nbhai bol \"Sum: \" + sum\naavjo bhai",
+    "status": "PASS",
+    "stdout": "First number: 15\nSecond number: 25\nSum: 40\n",
+    "stderr": "",
+    "returncode": 0
+  }
+]

@@ -36,6 +36,8 @@ class Lexer:
             "nahi": TokenType.NAHI,
             "to": TokenType.TO,
             "farvu": TokenType.FARVU,
+            "true": TokenType.BHAI_CHHE,
+            "false": TokenType.BHAI_NATHI,
         }
 
     def tokenize(self) -> List[Token]:
@@ -73,7 +75,6 @@ class Lexer:
             '+': TokenType.PLUS,
             '-': TokenType.MINUS,
             '*': TokenType.MULTIPLY,
-            '/': TokenType.DIVIDE,
             '%': TokenType.MODULO,
         }
 
@@ -111,8 +112,18 @@ class Lexer:
             return
 
         # String literals
-        if c == '"':
-            self.string()
+        if c == '"' or c == "'":
+            self.string(c)
+            return
+
+        # Comments or division
+        if c == '/':
+            if self.match('/'):
+                # A comment goes until the end of the line
+                while self.peek() != '\n' and not self.is_at_end():
+                    self.advance()
+            else:
+                self.add_token(TokenType.DIVIDE)
             return
 
         # Numbers
@@ -153,12 +164,12 @@ class Lexer:
             return '\0'
         return self.source[self.current + 1]
 
-    def string(self):
+    def string(self, quote_char):
         start_line = self.line
         start_col = self.col - 1
 
         value = ""
-        while self.peek() != '"' and not self.is_at_end():
+        while self.peek() != quote_char and not self.is_at_end():
             if self.peek() == '\n':
                 self.line += 1
                 self.col = 1
@@ -169,8 +180,8 @@ class Lexer:
                     value += '\n'
                 elif escaped == 't':
                     value += '\t'
-                elif escaped == '"':
-                    value += '"'
+                elif escaped == quote_char:
+                    value += quote_char
                 elif escaped == '\\':
                     value += '\\'
                 else:
@@ -192,9 +203,17 @@ class Lexer:
         while self.peek().isdigit():
             self.advance()
 
-        # Look for fractional part (not in spec but good for future)
-        value = int(self.source[self.start:self.current])
-        self.add_token(TokenType.INTEGER, value)
+        # Look for a fractional part
+        if self.peek() == '.' and self.peek_next().isdigit():
+            # Consume the "."
+            self.advance()
+            while self.peek().isdigit():
+                self.advance()
+            value = float(self.source[self.start:self.current])
+            self.add_token(TokenType.FLOAT, value)
+        else:
+            value = int(self.source[self.start:self.current])
+            self.add_token(TokenType.INTEGER, value)
 
     def identifier_or_keyword(self):
         # First, try to match multi-word keywords

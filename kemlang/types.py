@@ -6,6 +6,7 @@ from typing import Any, List, Optional, Union
 class TokenType(Enum):
     # Literals
     INTEGER = auto()
+    FLOAT = auto()
     STRING = auto()
     BOOLEAN = auto()
     IDENTIFIER = auto()

@@ -7,7 +7,7 @@ from .types import (
     Print, Declaration, Assignment, If, While, Break, Continue,
     Binary, Unary, Literal, Variable, Input, TokenType
 )
-from .errors import RuntimeError, BreakError, ContinueError
+from .errors import RuntimeError, BreakException, ContinueException
 from .parser import parse_program
 
 
@@ -76,9 +76,9 @@ class Interpreter:
         elif isinstance(stmt, Block):
             self.execute_block(stmt)
         elif isinstance(stmt, Break):
-            raise BreakError()
+            raise BreakException()
         elif isinstance(stmt, Continue):
-            raise ContinueError()
+            raise ContinueException()
         else:
             raise RuntimeError(f"Unknown statement type: {type(stmt)}")
 
@@ -108,7 +108,7 @@ class Interpreter:
                 # Execute body first
                 try:
                     self.execute(stmt.body)
-                except ContinueError:
+                except ContinueException:
                     pass  # Continue to condition check
 
                 # Then check condition
@@ -116,7 +116,7 @@ class Interpreter:
                 if not self.is_truthy(condition):
                     break
 
-        except BreakError:
+        except BreakException:
             pass  # Exit the loop
 
     def execute_block(self, stmt: Block):
@@ -152,8 +152,8 @@ class Interpreter:
 
         # Arithmetic operators
         if op == TokenType.PLUS:
-            if isinstance(left, str) and isinstance(right, str):
-                return left + right
+            if isinstance(left, str) or isinstance(right, str):
+                return self.stringify(left) + self.stringify(right)
             elif isinstance(left, (int, float)) and isinstance(right, (int, float)):
                 return left + right
             else:

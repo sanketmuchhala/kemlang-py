@@ -21,11 +21,11 @@ class RuntimeError(KemError):
     pass
 
 
-class BreakError(Exception):
+class BreakException(Exception):
     pass
 
 
-class ContinueError(Exception):
+class ContinueException(Exception):
     pass
 
 
