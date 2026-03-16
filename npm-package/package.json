@@ -20,13 +20,13 @@
   ],
   "author": "KemLang Contributors",
   "license": "MIT",
-  "homepage": "https://github.com/kemlang/kemlang",
+  "homepage": "https://github.com/sanketmuchhala/Gujju.py",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kemlang/kemlang.git"
+    "url": "https://github.com/sanketmuchhala/Gujju.py.git"
   },
   "bugs": {
-    "url": "https://github.com/kemlang/kemlang/issues"
+    "url": "https://github.com/sanketmuchhala/Gujju.py/issues"
   },
   "engines": {
     "node": ">=14.0.0"
