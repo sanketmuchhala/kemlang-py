@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CodeSample } from "@/components/code-sample";
 import { InstallTabs } from "@/components/install-tabs";
+import { JsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = {
   title: "kemlang-py - Gujarati Programming Language",
@@ -170,6 +171,21 @@ const SectionDesc = ({ children }: { children: React.ReactNode }) => (
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "kemlang-py",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "macOS, Linux, Windows",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "A Gujarati-flavored programming language interpreter. Write programs using real Gujarati keywords like kem bhai, bhai bol, and jo.",
+        "url": "https://kemlang.cloud",
+        "downloadUrl": "https://github.com/sanketmuchhala/kemlang-py/releases",
+        "softwareVersion": "0.1.3",
+        "license": "https://github.com/sanketmuchhala/kemlang-py/blob/main/LICENSE",
+        "programmingLanguage": "Python",
+        "author": { "@type": "Person", "name": "Sanket Muchhala", "url": "https://github.com/sanketmuchhala" },
+      }} />
       <SiteHeader />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}

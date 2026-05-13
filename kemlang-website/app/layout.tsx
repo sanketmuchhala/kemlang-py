@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { JsonLd } from "@/components/json-ld";
 import { DM_Serif_Display, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Analytics } from "@vercel/analytics/next";
@@ -70,6 +71,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${dmSerifDisplay.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
     >
       <body className="font-sans antialiased min-h-screen">
+        <JsonLd data={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "kemlang-py",
+          "url": "https://kemlang.cloud",
+          "sameAs": ["https://github.com/sanketmuchhala/kemlang-py"],
+          "founder": { "@type": "Person", "name": "Sanket Muchhala" },
+        }} />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

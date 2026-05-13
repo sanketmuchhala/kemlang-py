@@ -1,6 +1,7 @@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { DocsLayout } from "@/components/docs-layout";
+import { JsonLd } from "@/components/json-ld";
 
 const navigation = [
   {
@@ -65,6 +66,14 @@ export default function DocsLayoutComponent({
 }) {
   return (
     <div className="flex min-h-screen flex-col">
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://kemlang.cloud" },
+          { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://kemlang.cloud/docs" },
+        ],
+      }} />
       <SiteHeader />
       <div className="container mx-auto flex-1">
         <DocsLayout navigation={navigation}>
