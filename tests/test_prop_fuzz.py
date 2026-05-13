@@ -1,28 +1,28 @@
+import string
+
 import pytest
-from hypothesis import given, strategies as st, assume, settings
-from kemlang.lexer import tokenize, LexerError
-from kemlang.parser import parse_program, ParseError
+from hypothesis import assume, given, settings
+from hypothesis import strategies as st
+
 from kemlang.fmt import format_code
 from kemlang.interpreter import run
+from kemlang.lexer import LexerError, tokenize
+from kemlang.parser import ParseError, parse_program
 from kemlang.types import TokenType
-import string
-import random
 
 
 class TestPropertyFuzz:
     # Character sets for generating test data
-    VALID_IDENTIFIER_CHARS = string.ascii_letters + string.digits + '_'
-    VALID_STRING_CHARS = string.ascii_letters + string.digits + ' !@#$%^&*()[]{}|:;<>?,.`~'
+    VALID_IDENTIFIER_CHARS = string.ascii_letters + string.digits + "_"
+    VALID_STRING_CHARS = string.ascii_letters + string.digits + " !@#$%^&*()[]{}|:;<>?,.`~"
 
     @given(st.text(alphabet=VALID_IDENTIFIER_CHARS, min_size=1, max_size=20))
     def test_identifier_tokenization_never_crashes(self, identifier):
         """Property: Valid identifiers should never crash the lexer."""
-        assume(identifier[0].isalpha() or identifier[0] == '_')  # Valid identifier start
+        assume(identifier[0].isalpha() or identifier[0] == "_")  # Valid identifier start
 
         # Don't test keywords as identifiers
-        keywords = {
-            'aa', 'che', 'jo', 'nahi', 'to', 'farvu'
-        }
+        keywords = {"aa", "che", "jo", "nahi", "to", "farvu"}
         assume(identifier not in keywords)
 
         try:
@@ -49,7 +49,7 @@ class TestPropertyFuzz:
     def test_string_tokenization_never_crashes(self, content):
         """Property: Valid string content should never crash the lexer."""
         # Escape quotes and backslashes for valid string literal
-        escaped_content = content.replace('\\', '\\\\').replace('"', '\\"')
+        escaped_content = content.replace("\\", "\\\\").replace('"', '\\"')
         string_literal = f'"{escaped_content}"'
 
         try:
@@ -61,11 +61,16 @@ class TestPropertyFuzz:
             # Lexer errors are acceptable for edge cases
             pass
 
-    @given(st.lists(st.sampled_from(['+', '-', '*', '/', '%', '==', '!=', '<', '>', '<=', '>=']),
-                   min_size=1, max_size=10))
+    @given(
+        st.lists(
+            st.sampled_from(["+", "-", "*", "/", "%", "==", "!=", "<", ">", "<=", ">="]),
+            min_size=1,
+            max_size=10,
+        )
+    )
     def test_operator_sequences_never_crash_lexer(self, operators):
         """Property: Sequences of operators should never crash the lexer."""
-        source = ' '.join(operators)
+        source = " ".join(operators)
 
         try:
             tokens = tokenize(source)
@@ -100,7 +105,7 @@ class TestPropertyFuzz:
             expr = str(numbers[0])
         else:
             # Create expression like: num1 + num2 + num3 ...
-            expr = ' + '.join(str(n) for n in numbers)
+            expr = " + ".join(str(n) for n in numbers)
 
         source = f"kem bhai\nbhai bol {expr}\naavjo bhai"
 
@@ -135,7 +140,7 @@ class TestPropertyFuzz:
             if i == 0:
                 statements.append(f"aa var{i} che {i}")
             else:
-                statements.append(f"aa var{i} che var{i-1} + {i}")
+                statements.append(f"aa var{i} che var{i - 1} + {i}")
 
         if statements:
             statements.append(f"bhai bol var{chain_length - 1}")
@@ -152,24 +157,24 @@ class TestPropertyFuzz:
     def test_format_idempotency_fuzzing(self):
         """Property: Formatting should be idempotent for valid programs."""
         valid_programs = [
-            '''kem bhai
+            """kem bhai
 aa x che 42
 bhai bol x
-aavjo bhai''',
-            '''kem bhai
+aavjo bhai""",
+            """kem bhai
 jo bhai chhe {
     bhai bol "true"
 } nahi to {
     bhai bol "false"
 }
-aavjo bhai''',
-            '''kem bhai
+aavjo bhai""",
+            """kem bhai
 aa i che 0
 farvu {
     bhai bol i
     i che i + 1
 } jya sudhi i < 5
-aavjo bhai'''
+aavjo bhai""",
         ]
 
         for program in valid_programs:
@@ -181,8 +186,11 @@ aavjo bhai'''
                 # Invalid programs are acceptable to reject
                 pass
 
-    @given(st.lists(st.text(alphabet=string.ascii_letters, min_size=1, max_size=10),
-                   min_size=1, max_size=10))
+    @given(
+        st.lists(
+            st.text(alphabet=string.ascii_letters, min_size=1, max_size=10), min_size=1, max_size=10
+        )
+    )
     def test_string_concatenation_properties(self, string_parts):
         """Property: String concatenation should be associative."""
         assume(all(part.isalpha() for part in string_parts))  # Only letters for simplicity
@@ -191,15 +199,16 @@ aavjo bhai'''
             return
 
         # Create concatenation expression
-        concat_expr = ' + '.join(f'"{part}"' for part in string_parts)
-        source = f'kem bhai\nbhai bol {concat_expr}\naavjo bhai'
+        concat_expr = " + ".join(f'"{part}"' for part in string_parts)
+        source = f"kem bhai\nbhai bol {concat_expr}\naavjo bhai"
 
         try:
             # Should not crash and should produce expected result
-            expected_result = ''.join(string_parts)
+            expected_result = "".join(string_parts)
 
             # Capture output
             output_lines = []
+
             def capture_output(line):
                 output_lines.append(line)
 
@@ -216,12 +225,12 @@ aavjo bhai'''
     def test_nested_if_statements(self, nesting_depth):
         """Property: Nested if statements should not crash the parser."""
         # Generate nested if: if (true) { if (true) { ... } }
-        inner = "bhai bol \"innermost\""
+        inner = 'bhai bol "innermost"'
 
-        for i in range(nesting_depth):
-            inner = f'''jo bhai chhe {{
+        for _i in range(nesting_depth):
+            inner = f"""jo bhai chhe {{
     {inner}
-}}'''
+}}"""
 
         source = f"kem bhai\n{inner}\naavjo bhai"
 
@@ -240,12 +249,11 @@ aavjo bhai'''
     def test_smoke_test_examples(self):
         """Smoke test: All example files should process without crashing."""
         examples = [
-            '''kem bhai
+            """kem bhai
 aa naam che bapu tame bolo
 bhai bol "kem cho, " + naam + "!"
-aavjo bhai''',
-
-            '''kem bhai
+aavjo bhai""",
+            """kem bhai
 aa i che 0
 farvu {
   bhai bol i
@@ -258,12 +266,11 @@ jo i == 5 {
 } nahi to {
   bhai bol "kuch to gadbad chhe!"
 }
-aavjo bhai''',
-
-            '''kem bhai
+aavjo bhai""",
+            """kem bhai
 aa x che 1
 x che x + "oops"
-aavjo bhai'''
+aavjo bhai""",
         ]
 
         for i, example in enumerate(examples):
@@ -280,9 +287,7 @@ aavjo bhai'''
                 assert len(formatted) > 0
 
                 # Try to run (may fail with runtime errors, but shouldn't crash)
-                exit_code = run(example,
-                              input_fn=lambda: "test_input",
-                              output_fn=lambda x: None)
+                exit_code = run(example, input_fn=lambda: "test_input", output_fn=lambda x: None)
                 assert exit_code in [0, 1]
 
             except (LexerError, ParseError, ValueError):

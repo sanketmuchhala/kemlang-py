@@ -1,7 +1,8 @@
-import pytest
 import tempfile
 from pathlib import Path
+
 from typer.testing import CliRunner
+
 from kemlang.cli import app
 
 
@@ -16,10 +17,10 @@ class TestCLI:
         assert "0.1.0" in result.stdout
 
     def test_run_valid_file(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.jsk', delete=False) as f:
-            f.write('''kem bhai
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
+            f.write("""kem bhai
             bhai bol "Hello from CLI!"
-            aavjo bhai''')
+            aavjo bhai""")
             f.flush()
 
             result = self.runner.invoke(app, ["run-file", f.name])
@@ -29,11 +30,11 @@ class TestCLI:
         Path(f.name).unlink()
 
     def test_run_file_with_trace(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.jsk', delete=False) as f:
-            f.write('''kem bhai
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
+            f.write("""kem bhai
             aa x che 42
             bhai bol x
-            aavjo bhai''')
+            aavjo bhai""")
             f.flush()
 
             result = self.runner.invoke(app, ["run-file", f.name, "--trace"])
@@ -50,10 +51,10 @@ class TestCLI:
         assert "not found" in result.stdout
 
     def test_run_invalid_syntax(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.jsk', delete=False) as f:
-            f.write('''kem bhai
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
+            f.write("""kem bhai
             invalid syntax here
-            aavjo bhai''')
+            aavjo bhai""")
             f.flush()
 
             result = self.runner.invoke(app, ["run-file", f.name])
@@ -62,10 +63,10 @@ class TestCLI:
         Path(f.name).unlink()
 
     def test_tokens_command(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.jsk', delete=False) as f:
-            f.write('''kem bhai
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
+            f.write("""kem bhai
             aa x che 42
-            aavjo bhai''')
+            aavjo bhai""")
             f.flush()
 
             result = self.runner.invoke(app, ["tokens", f.name])
@@ -80,10 +81,10 @@ class TestCLI:
         Path(f.name).unlink()
 
     def test_ast_command(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.jsk', delete=False) as f:
-            f.write('''kem bhai
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
+            f.write("""kem bhai
             bhai bol "hello"
-            aavjo bhai''')
+            aavjo bhai""")
             f.flush()
 
             result = self.runner.invoke(app, ["ast", f.name])
@@ -93,12 +94,12 @@ class TestCLI:
         Path(f.name).unlink()
 
     def test_fmt_command_single_file(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.jsk', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
             # Poorly formatted code
-            f.write('''kem bhai
+            f.write("""kem bhai
 aa x che 42
 jo x==42{bhai bol"found"}
-aavjo bhai''')
+aavjo bhai""")
             f.flush()
 
             result = self.runner.invoke(app, ["fmt", f.name])
@@ -112,12 +113,12 @@ aavjo bhai''')
         Path(f.name).unlink()
 
     def test_fmt_command_check_mode(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.jsk', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
             # Poorly formatted code
-            f.write('''kem bhai
+            f.write("""kem bhai
 aa x che 42
 jo x==42{bhai bol"found"}
-aavjo bhai''')
+aavjo bhai""")
             f.flush()
 
             original_content = Path(f.name).read_text()
@@ -136,13 +137,13 @@ aavjo bhai''')
             temp_path = Path(temp_dir)
 
             # Create multiple .jsk files
-            (temp_path / "file1.jsk").write_text('''kem bhai
+            (temp_path / "file1.jsk").write_text("""kem bhai
 aa x che 1
-aavjo bhai''')
+aavjo bhai""")
 
-            (temp_path / "file2.jsk").write_text('''kem bhai
+            (temp_path / "file2.jsk").write_text("""kem bhai
 aa y che 2
-aavjo bhai''')
+aavjo bhai""")
 
             # Create a non-.jsk file that should be ignored
             (temp_path / "readme.txt").write_text("This should be ignored")
@@ -162,10 +163,10 @@ aavjo bhai''')
             assert "No .jsk files found" in result.stdout
 
     def test_ast_command_parse_error(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.jsk', delete=False) as f:
-            f.write('''kem bhai
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
+            f.write("""kem bhai
             bhai bol "unterminated string
-            aavjo bhai''')
+            aavjo bhai""")
             f.flush()
 
             result = self.runner.invoke(app, ["ast", f.name])
@@ -175,10 +176,10 @@ aavjo bhai''')
         Path(f.name).unlink()
 
     def test_tokens_command_lexer_error(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.jsk', delete=False) as f:
-            f.write('''kem bhai
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
+            f.write("""kem bhai
             aa x che "unterminated string
-            aavjo bhai''')
+            aavjo bhai""")
             f.flush()
 
             result = self.runner.invoke(app, ["tokens", f.name])
@@ -194,10 +195,10 @@ aavjo bhai''')
         assert "Ctrl+D" in result.stdout
 
     def test_fmt_invalid_syntax_file(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.jsk', delete=False) as f:
-            f.write('''kem bhai
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
+            f.write("""kem bhai
             this is not valid syntax @#$
-            aavjo bhai''')
+            aavjo bhai""")
             f.flush()
 
             result = self.runner.invoke(app, ["fmt", f.name])
@@ -207,10 +208,10 @@ aavjo bhai''')
         Path(f.name).unlink()
 
     def test_run_file_runtime_error(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.jsk', delete=False) as f:
-            f.write('''kem bhai
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
+            f.write("""kem bhai
             bhai bol 1 / 0
-            aavjo bhai''')
+            aavjo bhai""")
             f.flush()
 
             result = self.runner.invoke(app, ["run-file", f.name])
@@ -220,10 +221,10 @@ aavjo bhai''')
         Path(f.name).unlink()
 
     def test_extension_warning(self):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
-            f.write('''kem bhai
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
+            f.write("""kem bhai
             bhai bol "hello"
-            aavjo bhai''')
+            aavjo bhai""")
             f.flush()
 
             result = self.runner.invoke(app, ["run-file", f.name])

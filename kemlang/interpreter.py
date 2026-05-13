@@ -1,19 +1,34 @@
-from typing import Dict, Any, Callable, Optional, List
-import sys
-from io import StringIO
+import contextlib
+from collections.abc import Callable
+from typing import Optional
 
-from .types import (
-    Program, Block, Stmt, Expr, KemValue,
-    Print, Declaration, Assignment, If, While, Break, Continue,
-    Binary, Unary, Literal, Variable, Input, TokenType
-)
-from .errors import RuntimeError, BreakError, ContinueError
+from .errors import BreakError, ContinueError, RuntimeError
 from .parser import parse_program
+from .types import (
+    Assignment,
+    Binary,
+    Block,
+    Break,
+    Continue,
+    Declaration,
+    Expr,
+    If,
+    Input,
+    KemValue,
+    Literal,
+    Print,
+    Program,
+    Stmt,
+    TokenType,
+    Unary,
+    Variable,
+    While,
+)
 
 
 class Environment:
-    def __init__(self, enclosing: Optional['Environment'] = None):
-        self.values: Dict[str, KemValue] = {}
+    def __init__(self, enclosing: Optional["Environment"] = None):
+        self.values: dict[str, KemValue] = {}
         self.enclosing = enclosing
 
     def define(self, name: str, value: KemValue):
@@ -42,7 +57,9 @@ class Environment:
 
 
 class Interpreter:
-    def __init__(self, input_fn: Callable[[], str] = input, output_fn: Callable[[str], None] = print):
+    def __init__(
+        self, input_fn: Callable[[], str] = input, output_fn: Callable[[str], None] = print
+    ):
         self.globals = Environment()
         self.environment = self.globals
         self.input_fn = input_fn
@@ -106,10 +123,8 @@ class Interpreter:
         try:
             while True:
                 # Execute body first
-                try:
+                with contextlib.suppress(ContinueError):
                     self.execute(stmt.body)
-                except ContinueError:
-                    pass  # Continue to condition check
 
                 # Then check condition
                 condition = self.evaluate(stmt.condition)
@@ -140,7 +155,7 @@ class Interpreter:
         elif isinstance(expr, Unary):
             return self.evaluate_unary(expr)
         elif isinstance(expr, Input):
-            return self.input_fn().rstrip('\n')  # Remove only trailing newline
+            return self.input_fn().rstrip("\n")  # Remove only trailing newline
         else:
             raise RuntimeError(f"Unknown expression type: {type(expr)}")
 
@@ -157,7 +172,9 @@ class Interpreter:
             elif isinstance(left, (int, float)) and isinstance(right, (int, float)):
                 return left + right
             else:
-                raise RuntimeError(f"TypeError: cannot `+` {type(left).__name__} and {type(right).__name__}")
+                raise RuntimeError(
+                    f"TypeError: cannot `+` {type(left).__name__} and {type(right).__name__}"
+                )
 
         elif op == TokenType.MINUS:
             self.check_number_operands(left, right, expr.operator.lexeme)
@@ -241,7 +258,9 @@ class Interpreter:
         return str(value)
 
 
-def run(source: str, *, input_fn: Callable[[], str] = input, output_fn: Callable[[str], None] = print) -> int:
+def run(
+    source: str, *, input_fn: Callable[[], str] = input, output_fn: Callable[[str], None] = print
+) -> int:
     """Run KemLang source code. Returns exit code 0 on success, 1 on error."""
     try:
         program = parse_program(source)

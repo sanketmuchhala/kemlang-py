@@ -1,6 +1,3 @@
-from typing import Optional
-
-
 class KemError(Exception):
     def __init__(self, message: str, line: int = 0, col: int = 0):
         self.message = message
@@ -31,7 +28,7 @@ class ContinueError(Exception):
 
 def render_diagnostic(source: str, line: int, col: int, message: str, kind: str = "Error") -> str:
     """Render a diagnostic with source context and caret pointing to the error."""
-    lines = source.split('\n')
+    lines = source.split("\n")
 
     if line < 1 or line > len(lines):
         return f"{kind}: {message} (line {line}:{col})"

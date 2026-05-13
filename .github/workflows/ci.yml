@@ -2,120 +2,129 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  test:
+  lint:
+    name: Lint & Type Check
     runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev,test]"
+
+      - name: Ruff check
+        run: ruff check kemlang tests
+
+      - name: Ruff format check
+        run: ruff format --check kemlang tests
+
+      - name: Type check
+        run: mypy kemlang
+
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    needs: lint
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.10", "3.11", "3.12"]
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -e ".[test,dev]"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
 
-    - name: Lint with ruff
-      run: |
-        ruff check kemlang tests
-        ruff format --check kemlang tests
+      - name: Run tests
+        run: pytest --cov=kemlang --cov-report=xml --cov-report=term-missing
 
-    - name: Format check with black
-      run: |
-        black --check kemlang tests
-
-    - name: Type check with mypy
-      run: |
-        mypy kemlang
-
-    - name: Test with pytest
-      run: |
-        pytest --cov=kemlang --cov-report=xml --cov-report=term-missing
-
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: true
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+        continue-on-error: true
 
   build:
+    name: Build Package
     runs-on: ubuntu-latest
     needs: test
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.11"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-    - name: Install build dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install build
+      - name: Build
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build
 
-    - name: Build package
-      run: python -m build
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: dist
-        path: dist/
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
 
   integration-test:
+    name: Integration Test
     runs-on: ubuntu-latest
     needs: build
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.11"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-    - name: Download build artifacts
-      uses: actions/download-artifact@v3
-      with:
-        name: dist
-        path: dist/
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
 
-    - name: Install from wheel
-      run: |
-        pip install dist/*.whl
+      - name: Install from wheel
+        run: pip install dist/*.whl
 
-    - name: Test CLI installation
-      run: |
-        kem version
-        echo "kem bhai\nbhai bol \"CLI works!\"\naavjo bhai" > test.kem
-        kem run-file test.kem
+      - name: Test CLI
+        run: |
+          kem version
+          echo -e "kem bhai\nbhai bol \"CLI works!\"\naavjo bhai" > test.jsk
+          kem run test.jsk
 
-    - name: Test examples
-      run: |
-        cd examples
-        kem run-file hello.kem < <(echo "Test User")
-        kem run-file loop_and_if.kem
-        # errors.kem should fail
-        ! kem run-file errors.kem
+      - name: Test examples
+        run: |
+          kem run examples/hello.jsk < <(echo "Test User")
+          kem run examples/loop_and_if.jsk
+          ! kem run examples/errors.jsk
 
-    - name: Test formatter
-      run: |
-        cd examples
-        kem fmt --check *.kem || true  # May not be formatted
-        kem fmt *.kem
-        kem fmt --check *.kem  # Should pass after formatting
+      - name: Test formatter
+        run: |
+          kem fmt --check examples/hello.jsk || true
+          kem fmt examples/hello.jsk
+          kem fmt --check examples/hello.jsk

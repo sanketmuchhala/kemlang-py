@@ -1,16 +1,29 @@
-from typing import List
-from .types import (
-    Program, Block, Stmt, Expr,
-    Print, Declaration, Assignment, If, While, Break, Continue,
-    Binary, Unary, Literal, Variable, Input, TokenType
-)
 from .parser import parse_program
+from .types import (
+    Assignment,
+    Binary,
+    Block,
+    Break,
+    Continue,
+    Declaration,
+    Expr,
+    If,
+    Input,
+    Literal,
+    Print,
+    Program,
+    Stmt,
+    TokenType,
+    Unary,
+    Variable,
+    While,
+)
 
 
 class Formatter:
     def __init__(self):
         self.indent_level = 0
-        self.output: List[str] = []
+        self.output: list[str] = []
 
     def format_program(self, program: Program) -> str:
         """Format a complete program."""
@@ -118,7 +131,12 @@ class Formatter:
         value = expr.value
         if isinstance(value, str):
             # Escape special characters
-            escaped = value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\t", "\\t")
+            escaped = (
+                value.replace("\\", "\\\\")
+                .replace('"', '\\"')
+                .replace("\n", "\\n")
+                .replace("\t", "\\t")
+            )
             self.emit(f'"{escaped}"')
         elif isinstance(value, bool):
             self.emit("bhai chhe" if value else "bhai nathi")
@@ -156,11 +174,17 @@ class Formatter:
     def needs_parentheses(self, child: Binary, parent: Binary) -> bool:
         """Determine if child expression needs parentheses."""
         precedence = {
-            TokenType.MULTIPLY: 3, TokenType.DIVIDE: 3, TokenType.MODULO: 3,
-            TokenType.PLUS: 2, TokenType.MINUS: 2,
-            TokenType.GREATER: 1, TokenType.GREATER_EQUAL: 1,
-            TokenType.LESS: 1, TokenType.LESS_EQUAL: 1,
-            TokenType.EQUAL: 0, TokenType.NOT_EQUAL: 0,
+            TokenType.MULTIPLY: 3,
+            TokenType.DIVIDE: 3,
+            TokenType.MODULO: 3,
+            TokenType.PLUS: 2,
+            TokenType.MINUS: 2,
+            TokenType.GREATER: 1,
+            TokenType.GREATER_EQUAL: 1,
+            TokenType.LESS: 1,
+            TokenType.LESS_EQUAL: 1,
+            TokenType.EQUAL: 0,
+            TokenType.NOT_EQUAL: 0,
         }
 
         child_prec = precedence.get(child.operator.type, 0)

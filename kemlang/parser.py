@@ -1,16 +1,29 @@
-from typing import List, Optional, Callable, Dict
-
-from .types import (
-    Token, TokenType, Program, Block, Stmt, Expr,
-    Print, Declaration, Assignment, If, While, Break, Continue,
-    Binary, Unary, Literal, Variable, Input
-)
 from .errors import ParseError
 from .lexer import tokenize
+from .types import (
+    Assignment,
+    Binary,
+    Block,
+    Break,
+    Continue,
+    Declaration,
+    Expr,
+    If,
+    Input,
+    Literal,
+    Print,
+    Program,
+    Stmt,
+    Token,
+    TokenType,
+    Unary,
+    Variable,
+    While,
+)
 
 
 class Parser:
-    def __init__(self, tokens: List[Token]):
+    def __init__(self, tokens: list[Token]):
         self.tokens = [t for t in tokens if t.type != TokenType.NEWLINE]  # Filter out newlines
         self.current = 0
 
@@ -33,7 +46,7 @@ class Parser:
 
         return Program(statements)
 
-    def statement(self) -> Optional[Stmt]:
+    def statement(self) -> Stmt | None:
         """Parse a statement."""
         try:
             if self.match(TokenType.BHAI_BOL):
@@ -151,8 +164,9 @@ class Parser:
         """Parse comparison: >, >=, <, <="""
         expr = self.term()
 
-        while self.match(TokenType.GREATER, TokenType.GREATER_EQUAL,
-                         TokenType.LESS, TokenType.LESS_EQUAL):
+        while self.match(
+            TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL
+        ):
             operator = self.previous()
             right = self.term()
             expr = Binary(expr, operator, right)
@@ -262,8 +276,14 @@ class Parser:
 
         while not self.is_at_end():
             # Look for statement starters
-            if self.peek().type in [TokenType.BHAI_BOL, TokenType.AA, TokenType.JO,
-                                   TokenType.FARVU, TokenType.TAME_JAO, TokenType.AAGAL_VADO]:
+            if self.peek().type in [
+                TokenType.BHAI_BOL,
+                TokenType.AA,
+                TokenType.JO,
+                TokenType.FARVU,
+                TokenType.TAME_JAO,
+                TokenType.AAGAL_VADO,
+            ]:
                 return
             self.advance()
 

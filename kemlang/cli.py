@@ -1,17 +1,18 @@
 import sys
 from pathlib import Path
+from typing import Annotated
+
 import typer
 from rich.console import Console
-from rich.syntax import Syntax
 from rich.tree import Tree
-import json
 
-from .version import __version__
+from .errors import KemError, render_diagnostic
+from .fmt import format_code
+from .interpreter import run as interpret
 from .lexer import tokenize
 from .parser import parse_program
-from .interpreter import run
-from .fmt import format_code
-from .errors import render_diagnostic, KemError
+from .version import __version__
+
 
 app = typer.Typer(help="KemLang - A Gujarati-flavored programming language")
 console = Console()
@@ -24,27 +25,29 @@ def pretty_print_ast(node, tree=None, name="Program") -> Tree:
 
     node_type = type(node).__name__
 
-    if hasattr(node, 'statements'):
+    if hasattr(node, "statements"):
         subtree = tree.add(f"[green]{node_type}[/green]")
         for i, stmt in enumerate(node.statements):
-            pretty_print_ast(stmt, subtree, f"Statement {i+1}")
-    elif hasattr(node, 'expression'):
+            pretty_print_ast(stmt, subtree, f"Statement {i + 1}")
+    elif hasattr(node, "expression"):
         subtree = tree.add(f"[green]{node_type}[/green]")
         pretty_print_ast(node.expression, subtree, "Expression")
-    elif hasattr(node, 'condition'):
+    elif hasattr(node, "condition"):
         subtree = tree.add(f"[green]{node_type}[/green]")
         pretty_print_ast(node.condition, subtree, "Condition")
-        if hasattr(node, 'then_branch'):
+        if hasattr(node, "then_branch"):
             pretty_print_ast(node.then_branch, subtree, "Then")
-        if hasattr(node, 'else_branch') and node.else_branch:
+        if hasattr(node, "else_branch") and node.else_branch:
             pretty_print_ast(node.else_branch, subtree, "Else")
-    elif hasattr(node, 'left') and hasattr(node, 'right'):
-        subtree = tree.add(f"[green]{node_type}[/green] [yellow]{getattr(node, 'operator', {}).lexeme if hasattr(node, 'operator') else ''}[/yellow]")
+    elif hasattr(node, "left") and hasattr(node, "right"):
+        subtree = tree.add(
+            f"[green]{node_type}[/green] [yellow]{node.operator.lexeme if hasattr(node, 'operator') else ''}[/yellow]"
+        )
         pretty_print_ast(node.left, subtree, "Left")
         pretty_print_ast(node.right, subtree, "Right")
-    elif hasattr(node, 'value'):
+    elif hasattr(node, "value"):
         tree.add(f"[green]{node_type}[/green]: [cyan]{repr(node.value)}[/cyan]")
-    elif hasattr(node, 'name'):
+    elif hasattr(node, "name"):
         tree.add(f"[green]{node_type}[/green]: [cyan]{node.name}[/cyan]")
     else:
         tree.add(f"[green]{node_type}[/green]")
@@ -52,17 +55,17 @@ def pretty_print_ast(node, tree=None, name="Program") -> Tree:
     return tree
 
 
-@app.command("run-file")
-def run_file(
-    file: Path = typer.Argument(..., help="KemLang file to run"),
-    trace: bool = typer.Option(False, "--trace", help="Show tokens and AST before execution")
+@app.command()
+def run(
+    file: Annotated[Path, typer.Argument(help="KemLang file to run")],
+    trace: Annotated[bool, typer.Option("--trace", help="Show tokens and AST before execution")] = False,
 ):
     """Run a KemLang file."""
     if not file.exists():
         console.print(f"[red]Error: File '{file}' not found[/red]")
         raise typer.Exit(1)
 
-    if file.suffix != '.jsk':
+    if file.suffix != ".jsk":
         console.print(f"[yellow]Warning: File '{file}' doesn't have .jsk extension[/yellow]")
 
     try:
@@ -72,7 +75,9 @@ def run_file(
             console.print("[bold]Tokens:[/bold]")
             tokens = tokenize(source)
             for token in tokens[:20]:  # Limit output
-                console.print(f"  {token.type.name:15} {token.lexeme!r:15} {token.line}:{token.col}")
+                console.print(
+                    f"  {token.type.name:15} {token.lexeme!r:15} {token.line}:{token.col}"
+                )
             if len(tokens) > 20:
                 console.print(f"  ... and {len(tokens) - 20} more tokens")
 
@@ -82,7 +87,7 @@ def run_file(
             console.print(tree)
             console.print()
 
-        exit_code = run(source)
+        exit_code = interpret(source)
         if exit_code == 0:
             sys.exit(0)
         else:
@@ -127,7 +132,7 @@ def repl():
             if "kem bhai" not in source:
                 source = f"kem bhai\n{source}\naavjo bhai"
 
-            exit_code = run(source)
+            exit_code = interpret(source)
             if exit_code != 0:
                 console.print("[red]Execution failed[/red]")
 
@@ -140,8 +145,8 @@ def repl():
 
 @app.command()
 def fmt(
-    path: Path = typer.Argument(..., help="File or directory to format"),
-    check: bool = typer.Option(False, "--check", help="Check if files are formatted without modifying them")
+    path: Annotated[Path, typer.Argument(help="File or directory to format")],
+    check: Annotated[bool, typer.Option("--check", help="Check if files are formatted without modifying them")] = False,
 ):
     """Format KemLang files."""
     if path.is_file():
@@ -183,7 +188,7 @@ def fmt(
 
 
 @app.command()
-def tokens(file: Path = typer.Argument(..., help="KemLang file to tokenize")):
+def tokens(file: Annotated[Path, typer.Argument(help="KemLang file to tokenize")]):
     """Show tokens for a KemLang file."""
     if not file.exists():
         console.print(f"[red]Error: File '{file}' not found[/red]")
@@ -203,7 +208,7 @@ def tokens(file: Path = typer.Argument(..., help="KemLang file to tokenize")):
 
 
 @app.command()
-def ast(file: Path = typer.Argument(..., help="KemLang file to parse")):
+def ast(file: Annotated[Path, typer.Argument(help="KemLang file to parse")]):
     """Show AST for a KemLang file."""
     if not file.exists():
         console.print(f"[red]Error: File '{file}' not found[/red]")

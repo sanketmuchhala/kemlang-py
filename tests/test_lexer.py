@@ -1,5 +1,6 @@
 import pytest
-from kemlang.lexer import Lexer, tokenize, LexerError
+
+from kemlang.lexer import LexerError, tokenize
 from kemlang.types import TokenType
 
 
@@ -45,10 +46,17 @@ class TestLexer:
         tokens = tokenize(source)
 
         expected = [
-            TokenType.PLUS, TokenType.MINUS, TokenType.MULTIPLY,
-            TokenType.DIVIDE, TokenType.MODULO, TokenType.EQUAL,
-            TokenType.NOT_EQUAL, TokenType.LESS, TokenType.GREATER,
-            TokenType.LESS_EQUAL, TokenType.GREATER_EQUAL
+            TokenType.PLUS,
+            TokenType.MINUS,
+            TokenType.MULTIPLY,
+            TokenType.DIVIDE,
+            TokenType.MODULO,
+            TokenType.EQUAL,
+            TokenType.NOT_EQUAL,
+            TokenType.LESS,
+            TokenType.GREATER,
+            TokenType.LESS_EQUAL,
+            TokenType.GREATER_EQUAL,
         ]
 
         for i, expected_type in enumerate(expected):
@@ -176,18 +184,24 @@ class TestLexer:
         assert tokens[2].type == TokenType.IDENTIFIER
 
     def test_complete_program(self):
-        source = '''kem bhai
+        source = """kem bhai
         aa x che 42
         bhai bol x
-        aavjo bhai'''
+        aavjo bhai"""
 
         tokens = tokenize(source)
 
         token_types = [t.type for t in tokens if t.type != TokenType.NEWLINE]
         expected = [
-            TokenType.KEM_BHAI, TokenType.AA, TokenType.IDENTIFIER,
-            TokenType.CHE, TokenType.INTEGER, TokenType.BHAI_BOL,
-            TokenType.IDENTIFIER, TokenType.AAVJO_BHAI, TokenType.EOF
+            TokenType.KEM_BHAI,
+            TokenType.AA,
+            TokenType.IDENTIFIER,
+            TokenType.CHE,
+            TokenType.INTEGER,
+            TokenType.BHAI_BOL,
+            TokenType.IDENTIFIER,
+            TokenType.AAVJO_BHAI,
+            TokenType.EOF,
         ]
 
         assert token_types == expected

@@ -1,39 +1,44 @@
 import pytest
+
 from kemlang.fmt import format_code
 
 
 class TestFormatter:
     def test_basic_formatting(self):
-        source = '''kem bhai
+        source = """kem bhai
 aa x che 42
 bhai bol x
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "aa x che 42" in formatted
         assert "bhai bol x" in formatted
 
     def test_operator_spacing(self):
-        source = '''kem bhai
+        source = """kem bhai
 bhai bol 1+2*3-4/5
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "1 + 2 * 3 - 4 / 5" in formatted
 
     def test_comparison_operators(self):
-        source = '''kem bhai
+        source = """kem bhai
 bhai bol x==y
 bhai bol a!=b
 bhai bol c<d
 bhai bol e>f
 bhai bol g<=h
 bhai bol i>=j
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
-        lines = formatted.split('\n')
-        content_lines = [line.strip() for line in lines if line.strip() and line.strip() not in ['kem bhai', 'aavjo bhai']]
+        lines = formatted.split("\n")
+        content_lines = [
+            line.strip()
+            for line in lines
+            if line.strip() and line.strip() not in ["kem bhai", "aavjo bhai"]
+        ]
 
         assert "bhai bol x == y" in content_lines
         assert "bhai bol a != b" in content_lines
@@ -43,31 +48,31 @@ aavjo bhai'''
         assert "bhai bol i >= j" in content_lines
 
     def test_if_statement_formatting(self):
-        source = '''kem bhai
+        source = """kem bhai
 jo x==42{bhai bol"found"}
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "jo x == 42 {" in formatted
-        assert "  bhai bol \"found\"" in formatted
+        assert '  bhai bol "found"' in formatted
         assert "}" in formatted
 
     def test_if_else_formatting(self):
-        source = '''kem bhai
+        source = """kem bhai
 jo x==42{bhai bol"found"}nahi to{bhai bol"not found"}
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "jo x == 42 {" in formatted
         assert "} nahi to {" in formatted
-        assert "  bhai bol \"found\"" in formatted
-        assert "  bhai bol \"not found\"" in formatted
+        assert '  bhai bol "found"' in formatted
+        assert '  bhai bol "not found"' in formatted
 
     def test_while_loop_formatting(self):
-        source = '''kem bhai
+        source = """kem bhai
 farvu{bhai bol i
 i che i+1}jya sudhi i<10
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "farvu {" in formatted
@@ -76,89 +81,87 @@ aavjo bhai'''
         assert "} jya sudhi i < 10" in formatted
 
     def test_nested_blocks(self):
-        source = '''kem bhai
+        source = """kem bhai
 jo bhai chhe{jo bhai nathi{bhai bol"nested"}}
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
-        lines = formatted.split('\n')
-
         # Find the nested structure
         assert "jo bhai chhe {" in formatted
         assert "  jo bhai nathi {" in formatted
-        assert "    bhai bol \"nested\"" in formatted
+        assert '    bhai bol "nested"' in formatted
         assert "  }" in formatted
         assert "}" in formatted
 
     def test_string_literal_preservation(self):
-        source = '''kem bhai
+        source = """kem bhai
 bhai bol "hello\\nworld\\twith\\ttabs\\\"and quotes\\\\"
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
-        assert "hello\\nworld\\twith\\ttabs\\\"and quotes\\\\" in formatted
+        assert 'hello\\nworld\\twith\\ttabs\\"and quotes\\\\' in formatted
 
     def test_boolean_literals(self):
-        source = '''kem bhai
+        source = """kem bhai
 aa t che bhai chhe
 aa f che bhai nathi
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "aa t che bhai chhe" in formatted
         assert "aa f che bhai nathi" in formatted
 
     def test_unary_minus(self):
-        source = '''kem bhai
+        source = """kem bhai
 bhai bol -42
 bhai bol -(x+y)
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "bhai bol -42" in formatted
         assert "bhai bol -(x + y)" in formatted
 
     def test_parentheses_preservation(self):
-        source = '''kem bhai
+        source = """kem bhai
 bhai bol (1+2)*3
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "bhai bol (1 + 2) * 3" in formatted
 
     def test_input_expression(self):
-        source = '''kem bhai
+        source = """kem bhai
 aa name che bapu tame bolo
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "aa name che bapu tame bolo" in formatted
 
     def test_break_continue_statements(self):
-        source = '''kem bhai
+        source = """kem bhai
 tame jao
 aagal vado
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "tame jao" in formatted
         assert "aagal vado" in formatted
 
     def test_empty_blocks(self):
-        source = '''kem bhai
+        source = """kem bhai
 jo bhai chhe{
 }
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "jo bhai chhe {" in formatted
         assert "}" in formatted
 
     def test_complex_expression_precedence(self):
-        source = '''kem bhai
+        source = """kem bhai
 bhai bol 1+2*3+4
 bhai bol (1+2)*(3+4)
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
         assert "bhai bol 1 + 2 * 3 + 4" in formatted
@@ -166,14 +169,14 @@ aavjo bhai'''
 
     def test_idempotency(self):
         """Test that formatting twice produces the same result."""
-        source = '''kem bhai
+        source = """kem bhai
 aa x che 42
 jo x==42{
 bhai bol"found"
 }nahi to{
 bhai bol"not found"
 }
-aavjo bhai'''
+aavjo bhai"""
 
         formatted_once = format_code(source)
         formatted_twice = format_code(formatted_once)
@@ -182,21 +185,21 @@ aavjo bhai'''
 
     def test_program_structure_preservation(self):
         """Test that basic program structure is preserved."""
-        source = '''kem bhai
+        source = """kem bhai
 aa x che 1
 bhai bol x
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
 
         # Should start with 'kem bhai' and end with 'aavjo bhai'
-        lines = formatted.strip().split('\n')
+        lines = formatted.strip().split("\n")
         assert lines[0] == "kem bhai"
         assert lines[-1] == "aavjo bhai"
 
     def test_whitespace_normalization(self):
         """Test that excessive whitespace is normalized."""
-        source = '''kem bhai
+        source = """kem bhai
 
 
 aa x che 42
@@ -205,12 +208,12 @@ aa x che 42
 bhai bol x
 
 
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
 
         # Should not have multiple consecutive blank lines
-        lines = formatted.split('\n')
+        lines = formatted.split("\n")
         consecutive_empty = 0
         max_consecutive_empty = 0
 
@@ -226,9 +229,9 @@ aavjo bhai'''
 
     def test_invalid_code_error(self):
         """Test that invalid code raises an error."""
-        source = '''kem bhai
+        source = """kem bhai
         invalid syntax here @#$
-        aavjo bhai'''
+        aavjo bhai"""
 
         with pytest.raises(ValueError) as exc:
             format_code(source)
@@ -244,10 +247,10 @@ aavjo bhai'''
 
     def test_real_example_formatting(self):
         """Test formatting of the hello.jsk example."""
-        source = '''kem bhai
+        source = """kem bhai
 aa naam che bapu tame bolo
 bhai bol"kem cho, "+naam+"!"
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
 
@@ -256,13 +259,13 @@ aavjo bhai'''
 
     def test_loop_example_formatting(self):
         """Test formatting of loop_and_if.jsk example."""
-        source = '''kem bhai
+        source = """kem bhai
 aa i che 0
 farvu{bhai bol i
 i che i+1
 jo i==5{tame jao}}jya sudhi i<10
 jo i==5{bhai bol"panch ma masti!"}nahi to{bhai bol"kuch to gadbad chhe!"}
-aavjo bhai'''
+aavjo bhai"""
 
         formatted = format_code(source)
 

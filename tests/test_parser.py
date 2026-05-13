@@ -1,10 +1,22 @@
 import pytest
-from kemlang.parser import Parser, parse_program, ParseError
-from kemlang.lexer import tokenize
+
+from kemlang.parser import ParseError, parse_program
 from kemlang.types import (
-    Program, Block, Stmt, Expr,
-    Print, Declaration, Assignment, If, While, Break, Continue,
-    Binary, Unary, Literal, Variable, Input, TokenType
+    Assignment,
+    Binary,
+    Block,
+    Break,
+    Continue,
+    Declaration,
+    If,
+    Input,
+    Literal,
+    Print,
+    Program,
+    TokenType,
+    Unary,
+    Variable,
+    While,
 )
 
 
@@ -30,7 +42,7 @@ class TestParser:
         assert stmt.expression.value == "hello world"
 
     def test_declaration(self):
-        source = 'kem bhai\naa x che 42\naavjo bhai'
+        source = "kem bhai\naa x che 42\naavjo bhai"
         program = parse_program(source)
 
         stmt = program.statements[0]
@@ -40,7 +52,7 @@ class TestParser:
         assert stmt.initializer.value == 42
 
     def test_assignment(self):
-        source = 'kem bhai\naa x che 1\nx che 42\naavjo bhai'
+        source = "kem bhai\naa x che 1\nx che 42\naavjo bhai"
         program = parse_program(source)
 
         stmt = program.statements[1]
@@ -50,11 +62,11 @@ class TestParser:
         assert stmt.value.value == 42
 
     def test_if_statement(self):
-        source = '''kem bhai
+        source = """kem bhai
         jo bhai chhe {
             bhai bol "true"
         }
-        aavjo bhai'''
+        aavjo bhai"""
 
         program = parse_program(source)
         stmt = program.statements[0]
@@ -66,13 +78,13 @@ class TestParser:
         assert stmt.else_branch is None
 
     def test_if_else_statement(self):
-        source = '''kem bhai
+        source = """kem bhai
         jo bhai nathi {
             bhai bol "false"
         } nahi to {
             bhai bol "true"
         }
-        aavjo bhai'''
+        aavjo bhai"""
 
         program = parse_program(source)
         stmt = program.statements[0]
@@ -84,11 +96,11 @@ class TestParser:
         assert isinstance(stmt.else_branch, Block)
 
     def test_while_statement(self):
-        source = '''kem bhai
+        source = """kem bhai
         farvu {
             bhai bol "loop"
         } jya sudhi bhai chhe
-        aavjo bhai'''
+        aavjo bhai"""
 
         program = parse_program(source)
         stmt = program.statements[0]
@@ -99,10 +111,10 @@ class TestParser:
         assert stmt.condition.value is True
 
     def test_break_continue(self):
-        source = '''kem bhai
+        source = """kem bhai
         tame jao
         aagal vado
-        aavjo bhai'''
+        aavjo bhai"""
 
         program = parse_program(source)
 
@@ -110,7 +122,7 @@ class TestParser:
         assert isinstance(program.statements[1], Continue)
 
     def test_binary_expressions(self):
-        source = 'kem bhai\nbhai bol 1 + 2 * 3\naavjo bhai'
+        source = "kem bhai\nbhai bol 1 + 2 * 3\naavjo bhai"
         program = parse_program(source)
 
         stmt = program.statements[0]
@@ -125,7 +137,7 @@ class TestParser:
         assert expr.right.operator.type == TokenType.MULTIPLY
 
     def test_comparison_operators(self):
-        source = 'kem bhai\nbhai bol 1 < 2\naavjo bhai'
+        source = "kem bhai\nbhai bol 1 < 2\naavjo bhai"
         program = parse_program(source)
 
         expr = program.statements[0].expression
@@ -133,7 +145,7 @@ class TestParser:
         assert expr.operator.type == TokenType.LESS
 
     def test_equality_operators(self):
-        source = 'kem bhai\nbhai bol 1 == 2\naavjo bhai'
+        source = "kem bhai\nbhai bol 1 == 2\naavjo bhai"
         program = parse_program(source)
 
         expr = program.statements[0].expression
@@ -141,7 +153,7 @@ class TestParser:
         assert expr.operator.type == TokenType.EQUAL
 
     def test_unary_minus(self):
-        source = 'kem bhai\nbhai bol -42\naavjo bhai'
+        source = "kem bhai\nbhai bol -42\naavjo bhai"
         program = parse_program(source)
 
         expr = program.statements[0].expression
@@ -151,7 +163,7 @@ class TestParser:
         assert expr.right.value == 42
 
     def test_parenthesized_expressions(self):
-        source = 'kem bhai\nbhai bol (1 + 2) * 3\naavjo bhai'
+        source = "kem bhai\nbhai bol (1 + 2) * 3\naavjo bhai"
         program = parse_program(source)
 
         expr = program.statements[0].expression
@@ -162,7 +174,7 @@ class TestParser:
         assert expr.left.operator.type == TokenType.PLUS
 
     def test_variable_expression(self):
-        source = 'kem bhai\nbhai bol variable_name\naavjo bhai'
+        source = "kem bhai\nbhai bol variable_name\naavjo bhai"
         program = parse_program(source)
 
         expr = program.statements[0].expression
@@ -170,17 +182,17 @@ class TestParser:
         assert expr.name == "variable_name"
 
     def test_input_expression(self):
-        source = 'kem bhai\naa x che bapu tame bolo\naavjo bhai'
+        source = "kem bhai\naa x che bapu tame bolo\naavjo bhai"
         program = parse_program(source)
 
         expr = program.statements[0].initializer
         assert isinstance(expr, Input)
 
     def test_boolean_literals(self):
-        source = '''kem bhai
+        source = """kem bhai
         aa t che bhai chhe
         aa f che bhai nathi
-        aavjo bhai'''
+        aavjo bhai"""
 
         program = parse_program(source)
 
@@ -194,7 +206,7 @@ class TestParser:
 
     def test_operator_precedence(self):
         # Test that * has higher precedence than +
-        source = 'kem bhai\nbhai bol 1 + 2 * 3 + 4\naavjo bhai'
+        source = "kem bhai\nbhai bol 1 + 2 * 3 + 4\naavjo bhai"
         program = parse_program(source)
 
         expr = program.statements[0].expression
@@ -217,7 +229,7 @@ class TestParser:
 
     def test_comparison_precedence(self):
         # Test that + has higher precedence than ==
-        source = 'kem bhai\nbhai bol 1 + 2 == 3\naavjo bhai'
+        source = "kem bhai\nbhai bol 1 + 2 == 3\naavjo bhai"
         program = parse_program(source)
 
         expr = program.statements[0].expression
@@ -244,7 +256,7 @@ class TestParser:
         assert "must end with 'aavjo bhai'" in str(exc.value)
 
     def test_missing_che_in_declaration(self):
-        source = 'kem bhai\naa x 42\naavjo bhai'
+        source = "kem bhai\naa x 42\naavjo bhai"
 
         with pytest.raises(ParseError) as exc:
             parse_program(source)
@@ -260,7 +272,7 @@ class TestParser:
         assert "Expected '{'" in str(exc.value)
 
     def test_missing_closing_paren(self):
-        source = 'kem bhai\nbhai bol (1 + 2\naavjo bhai'
+        source = "kem bhai\nbhai bol (1 + 2\naavjo bhai"
 
         with pytest.raises(ParseError) as exc:
             parse_program(source)
@@ -268,7 +280,7 @@ class TestParser:
         assert "Expected ')'" in str(exc.value)
 
     def test_complex_expression(self):
-        source = 'kem bhai\nbhai bol (1 + 2) * (3 - 4) / 5\naavjo bhai'
+        source = "kem bhai\nbhai bol (1 + 2) * (3 - 4) / 5\naavjo bhai"
         program = parse_program(source)
 
         # Just verify it parses without error
@@ -276,13 +288,13 @@ class TestParser:
         assert isinstance(expr, Binary)
 
     def test_nested_blocks(self):
-        source = '''kem bhai
+        source = """kem bhai
         jo bhai chhe {
             jo bhai nathi {
                 bhai bol "nested"
             }
         }
-        aavjo bhai'''
+        aavjo bhai"""
 
         program = parse_program(source)
         if_stmt = program.statements[0]
@@ -294,10 +306,10 @@ class TestParser:
         assert isinstance(nested_if, If)
 
     def test_empty_blocks(self):
-        source = '''kem bhai
+        source = """kem bhai
         jo bhai chhe {
         }
-        aavjo bhai'''
+        aavjo bhai"""
 
         program = parse_program(source)
         if_stmt = program.statements[0]
