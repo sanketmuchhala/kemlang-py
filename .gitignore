@@ -152,7 +152,7 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
+# package-lock.json committed for reproducible Vercel builds
 
 # Next.js
 .next/
