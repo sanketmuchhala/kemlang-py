@@ -7,7 +7,8 @@ const navigation = [
     title: "Getting Started",
     href: "/docs",
     items: [
-      { title: "Introduction",  href: "/docs" },
+      { title: "Introduction",   href: "/docs" },
+      { title: "How it works",  href: "/docs/internals" },
       { title: "Installation",  href: "/docs/installation" },
     ],
   },

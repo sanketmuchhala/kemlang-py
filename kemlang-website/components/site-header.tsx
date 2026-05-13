@@ -20,7 +20,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b bg-background/90 backdrop-blur-sm">
       <div className="container mx-auto flex h-14 items-center justify-between px-5 md:px-8">
 
-        <Link href="/" className="flex items-center gap-2 group">
+        <Link href="/" className="flex items-center gap-2 group rounded-md px-2 py-1 -mx-2 hover:bg-muted/50 transition-colors">
           <span className="font-mono text-sm font-semibold text-primary">$</span>
           <span className="font-mono text-sm font-semibold tracking-tight">
             kemlang<span className="text-primary">-py</span>
