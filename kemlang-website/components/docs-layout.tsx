@@ -43,9 +43,9 @@ export function DocsLayout({ children, navigation }: DocsLayoutProps) {
           <nav className="w-full space-y-6">
             {navigation.map((section) => (
               <div key={section.href}>
-                <p className="font-mono text-[10px] font-semibold uppercase tracking-widest text-muted-foreground px-2 mb-1.5">
+                <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-semibold">
                   {section.title}
-                </p>
+                </h4>
                 {section.items && (
                   <div className="space-y-0.5">
                     {section.items.map((item) => (
