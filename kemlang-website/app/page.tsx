@@ -1,9 +1,22 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Terminal, Zap, Heart, Package, BookOpen, GitBranch } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CodeSample } from "@/components/code-sample";
 import { InstallTabs } from "@/components/install-tabs";
+
+export const metadata: Metadata = {
+  title: "kemlang-py - Gujarati Programming Language",
+  description:
+    "Write programs in Gujarati with kemlang-py. A fun, open-source interpreter with real Gujarati keywords like kem bhai, bhai bol, and jo. Install with npm or pip.",
+  alternates: { canonical: "https://kemlang.cloud/" },
+  openGraph: {
+    title: "kemlang-py - Gujarati Programming Language",
+    description: "Write programs in Gujarati. Real Gujarati keywords, open source, install with npm or pip.",
+    url: "https://kemlang.cloud/",
+  },
+};
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 

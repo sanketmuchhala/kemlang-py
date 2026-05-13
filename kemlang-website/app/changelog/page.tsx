@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
   title: "Changelog",
-  description: "Latest updates and changes to KemLang.",
+  description: "kemlang-py release history - new features, bug fixes, and improvements in every version.",
 };
 
 const changelog = [
