@@ -1,31 +1,31 @@
 import Link from "next/link";
-import { ArrowRight, Terminal, Zap, Heart, Package, BookOpen } from "lucide-react";
+import { ArrowRight, Terminal, Zap, Heart, Package, BookOpen, GitBranch } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CodeSample } from "@/components/code-sample";
 import { InstallTabs } from "@/components/install-tabs";
 
 const heroCode = `kem bhai
-  // Say hello in Gujarati
+  // greet the user
   aa naam che bapu tame bolo
   bhai bol "kem cho, " + naam + "!"
 
-  aa count che 1
+  aa i che 1
   farvu {
-    bhai bol count
-    count che count + 1
-  } jya sudhi count < 6
+    bhai bol i
+    i che i + 1
+  } jya sudhi i < 6
 aavjo bhai`;
 
 const snippets = [
   {
-    title: "Variables",
+    label: "Variables",
     code: `aa x che 42
 aa msg che "kem cho!"
 bhai bol msg`,
   },
   {
-    title: "Conditionals",
+    label: "Conditionals",
     code: `jo age >= 18 {
   bhai bol "adult"
 } nahi to {
@@ -33,7 +33,7 @@ bhai bol msg`,
 }`,
   },
   {
-    title: "Loops",
+    label: "Loops",
     code: `aa i che 0
 farvu {
   bhai bol i
@@ -42,298 +42,279 @@ farvu {
   },
 ];
 
+const keywords: [string, string][] = [
+  ["kem bhai",                 "program start"],
+  ["aavjo bhai",               "program end"],
+  ["aa x che val",             "declare variable"],
+  ["x che val",                "reassign variable"],
+  ["bhai bol expr",            "print"],
+  ["bapu tame bolo",           "read input"],
+  ["jo cond { }",              "if"],
+  ["nahi to { }",              "else"],
+  ["farvu { } jya sudhi cond", "while loop"],
+  ["tame jao",                 "break"],
+  ["aagal vado",               "continue"],
+  ["bhai chhe / bhai nathi",   "true / false"],
+];
+
 const features = [
   {
-    icon: <Terminal className="h-5 w-5" />,
-    title: "Gujarati Keywords",
-    description:
-      "Write code with words you already know — kem bhai, bhai bol, jo, farvu. Programming in your mother tongue.",
+    icon: Terminal,
+    title: "Gujarati keywords",
+    body: "Write kem bhai, bhai bol, jo, farvu. Real Gujarati words mapped to real programming concepts.",
   },
   {
-    icon: <Zap className="h-5 w-5" />,
-    title: "Zero Config",
-    description:
-      "One command to install, one to run. No runtimes to set up, no config files to write.",
+    icon: Zap,
+    title: "Zero config",
+    body: "One install command, one run command. No runtime setup, no config files.",
   },
   {
-    icon: <Package className="h-5 w-5" />,
+    icon: Package,
     title: "npm & PyPI",
-    description:
-      "Install via npm or pip. Works on macOS, Linux, and Windows out of the box.",
+    body: "Install however you prefer. Works on macOS, Linux, and Windows.",
   },
   {
-    icon: <BookOpen className="h-5 w-5" />,
+    icon: BookOpen,
     title: "Rich CLI",
-    description:
-      "Built-in formatter, token inspector, AST viewer, and an interactive REPL.",
+    body: "kem run, kem repl, kem fmt, kem tokens, kem ast — a complete developer toolkit.",
   },
   {
-    icon: <Heart className="h-5 w-5" />,
-    title: "Open Source",
-    description:
-      "MIT licensed. Built with Python, Typer, and Rich. Contributions welcome.",
+    icon: GitBranch,
+    title: "Open source",
+    body: "MIT licensed. Built in Python. Read the code, file issues, send PRs.",
   },
   {
-    icon: <Terminal className="h-5 w-5" />,
-    title: "Web Playground",
-    description:
-      "Try kemlang-py right in your browser — no install required.",
+    icon: Heart,
+    title: "Community",
+    body: "Made for Gujarati speakers learning programming, and programmers curious about linguistic esolangs.",
   },
 ];
 
-export default function HomePage() {
+export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <SiteHeader />
 
-      <main className="flex-1">
-        {/* ── Hero ─────────────────────────────────────────── */}
-        <section className="relative overflow-hidden border-b border-border/60">
-          {/* Grid background */}
-          <div className="absolute inset-0 bg-grid opacity-40 pointer-events-none" />
-          {/* Amber glow */}
-          <div
-            className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-10 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(circle, hsl(38 95% 52%) 0%, transparent 70%)",
-              transform: "translate(30%, -30%)",
-            }}
-          />
+      {/* ── Hero ─────────────────────────────────────────────── */}
+      <section className="relative border-b overflow-hidden">
+        <div className="absolute inset-0 dot-grid opacity-60 pointer-events-none" />
 
-          <div className="relative container mx-auto px-4 md:px-8 py-20 md:py-28">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left */}
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-medium mb-6 animate-fade-up">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
-                  </span>
-                  v0.1.3 — now on npm &amp; PyPI
-                </div>
+        {/* Large decorative text */}
+        <div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
+          aria-hidden
+        >
+          <span
+            className="font-display text-[22vw] font-normal leading-none whitespace-nowrap opacity-[0.04]"
+            style={{ letterSpacing: "-0.04em" }}
+          >
+            kem bhai
+          </span>
+        </div>
 
-                <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight animate-fade-up delay-100">
-                  Code in{" "}
-                  <span
-                    className="relative"
-                    style={{
-                      background: "linear-gradient(135deg, hsl(38 95% 52%), hsl(25 95% 55%))",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                    }}
-                  >
-                    Gujarati
-                  </span>
-                  .
-                </h1>
+        <div className="relative container mx-auto px-5 md:px-8 py-24 md:py-36">
+          <div className="grid lg:grid-cols-5 gap-16 items-center">
 
-                <p className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-lg animate-fade-up delay-200">
-                  kemlang-py is a fun, educational programming language with
-                  Gujarati keywords. Write{" "}
-                  <code className="text-sm">kem bhai</code>, run anywhere.
-                </p>
-
-                <div className="mt-8 flex flex-wrap gap-3 animate-fade-up delay-300">
-                  <Link
-                    href="/docs"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
-                  >
-                    Get Started
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                  <Link
-                    href="/playground"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-md border border-border bg-background text-foreground text-sm font-semibold hover:bg-muted/60 transition-colors"
-                  >
-                    Try Online
-                  </Link>
-                </div>
-
-                {/* Quick install */}
-                <div className="mt-8 animate-fade-up delay-400">
-                  <div
-                    className="inline-flex items-center gap-3 rounded-lg border border-border/60 px-4 py-2.5 font-mono text-sm"
-                    style={{ background: "hsl(var(--code-bg))" }}
-                  >
-                    <span className="text-primary select-none">$</span>
-                    <span className="text-foreground/90">npm install -g kemlang-py</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right — code */}
-              <div className="animate-fade-up delay-300 lg:animate-fade-in">
-                <div className="animate-float">
-                  <CodeSample code={heroCode} highlighted />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Language Snippets ─────────────────────────────── */}
-        <section className="py-20 md:py-28 border-b border-border/60">
-          <div className="container mx-auto px-4 md:px-8">
-            <div className="text-center mb-14">
-              <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                Simple. Readable. Gujarati.
-              </h2>
-              <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-                KemLang maps familiar Gujarati words to real programming concepts.
+            {/* Left 2/5 */}
+            <div className="lg:col-span-2">
+              <p className="font-mono text-xs text-primary uppercase tracking-widest mb-5 a-rise">
+                v0.1.3 · available now
               </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {snippets.map((s, i) => (
-                <div key={i}>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                    {s.title}
-                  </p>
-                  <CodeSample code={s.code} highlighted />
-                </div>
-              ))}
-            </div>
-
-            {/* Keyword reference strip */}
-            <div className="mt-14 max-w-3xl mx-auto">
-              <div className="rounded-xl border border-border/60 overflow-hidden">
-                <div className="px-5 py-3 border-b border-border/60 bg-muted/40">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Keyword Reference
-                  </p>
-                </div>
-                <div className="divide-y divide-border/40" style={{ background: "hsl(var(--code-bg))" }}>
-                  {[
-                    ["kem bhai", "Program start"],
-                    ["aavjo bhai", "Program end"],
-                    ["aa x che val", "Declare variable"],
-                    ["bhai bol expr", "Print"],
-                    ["bapu tame bolo", "Read input"],
-                    ["jo cond { }", "If statement"],
-                    ["nahi to { }", "Else clause"],
-                    ["farvu { } jya sudhi cond", "While loop"],
-                    ["tame jao", "break"],
-                    ["aagal vado", "continue"],
-                  ].map(([kw, desc]) => (
-                    <div
-                      key={kw}
-                      className="flex items-center justify-between px-5 py-2.5 text-sm"
-                    >
-                      <code className="font-mono text-primary/90 bg-transparent text-sm">
-                        {kw}
-                      </code>
-                      <span className="text-muted-foreground text-xs">{desc}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Install ───────────────────────────────────────── */}
-        <section className="py-20 md:py-28 bg-muted/20 border-b border-border/60">
-          <div className="container mx-auto px-4 md:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
-              <div>
-                <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                  Up and running
-                  <br />
-                  in seconds.
-                </h2>
-                <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                  Install once, run anywhere. kemlang-py is available on npm,
-                  PyPI, and GitHub.
-                </p>
-                <div className="space-y-3 text-sm text-muted-foreground">
-                  {[
-                    "kem run hello.jsk — execute a file",
-                    "kem repl — interactive REPL",
-                    "kem fmt hello.jsk — format code",
-                    "kem tokens hello.jsk — inspect tokens",
-                    "kem ast hello.jsk — view AST",
-                  ].map((cmd) => (
-                    <div key={cmd} className="flex items-center gap-2">
-                      <span className="text-primary">›</span>
-                      <code className="font-mono text-xs bg-transparent">{cmd}</code>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <InstallTabs />
-            </div>
-          </div>
-        </section>
-
-        {/* ── Features ──────────────────────────────────────── */}
-        <section className="py-20 md:py-28 border-b border-border/60">
-          <div className="container mx-auto px-4 md:px-8">
-            <div className="text-center mb-14">
-              <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                Everything you need.
-              </h2>
-              <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-                A complete programming environment with a rich CLI and web playground.
+              <h1 className="font-display text-5xl md:text-6xl leading-[1.08] tracking-tight a-rise d1">
+                Code in<br />
+                <em className="not-italic text-primary">Gujarati.</em>
+              </h1>
+              <p className="mt-5 text-base text-muted-foreground leading-relaxed a-rise d2">
+                kemlang-py is a programming language with Gujarati keywords.
+                Write <code>kem bhai</code>, run everywhere.
               </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {features.map((f, i) => (
-                <div
-                  key={i}
-                  className="rounded-xl border border-border/60 p-6 bg-card hover:border-primary/30 transition-colors"
-                >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
-                    {f.icon}
-                  </div>
-                  <h3 className="font-display font-semibold text-base mb-2">{f.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{f.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── CTA ───────────────────────────────────────────── */}
-        <section className="py-20 md:py-28">
-          <div className="container mx-auto px-4 md:px-8 text-center">
-            <div className="max-w-2xl mx-auto">
-              <h2 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-                kem cho,{" "}
-                <span
-                  style={{
-                    background: "linear-gradient(135deg, hsl(38 95% 52%), hsl(25 95% 55%))",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  developer!
-                </span>
-              </h2>
-              <p className="text-muted-foreground text-lg mb-8">
-                Start writing code in Gujarati today. It takes less than a minute to install.
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 a-rise d3">
                 <Link
                   href="/docs"
-                  className="inline-flex items-center gap-2 px-8 py-3 rounded-md bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 h-10 px-5 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
                 >
-                  Read the Docs
-                  <ArrowRight className="h-4 w-4" />
+                  Get started <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
                 <Link
-                  href="https://github.com/sanketmuchhala/kemlang-py"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-8 py-3 rounded-md border border-border bg-background font-semibold hover:bg-muted/60 transition-colors text-sm"
+                  href="/playground"
+                  className="inline-flex items-center justify-center h-10 px-5 rounded-md border text-sm font-medium hover:bg-muted/50 transition-colors"
                 >
-                  Star on GitHub
+                  Playground
                 </Link>
               </div>
             </div>
+
+            {/* Right 3/5 */}
+            <div className="lg:col-span-3 a-appear d2">
+              <div className="a-bob">
+                <CodeSample code={heroCode} highlight />
+              </div>
+            </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
+
+      {/* ── Quick install strip ───────────────────────────────── */}
+      <section className="border-b bg-muted/30">
+        <div className="container mx-auto px-5 md:px-8 py-4">
+          <div className="flex items-center gap-4 overflow-x-auto hide-scrollbar">
+            <span className="text-xs text-muted-foreground shrink-0">Install:</span>
+            {[
+              "npm install -g kemlang-py",
+              "pip install kemlang-py",
+            ].map((cmd) => (
+              <div
+                key={cmd}
+                className="flex items-center gap-2 font-mono text-xs px-3 py-1.5 rounded border shrink-0"
+                style={{ background: "hsl(var(--code-bg))", borderColor: "hsl(var(--border))" }}
+              >
+                <span className="text-primary">$</span>
+                <span style={{ color: "hsl(var(--code-fg))" }}>{cmd}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Snippets ─────────────────────────────────────────── */}
+      <section className="py-24 md:py-32 border-b">
+        <div className="container mx-auto px-5 md:px-8">
+          <div className="max-w-xl mb-14">
+            <h2 className="font-display text-4xl md:text-5xl leading-tight mb-4">
+              Familiar words.<br />Real code.
+            </h2>
+            <p className="text-muted-foreground leading-relaxed">
+              Every Gujarati keyword maps directly to a programming concept — no translation required.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-5 mb-16">
+            {snippets.map((s) => (
+              <div key={s.label}>
+                <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-3">
+                  {s.label}
+                </p>
+                <CodeSample code={s.code} highlight />
+              </div>
+            ))}
+          </div>
+
+          {/* Keyword table */}
+          <div className="max-w-3xl rounded-xl border overflow-hidden">
+            <div
+              className="px-5 py-3 border-b"
+              style={{ background: "hsl(var(--code-bg))", borderColor: "hsl(var(--border))" }}
+            >
+              <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
+                keyword reference
+              </p>
+            </div>
+            <div style={{ background: "hsl(var(--code-bg))" }}>
+              {keywords.map(([kw, desc], i) => (
+                <div
+                  key={kw}
+                  className="flex items-center justify-between px-5 py-2.5 text-sm"
+                  style={{
+                    borderTop: i > 0 ? "1px solid hsl(var(--border))" : undefined,
+                  }}
+                >
+                  <code
+                    className="font-mono text-xs"
+                    style={{ background: "transparent", color: "hsl(var(--kw))", padding: 0 }}
+                  >
+                    {kw}
+                  </code>
+                  <span className="text-xs" style={{ color: "hsl(var(--cmt))" }}>{desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Install ───────────────────────────────────────────── */}
+      <section className="py-24 md:py-32 border-b bg-muted/20">
+        <div className="container mx-auto px-5 md:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-start max-w-5xl mx-auto">
+            <div>
+              <h2 className="font-display text-4xl md:text-5xl leading-tight mb-5">
+                Running in<br />under a minute.
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-8">
+                Pick your preferred package manager. Both install the same{" "}
+                <code>kem</code> CLI.
+              </p>
+              <div className="space-y-2 font-mono text-sm">
+                {[
+                  ["run",    "kem run hello.jsk"],
+                  ["repl",   "kem repl"],
+                  ["format", "kem fmt hello.jsk"],
+                  ["tokens", "kem tokens hello.jsk"],
+                  ["ast",    "kem ast hello.jsk"],
+                ].map(([label, cmd]) => (
+                  <div key={label} className="flex items-center gap-3">
+                    <span className="text-primary w-14 shrink-0 text-xs">{label}</span>
+                    <span
+                      className="text-xs"
+                      style={{ color: "hsl(var(--code-fg))" }}
+                    >
+                      {cmd}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <InstallTabs />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Features ──────────────────────────────────────────── */}
+      <section className="py-24 md:py-32 border-b">
+        <div className="container mx-auto px-5 md:px-8">
+          <h2 className="font-display text-4xl md:text-5xl leading-tight mb-14 max-w-xs">
+            Everything included.
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px border rounded-xl overflow-hidden bg-border">
+            {features.map(({ icon: Icon, title, body }) => (
+              <div key={title} className="bg-background p-7 hover:bg-muted/30 transition-colors">
+                <Icon className="h-5 w-5 text-primary mb-4" strokeWidth={1.5} />
+                <h3 className="font-semibold mb-2">{title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ───────────────────────────────────────────────── */}
+      <section className="py-24 md:py-36">
+        <div className="container mx-auto px-5 md:px-8 text-center">
+          <h2 className="font-display text-5xl md:text-7xl leading-[1.05] tracking-tight mb-6">
+            kem cho,<br />
+            <em className="not-italic text-primary">developer.</em>
+          </h2>
+          <p className="text-muted-foreground text-lg mb-10 max-w-md mx-auto">
+            Start writing Gujarati code today. It takes less than 60 seconds to install.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link
+              href="/docs"
+              className="inline-flex items-center gap-2 h-11 px-7 rounded-md bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
+            >
+              Read the docs <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="https://github.com/sanketmuchhala/kemlang-py"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 h-11 px-7 rounded-md border font-medium hover:bg-muted/50 transition-colors text-sm"
+            >
+              Star on GitHub
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <SiteFooter />
     </div>

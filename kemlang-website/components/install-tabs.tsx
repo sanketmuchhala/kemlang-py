@@ -4,108 +4,95 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Check, Copy } from "lucide-react";
 
-const installMethods = [
+const methods = [
   {
     id: "npm",
     label: "npm",
-    icon: "⬡",
-    install: "npm install -g kemlang-py",
-    verify: "kem version",
+    steps: [
+      { label: "install", cmd: "npm install -g kemlang-py" },
+      { label: "verify",  cmd: "kem version" },
+    ],
     note: "Requires Node.js 14+ and Python 3.10+",
   },
   {
     id: "pip",
     label: "pip",
-    icon: "🐍",
-    install: "pip install kemlang-py",
-    verify: "kem version",
+    steps: [
+      { label: "install", cmd: "pip install kemlang-py" },
+      { label: "verify",  cmd: "kem version" },
+    ],
     note: "Requires Python 3.10+",
   },
   {
-    id: "source",
+    id: "src",
     label: "source",
-    icon: "⌥",
-    install: "git clone https://github.com/sanketmuchhala/kemlang-py\ncd kemlang-py\npip install -e .",
-    verify: "kem version",
+    steps: [
+      { label: "clone",   cmd: "git clone https://github.com/sanketmuchhala/kemlang-py" },
+      { label: "install", cmd: "pip install -e kemlang-py/." },
+      { label: "verify",  cmd: "kem version" },
+    ],
     note: "For contributors and local development",
   },
 ];
 
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
+function Cmd({ label, cmd }: { label: string; cmd: string }) {
+  const [ok, setOk] = useState(false);
   const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {}
+    try { await navigator.clipboard.writeText(cmd); } catch {}
+    setOk(true);
+    setTimeout(() => setOk(false), 2000);
   };
-  return (
-    <button
-      onClick={copy}
-      className="absolute top-3 right-3 flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors opacity-0 group-hover:opacity-100"
-    >
-      {copied ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
-    </button>
-  );
-}
 
-function CommandBlock({ code }: { code: string }) {
   return (
-    <div
-      className="relative group rounded-lg border border-border/60 overflow-hidden"
-      style={{ background: "hsl(var(--code-bg))" }}
-    >
-      <div className="px-4 py-3">
-        <pre className="font-mono text-sm text-foreground/90 whitespace-pre">{code}</pre>
+    <div>
+      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1.5 font-medium">
+        {label}
+      </p>
+      <div
+        className="group relative flex items-center justify-between gap-3 rounded-lg border px-4 py-3 font-mono text-sm"
+        style={{ background: "hsl(var(--code-bg))", borderColor: "hsl(var(--border))" }}
+      >
+        <span style={{ color: "hsl(var(--code-fg))" }}>
+          <span style={{ color: "hsl(var(--kw))" }} className="select-none mr-2">$</span>
+          {cmd}
+        </span>
+        <button
+          onClick={copy}
+          className="shrink-0 transition-colors"
+          style={{ color: ok ? "hsl(var(--kw))" : "hsl(var(--cmt))" }}
+        >
+          {ok ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+        </button>
       </div>
-      <CopyButton text={code} />
     </div>
   );
 }
 
 export function InstallTabs() {
   const [active, setActive] = useState("npm");
-  const method = installMethods.find((m) => m.id === active)!;
+  const m = methods.find((x) => x.id === active)!;
 
   return (
-    <div className="w-full">
-      {/* Tabs */}
-      <div
-        className="flex gap-1 p-1 rounded-lg mb-5 w-fit"
-        style={{ background: "hsl(var(--muted))" }}
-      >
-        {installMethods.map((m) => (
+    <div>
+      <div className="flex gap-1 mb-5 border-b">
+        {methods.map((x) => (
           <button
-            key={m.id}
-            onClick={() => setActive(m.id)}
+            key={x.id}
+            onClick={() => setActive(x.id)}
             className={cn(
-              "px-4 py-1.5 text-sm font-medium rounded-md transition-all",
-              active === m.id
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+              "px-3 pb-2.5 pt-1 text-sm font-medium border-b-2 -mb-px transition-colors",
+              active === x.id
+                ? "border-primary text-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground"
             )}
           >
-            {m.label}
+            {x.label}
           </button>
         ))}
       </div>
-
-      {/* Content */}
-      <div className="space-y-4">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
-            Install
-          </p>
-          <CommandBlock code={method.install} />
-        </div>
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
-            Verify
-          </p>
-          <CommandBlock code={method.verify} />
-        </div>
-        <p className="text-xs text-muted-foreground">{method.note}</p>
+      <div className="space-y-3">
+        {m.steps.map((s) => <Cmd key={s.label} {...s} />)}
+        <p className="text-xs text-muted-foreground pt-1">{m.note}</p>
       </div>
     </div>
   );
