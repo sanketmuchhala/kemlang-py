@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "kemlang"
+name = "kemlang-py"
 version = "0.1.0"
 description = "KemLang - A Gujarati-flavored programming language"
 readme = "README.md"
