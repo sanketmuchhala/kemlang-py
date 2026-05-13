@@ -5,9 +5,11 @@
 KemLang is a fun, educational programming language inspired by Bhailang, featuring Gujarati keywords and expressions while maintaining English-based syntax. It's designed to be approachable for Gujarati speakers learning programming concepts.
 
 [![CI](https://github.com/sanketmuchhala/Gujju.py/actions/workflows/ci.yml/badge.svg)](https://github.com/sanketmuchhala/Gujju.py/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/kemlang-py.svg)](https://pypi.org/project/kemlang-py/)
+[![npm](https://img.shields.io/npm/v/kemlang-py.svg)](https://www.npmjs.com/package/kemlang-py)
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Website](https://img.shields.io/badge/website-kemlang.dev-blue.svg)](https://kemlang.dev)
+[![Website](https://img.shields.io/badge/website-gujju--py.vercel.app-blue.svg)](https://gujju-py.vercel.app)
 
 ---
 
@@ -301,8 +303,8 @@ graph TB
 |-------------|----------|---------|-----|
 | **Production** | Vercel | Main website & playground | https://gujju-py.vercel.app/ |
 | **Preview** | Vercel | PR previews | Auto-generated URLs |
-| **CLI Package** | PyPI | Python package distribution | `pip install kemlang` |
-| **Web Assets** | NPM | JavaScript/TypeScript modules | `npm install kemlang` |
+| **CLI Package** | PyPI | Python package distribution | `pip install kemlang-py` |
+| **NPM Package** | npm | Node.js wrapper for `kem` CLI | `npm install -g kemlang-py` |
 
 ---
 
@@ -315,7 +317,7 @@ graph TB
 - **CLI tools**: Run, format, debug, and analyze KemLang code
 - **VS Code support**: Syntax highlighting extension included
 - **Web playground**: Interactive browser-based code editor
-- **Comprehensive docs**: Full documentation at [https://gujju-py.vercel.app/]([https://kemlang.dev](https://gujju-py.vercel.app/docs))
+- **Comprehensive docs**: Full documentation at [gujju-py.vercel.app/docs](https://gujju-py.vercel.app/docs)
 
 ---
 
@@ -325,7 +327,12 @@ graph TB
 
 #### **NPM (Recommended - Like Bhailang)**
 ```bash
-npm install -g kemlang
+npm install -g kemlang-py
+```
+
+#### **Python/Pip**
+```bash
+pip install kemlang-py
 ```
 
 #### **One-liner Install Script**
@@ -333,22 +340,41 @@ npm install -g kemlang
 curl -fsSL https://raw.githubusercontent.com/sanketmuchhala/Gujju.py/main/install.sh | bash
 ```
 
-#### **Python/Pip (Direct)**
-```bash
-# From PyPI (when available)
-pip install kemlang
-
-# From source
-git clone https://github.com/sanketmuchhala/Gujju.py
-cd kemlang
-pip install -e .
-```
-
 #### **Developer Setup**
 ```bash
 git clone https://github.com/sanketmuchhala/Gujju.py
-cd kemlang
+cd Gujju.py
 pip install -e ".[dev,test]"
+```
+
+### After Installing
+
+Both `npm install -g kemlang-py` and `pip install kemlang-py` give you the `kem` command:
+
+```bash
+# Check it works
+kem version
+
+# Start an interactive REPL
+kem repl
+
+# Run a .jsk file
+kem run hello.jsk
+
+# Run with token + AST trace
+kem run hello.jsk --trace
+
+# Format a file
+kem fmt hello.jsk
+
+# Check formatting without modifying
+kem fmt --check .
+
+# Show token stream
+kem tokens hello.jsk
+
+# Show abstract syntax tree
+kem ast hello.jsk
 ```
 
 ### Hello World
@@ -415,7 +441,7 @@ aavjo bhai
 | **Comparison** | `==`, `!=`, `<`, `>`, `<=`, `>=` | Lower than arithmetic |
 | **Unary** | `-` (negation) | Highest |
 
-**Note**: String concatenation uses `+` operator (string + string only).
+**Note**: String concatenation uses `+` operator. If either side is a string, the other is automatically cast (e.g. `"Sum: " + 42` works).
 
 ### Language Grammar (EBNF)
 
@@ -676,8 +702,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Issues**: [GitHub Issues](https://github.com/sanketmuchhala/Gujju.py/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/sanketmuchhala/Gujju.py/discussions)
-- **Email**: [Support](mailto:support@kemlang.dev)
-- **Website**: [kemlang.dev](https://kemlang.dev)
+- **Website**: [gujju-py.vercel.app](https://gujju-py.vercel.app)
+- **npm**: [npmjs.com/package/kemlang-py](https://www.npmjs.com/package/kemlang-py)
+- **PyPI**: [pypi.org/project/kemlang-py](https://pypi.org/project/kemlang-py/)
 
 ---
 
@@ -685,6 +712,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with love for the Gujarati developer community**
 
-[Website](https://kemlang.dev) • [Docs](https://kemlang.dev/docs) • [Playground](https://kemlang.dev/playground) • [Blog](https://kemlang.dev/changelog)
+[Website](https://gujju-py.vercel.app) • [Docs](https://gujju-py.vercel.app/docs) • [Playground](https://gujju-py.vercel.app/playground) • [npm](https://www.npmjs.com/package/kemlang-py) • [PyPI](https://pypi.org/project/kemlang-py/)
 
 </div>
