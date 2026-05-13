@@ -1,4 +1,3 @@
-import sys
 from pathlib import Path
 from typing import Annotated
 
@@ -90,10 +89,7 @@ def run(
             console.print()
 
         exit_code = interpret(source)
-        if exit_code == 0:
-            sys.exit(0)
-        else:
-            sys.exit(exit_code)
+        raise typer.Exit(exit_code)
 
     except KemError as e:
         diagnostic = render_diagnostic(source, e.line, e.col, e.message, type(e).__name__)
@@ -123,6 +119,9 @@ def repl():
                     line = input()
                     lines.append(line)
                 except EOFError:
+                    if not lines:
+                        console.print("\n[yellow]Goodbye![/yellow]")
+                        return
                     break
 
             if not lines:

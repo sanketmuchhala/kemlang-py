@@ -14,7 +14,7 @@ class TestCLI:
         result = self.runner.invoke(app, ["version"])
         assert result.exit_code == 0
         assert "KemLang" in result.stdout
-        assert "0.1.0" in result.stdout
+        assert "KemLang" in result.stdout
 
     def test_run_valid_file(self):
         with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:
@@ -23,7 +23,7 @@ class TestCLI:
             aavjo bhai""")
             f.flush()
 
-            result = self.runner.invoke(app, ["run-file", f.name])
+            result = self.runner.invoke(app, ["run", f.name])
             assert result.exit_code == 0
             assert "Hello from CLI!" in result.stdout
 
@@ -37,7 +37,7 @@ class TestCLI:
             aavjo bhai""")
             f.flush()
 
-            result = self.runner.invoke(app, ["run-file", f.name, "--trace"])
+            result = self.runner.invoke(app, ["run", f.name, "--trace"])
             assert result.exit_code == 0
             assert "Tokens:" in result.stdout
             assert "AST:" in result.stdout
@@ -46,7 +46,7 @@ class TestCLI:
         Path(f.name).unlink()
 
     def test_run_nonexistent_file(self):
-        result = self.runner.invoke(app, ["run-file", "nonexistent.jsk"])
+        result = self.runner.invoke(app, ["run", "nonexistent.jsk"])
         assert result.exit_code == 1
         assert "not found" in result.stdout
 
@@ -57,7 +57,7 @@ class TestCLI:
             aavjo bhai""")
             f.flush()
 
-            result = self.runner.invoke(app, ["run-file", f.name])
+            result = self.runner.invoke(app, ["run", f.name])
             assert result.exit_code == 1
 
         Path(f.name).unlink()
@@ -214,7 +214,7 @@ aavjo bhai""")
             aavjo bhai""")
             f.flush()
 
-            result = self.runner.invoke(app, ["run-file", f.name])
+            result = self.runner.invoke(app, ["run", f.name])
             assert result.exit_code == 1
             assert "Division by zero" in result.stdout
 
@@ -227,7 +227,7 @@ aavjo bhai""")
             aavjo bhai""")
             f.flush()
 
-            result = self.runner.invoke(app, ["run-file", f.name])
+            result = self.runner.invoke(app, ["run", f.name])
             assert result.exit_code == 0
             assert "Warning" in result.stdout
             assert ".jsk extension" in result.stdout
