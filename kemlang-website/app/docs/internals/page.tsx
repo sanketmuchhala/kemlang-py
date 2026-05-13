@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { MermaidDiagram } from "@/components/mermaid-diagram";
 
 export const metadata: Metadata = {
   title: "How it works",
@@ -19,43 +20,129 @@ const Code = ({ children }: { children: React.ReactNode }) => (
   <code className="font-mono text-xs px-1.5 py-0.5 rounded" style={{ background: "hsl(var(--code-bg))", color: "hsl(var(--kw))" }}>{children}</code>
 );
 
-const StageBox = ({
-  step,
-  name,
-  file,
-  input,
-  output,
-  desc,
-  accent,
-}: {
-  step: string;
-  name: string;
-  file: string;
-  input: string;
-  output: string;
-  desc: string;
-  accent: string;
-}) => (
-  <div className="rounded-xl border overflow-hidden" style={{ background: "hsl(var(--code-bg))" }}>
-    <div className="flex items-center gap-3 px-5 py-3 border-b" style={{ borderColor: "hsl(var(--border))" }}>
-      <span className="font-display text-2xl leading-none" style={{ color: accent }}>{step}</span>
-      <div>
-        <p className="font-semibold text-sm">{name}</p>
-        <p className="font-mono text-xs text-muted-foreground">{file}</p>
-      </div>
+const DiagramWrap = ({ label, children }: { label: string; children: React.ReactNode }) => (
+  <div className="rounded-xl border overflow-hidden mb-8" style={{ background: "hsl(var(--code-bg))" }}>
+    <div className="px-4 py-2 border-b" style={{ borderColor: "hsl(var(--border))" }}>
+      <span className="font-mono text-xs text-muted-foreground">{label}</span>
     </div>
-    <div className="px-5 py-4 grid grid-cols-[1fr_auto_1fr] gap-3 items-center border-b text-xs" style={{ borderColor: "hsl(var(--border))" }}>
-      <div className="rounded-lg border px-3 py-2 text-center font-mono" style={{ borderColor: "hsl(var(--border))", color: "hsl(var(--cmt))" }}>
-        {input}
-      </div>
-      <span style={{ color: accent }}>→</span>
-      <div className="rounded-lg border px-3 py-2 text-center font-mono" style={{ borderColor: "hsl(var(--border))", color: "hsl(var(--kw))" }}>
-        {output}
-      </div>
-    </div>
-    <p className="px-5 py-3 text-xs text-muted-foreground leading-relaxed">{desc}</p>
+    <div className="px-4 py-6">{children}</div>
   </div>
 );
+
+const PIPELINE_CHART = `
+flowchart LR
+  A(["📄 Source\\n.jsk file"]):::io
+  B["🔍 Lexer\\nlexer.py"]:::stage
+  C["🌳 Parser\\nparser.py"]:::stage
+  D["⚙️ Interpreter\\ninterpreter.py"]:::stage
+  E(["🖥️ Output\\nstdout"]):::io
+
+  A -->|"raw text"| B
+  B -->|"List[Token]"| C
+  C -->|"Program AST"| D
+  D -->|"print / exit"| E
+
+  classDef io fill:#0d2b1e,stroke:#34d399,stroke-width:2px,color:#e2e8f0,rx:20
+  classDef stage fill:#0d1f18,stroke:#34d39966,stroke-width:1px,color:#e2e8f0
+`.trim();
+
+const LEXER_CHART = `
+flowchart TD
+  SRC["Source text\\n\\"jo x > 5 { ... }\\""]:::input
+
+  MW{"multi-word\\nkeyword?"}:::decision
+  SW{"single-word\\nkeyword?"}:::decision
+  ID{"identifier?"}:::decision
+  LIT{"literal?"}:::decision
+  OP{"operator /\\npunct?"}:::decision
+  ERR["LexerError"]:::error
+
+  SRC --> MW
+  MW -->|yes| T1["KEM_BHAI\\nBHAI_BOL\\netc."]:::token
+  MW -->|no| SW
+  SW -->|yes| T2["JO AA CHE\\nFARVU etc."]:::token
+  SW -->|no| ID
+  ID -->|yes| T3["IDENTIFIER"]:::token
+  ID -->|no| LIT
+  LIT -->|yes| T4["STRING\\nINTEGER\\nFLOAT"]:::token
+  LIT -->|no| OP
+  OP -->|yes| T5["PLUS MINUS\\nEQEQ etc."]:::token
+  OP -->|no| ERR
+
+  classDef input fill:#0d2b1e,stroke:#34d399,stroke-width:2px,color:#e2e8f0
+  classDef decision fill:#1a2535,stroke:#34d39966,color:#94a3b8,stroke-width:1px
+  classDef token fill:#0d1f18,stroke:#34d39944,color:#34d399,stroke-width:1px
+  classDef error fill:#2b0d0d,stroke:#f8717166,color:#fca5a5,stroke-width:1px
+`.trim();
+
+const AST_CHART = `
+graph TD
+  P["Program"]:::root
+  D["Declaration\\nname = x"]:::node
+  L1["Literal\\nvalue = 10"]:::leaf
+  IF["If"]:::node
+  COND["Binary\\nop = >"]:::node
+  VAR["Variable\\nname = x"]:::leaf
+  L2["Literal\\nvalue = 5"]:::leaf
+  THEN["Print"]:::node
+  L3["Literal\\nvalue = 'big'"]:::leaf
+
+  P --> D
+  P --> IF
+  D --> L1
+  IF --> COND
+  IF --> THEN
+  COND --> VAR
+  COND --> L2
+  THEN --> L3
+
+  classDef root fill:#0d2b1e,stroke:#34d399,stroke-width:2px,color:#e2e8f0
+  classDef node fill:#0d1f18,stroke:#34d39966,color:#e2e8f0,stroke-width:1px
+  classDef leaf fill:#111827,stroke:#34d39933,color:#94a3b8,stroke-width:1px
+`.trim();
+
+const ENV_CHART = `
+flowchart TD
+  G["Global Environment\\n{ x: 10, n: 5 }"]:::env
+  B1["Block Environment (if)\\n{ temp: 'big' }"]:::child
+  B2["Block Environment (while)\\n{ i: 3 }"]:::child
+
+  B1 -->|"parent lookup"| G
+  B2 -->|"parent lookup"| G
+
+  MISS["Variable not found\\n→ RuntimeError"]:::error
+  G -->|"not in global"| MISS
+
+  classDef env fill:#0d2b1e,stroke:#34d399,stroke-width:2px,color:#e2e8f0
+  classDef child fill:#0d1f18,stroke:#34d39966,color:#e2e8f0,stroke-width:1px
+  classDef error fill:#2b0d0d,stroke:#f8717166,color:#fca5a5,stroke-width:1px
+`.trim();
+
+const STACK_CHART = `
+flowchart LR
+  subgraph Runtime["Runtime"]
+    PY["Python 3.10+"]:::core
+    TY["Typer"]:::lib
+    RI["Rich"]:::lib
+  end
+  subgraph Dev["Development"]
+    RU["ruff"]:::dev
+    MY["mypy"]:::dev
+    PT["pytest"]:::dev
+    HY["Hypothesis"]:::dev
+  end
+  subgraph Deploy["Distribution"]
+    NX["Next.js\\n(docs site)"]:::web
+    VE["Vercel"]:::web
+    NP["npm wrapper"]:::web
+    PP["PyPI"]:::web
+  end
+
+  classDef core fill:#0d2b1e,stroke:#34d399,stroke-width:2px,color:#e2e8f0
+  classDef lib fill:#0d1f18,stroke:#34d39966,color:#e2e8f0,stroke-width:1px
+  classDef dev fill:#1a1f2e,stroke:#6366f166,color:#a5b4fc,stroke-width:1px
+  classDef web fill:#1a1a2e,stroke:#818cf866,color:#c4b5fd,stroke-width:1px
+`.trim();
 
 export default function InternalsPage() {
   return (
@@ -68,80 +155,56 @@ export default function InternalsPage() {
         <p className="text-lg text-muted-foreground leading-relaxed">
           kemlang-py is a tree-walking interpreter written in pure Python.
           This page walks through every stage of the pipeline — from raw source text
-          to executed output — and lists every library the project depends on.
+          to executed output — with diagrams, data structures, and design decisions.
         </p>
       </div>
 
-      {/* Top-level pipeline */}
+      {/* Full pipeline */}
       <H2 id="pipeline">The full pipeline</H2>
       <P>
         When you run <Code>kem run hello.jsk</Code>, your source file passes through three sequential stages.
-        Each stage transforms one data structure into another; nothing is shared between stages except the output of the previous one.
+        Each stage transforms one data structure into the next — nothing is shared between stages except the output of the previous one.
       </P>
 
-      {/* ASCII pipeline diagram */}
+      <DiagramWrap label="pipeline overview">
+        <MermaidDiagram chart={PIPELINE_CHART} />
+      </DiagramWrap>
+
       <div className="rounded-xl border overflow-hidden mb-8" style={{ background: "hsl(var(--code-bg))" }}>
         <div className="px-4 py-2 border-b" style={{ borderColor: "hsl(var(--border))" }}>
-          <span className="font-mono text-xs text-muted-foreground">pipeline overview</span>
+          <span className="font-mono text-xs text-muted-foreground">what "kem run file.jsk" actually executes</span>
         </div>
-        <pre className="px-5 py-5 font-mono text-xs leading-relaxed overflow-x-auto" style={{ color: "hsl(var(--code-fg))" }}>{`
-  ┌──────────────────────────┐
-  │  Source file  (.jsk)     │   raw UTF-8 text on disk
-  └────────────┬─────────────┘
-               │
-               ▼
-  ┌──────────────────────────┐
-  │  Lexer  (lexer.py)       │   scans characters → tokens
-  └────────────┬─────────────┘
-               │  List[Token]
-               ▼
-  ┌──────────────────────────┐
-  │  Parser  (parser.py)     │   consumes tokens → AST
-  └────────────┬─────────────┘
-               │  Program (dataclass tree)
-               ▼
-  ┌──────────────────────────┐
-  │  Interpreter             │   walks AST → side effects
-  │  (interpreter.py)        │   (print, input, variables)
-  └────────────┬─────────────┘
-               │
-               ▼
-           stdout / exit code
-`}</pre>
+        <pre className="px-5 py-4 font-mono text-xs leading-relaxed" style={{ color: "hsl(var(--code-fg))" }}>{`source    = Path(file).read_text()
+tokens    = Lexer(source).tokenize()     # str  → List[Token]
+ast       = Parser(tokens).parse()       # tokens → Program
+exit_code = Interpreter().run(ast)       # ast  → stdout + int
+raise typer.Exit(exit_code)`}</pre>
       </div>
 
-      {/* Stage 1 — Lexer */}
+      {/* Lexer */}
       <H2 id="lexer">Stage 1 — Lexer</H2>
-      <StageBox
-        step="1"
-        name="Lexer"
-        file="kemlang/lexer.py"
-        input="str (source text)"
-        output="List[Token]"
-        accent="hsl(var(--kw))"
-        desc="The lexer (also called a tokenizer or scanner) reads the raw source text character by character and groups characters into tokens. A token is the smallest meaningful unit of the language — a keyword, a number, a string, an operator."
-      />
-
-      <div className="mt-5 mb-6">
-        <p className="text-sm font-semibold mb-3">Token data structure</p>
-        <div className="rounded-xl border overflow-hidden" style={{ background: "hsl(var(--code-bg))" }}>
-          <pre className="px-5 py-4 font-mono text-xs leading-relaxed" style={{ color: "hsl(var(--code-fg))" }}>{`@dataclass
-class Token:
-    type:    TokenType   # e.g. TokenType.BHAI_BOL
-    lexeme:  str         # the raw text e.g. "bhai bol"
-    line:    int         # 1-indexed line number
-    column:  int         # 0-indexed column offset`}</pre>
-        </div>
-      </div>
-
       <P>
-        Multi-word keywords like <Code>kem bhai</Code>, <Code>bhai bol</Code>, and <Code>aavjo bhai</Code> are the
-        trickiest part of lexing. The lexer checks for multi-word sequences first (using a look-ahead
-        buffer), then falls back to single-word keywords, then identifiers. This order matters —
-        <Code>bhai</Code> alone is not a valid keyword, but <Code>bhai bol</Code> is.
+        The lexer reads source text character by character and groups characters into tokens —
+        the smallest meaningful units of the language. It handles multi-word Gujarati keywords
+        (like <Code>bhai bol</Code> and <Code>aavjo bhai</Code>) by always trying multi-word matches before single-word ones.
       </P>
 
+      <DiagramWrap label="lexer scanning order">
+        <MermaidDiagram chart={LEXER_CHART} />
+      </DiagramWrap>
+
+      <p className="text-sm font-semibold mb-3">Token data structure</p>
       <div className="rounded-xl border overflow-hidden mb-6" style={{ background: "hsl(var(--code-bg))" }}>
+        <pre className="px-5 py-4 font-mono text-xs leading-relaxed" style={{ color: "hsl(var(--code-fg))" }}>{`@dataclass
+class Token:
+    type:    TokenType   # e.g. TokenType.BHAI_BOL
+    lexeme:  str         # the raw text  e.g. "bhai bol"
+    line:    int         # 1-indexed line number
+    column:  int         # 0-indexed column offset`}</pre>
+      </div>
+
+      <p className="text-sm font-semibold mb-3">Example token stream</p>
+      <div className="rounded-xl border overflow-hidden mb-8" style={{ background: "hsl(var(--code-bg))" }}>
         <div className="px-4 py-2 border-b" style={{ borderColor: "hsl(var(--border))" }}>
           <span className="font-mono text-xs text-muted-foreground">kem tokens hello.jsk</span>
         </div>
@@ -152,127 +215,64 @@ class Token:
   EOF             ''               4:0`}</pre>
       </div>
 
-      <p className="text-sm font-semibold mb-3">Lexer scanning order</p>
-      <div className="rounded-xl border overflow-hidden mb-8">
-        {[
-          ["1", "Multi-word keywords",  "kem bhai, aavjo bhai, bhai bol, jya sudhi, nahi to, tame jao, aagal vado, bapu tame bolo, bhai chhe, bhai nathi"],
-          ["2", "Single-word keywords", "aa, che, jo, farvu, kaam"],
-          ["3", "Identifiers",          "any sequence of letters/digits/underscore not matching a keyword"],
-          ["4", "String literals",      "double-quoted, single-line only"],
-          ["5", "Number literals",      "integer or float (one decimal point)"],
-          ["6", "Operators",            "+ - * / % == != < > <= >="],
-          ["7", "Punctuation",          "{ } ( )"],
-        ].map(([step, name, detail], i) => (
-          <div key={step} className="grid grid-cols-[28px_140px_1fr] px-5 py-2.5 text-xs gap-3" style={{ background: "hsl(var(--code-bg))", borderTop: i > 0 ? "1px solid hsl(var(--border))" : undefined }}>
-            <span className="text-muted-foreground">{step}</span>
-            <span className="font-medium">{name}</span>
-            <span className="text-muted-foreground">{detail}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Stage 2 — Parser */}
+      {/* Parser */}
       <H2 id="parser">Stage 2 — Parser</H2>
-      <StageBox
-        step="2"
-        name="Parser"
-        file="kemlang/parser.py"
-        input="List[Token]"
-        output="Program (AST root)"
-        accent="hsl(var(--str))"
-        desc="The parser consumes the token stream and builds an Abstract Syntax Tree (AST). kemlang-py uses a hand-written recursive-descent parser — one method per grammar rule. The AST is a tree of Python dataclasses defined in types.py."
-      />
-
-      <div className="mt-5 mb-6">
-        <p className="text-sm font-semibold mb-3">AST node types (types.py)</p>
-        <div className="rounded-xl border overflow-hidden" style={{ background: "hsl(var(--code-bg))" }}>
-          <pre className="px-5 py-4 font-mono text-xs leading-relaxed" style={{ color: "hsl(var(--code-fg))" }}>{`Program(body: list[Statement])
-  ├── Print(value: Expression)
-  ├── Declaration(name: str, value: Expression)
-  ├── Assignment(name: str, value: Expression)
-  ├── If(condition: Expression, then: list[Statement],
-  │       else_: list[Statement] | None)
-  ├── While(condition: Expression, body: list[Statement])
-  ├── Break
-  └── Continue
-
-Expressions
-  ├── Literal(value: int | float | str | bool | None)
-  ├── Variable(name: str)
-  ├── Binary(op: str, left: Expression, right: Expression)
-  └── Unary(op: str, operand: Expression)`}</pre>
-        </div>
-      </div>
-
       <P>
-        Every node is a frozen <Code>@dataclass</Code> — immutable once created. The parser never modifies
-        the token stream; it only advances a position cursor. If the token at the current position doesn&apos;t
-        match what the grammar expects, the parser raises a <Code>ParseError</Code> immediately.
+        The parser consumes the token stream with a hand-written recursive-descent approach —
+        one method per grammar rule. It builds an Abstract Syntax Tree (AST): a tree of
+        immutable Python <Code>@dataclass</Code> nodes defined in <Code>types.py</Code>.
       </P>
 
-      <div className="rounded-xl border overflow-hidden mb-8" style={{ background: "hsl(var(--code-bg))" }}>
-        <div className="px-4 py-2 border-b" style={{ borderColor: "hsl(var(--border))" }}>
-          <span className="font-mono text-xs text-muted-foreground">kem ast example.jsk</span>
-        </div>
-        <pre className="px-5 py-4 font-mono text-xs leading-relaxed" style={{ color: "hsl(var(--cmt))" }}>{`Program
-├── Declaration (x)
-│   └── Literal: 10
-└── If
-    ├── Condition: Binary (>)
-    │   ├── Left: Variable (x)
-    │   └── Right: Literal: 5
-    └── Then:
-        └── Print
-            └── Literal: "big"`}</pre>
+      <DiagramWrap label="AST for: aa x che 10 / jo x > 5 { bhai bol 'big' }">
+        <MermaidDiagram chart={AST_CHART} />
+      </DiagramWrap>
+
+      <p className="text-sm font-semibold mb-3">All AST node types</p>
+      <div className="rounded-xl border overflow-hidden mb-6" style={{ background: "hsl(var(--code-bg))" }}>
+        <pre className="px-5 py-4 font-mono text-xs leading-relaxed" style={{ color: "hsl(var(--code-fg))" }}>{`# Statements (produce side effects)
+Program(body: list[Statement])
+Print(value: Expression)
+Declaration(name: str, value: Expression)
+Assignment(name: str, value: Expression)
+If(condition: Expression, then: list[Statement], else_: list[Statement] | None)
+While(condition: Expression, body: list[Statement])
+Break
+Continue
+
+# Expressions (return a KemValue)
+Literal(value: int | float | str | bool | None)
+Variable(name: str)
+Binary(op: str, left: Expression, right: Expression)
+Unary(op: str, operand: Expression)`}</pre>
       </div>
 
-      {/* Stage 3 — Interpreter */}
+      {/* Interpreter */}
       <H2 id="interpreter">Stage 3 — Interpreter</H2>
-      <StageBox
-        step="3"
-        name="Interpreter"
-        file="kemlang/interpreter.py"
-        input="Program (AST root)"
-        output="stdout + exit code"
-        accent="hsl(var(--num))"
-        desc="The interpreter walks the AST recursively. For each node type it calls the matching execute_* or evaluate_* method. Statements produce side effects (printing, mutating variables); expressions return a KemValue."
-      />
+      <P>
+        The interpreter walks the AST recursively. Statements call <Code>execute()</Code> for side
+        effects (printing, mutating variables). Expressions call <Code>evaluate()</Code> and return
+        a <Code>KemValue</Code>. Variable scope is managed by a chain of <Code>Environment</Code> dicts.
+      </P>
 
-      <div className="mt-5 mb-6">
-        <p className="text-sm font-semibold mb-3">Runtime types</p>
-        <div className="rounded-xl border overflow-hidden" style={{ background: "hsl(var(--code-bg))" }}>
-          <pre className="px-5 py-4 font-mono text-xs leading-relaxed" style={{ color: "hsl(var(--code-fg))" }}>{`# types.py
+      <DiagramWrap label="variable scope — Environment chain">
+        <MermaidDiagram chart={ENV_CHART} />
+      </DiagramWrap>
+
+      <p className="text-sm font-semibold mb-3">Runtime value type</p>
+      <div className="rounded-xl border overflow-hidden mb-5" style={{ background: "hsl(var(--code-bg))" }}>
+        <pre className="px-5 py-4 font-mono text-xs leading-relaxed" style={{ color: "hsl(var(--code-fg))" }}>{`# types.py
 KemValue = int | float | str | bool | None
 
-# All kemlang-py values at runtime are one of these five Python types.
-# There is no separate "KemInt" class — Python's int IS the runtime int.`}</pre>
-        </div>
+# Every kemlang-py value at runtime is one of these five Python types.
+# No wrapper classes — Python's int/float/str ARE the runtime types.`}</pre>
       </div>
 
-      <div className="mb-6">
-        <p className="text-sm font-semibold mb-3">Environment (variable scope)</p>
-        <div className="rounded-xl border overflow-hidden" style={{ background: "hsl(var(--code-bg))" }}>
-          <pre className="px-5 py-4 font-mono text-xs leading-relaxed" style={{ color: "hsl(var(--code-fg))" }}>{`class Environment:
-    def __init__(self, parent: Environment | None = None):
-        self._store: dict[str, KemValue] = {}
-        self._parent = parent
-
-    def get(self, name: str) -> KemValue: ...
-    def set(self, name: str, value: KemValue) -> None: ...
-    def assign(self, name: str, value: KemValue) -> None: ...
-
-# Blocks (if/while bodies) get a child Environment.
-# Variable lookup walks up parent chain until found or raises RuntimeError.`}</pre>
-        </div>
-      </div>
-
+      <p className="text-sm font-semibold mb-3">Control flow via exceptions</p>
       <P>
-        Control flow (<Code>tame jao</Code> / break, <Code>aagal vado</Code> / continue) is implemented using Python
-        exceptions. When the interpreter encounters a <Code>Break</Code> node it raises a <Code>BreakError</Code>;
-        the enclosing <Code>execute_while</Code> catches it and exits the loop. This is a clean pattern
-        used by many tree-walking interpreters.
+        Break and continue are implemented by raising Python exceptions — <Code>BreakError</Code> and <Code>ContinueError</Code>.
+        The enclosing <Code>execute_while</Code> catches them at exactly the right stack frame. This avoids threading
+        a flag through every recursive call.
       </P>
-
       <div className="rounded-xl border overflow-hidden mb-8" style={{ background: "hsl(var(--code-bg))" }}>
         <pre className="px-5 py-4 font-mono text-xs leading-relaxed" style={{ color: "hsl(var(--code-fg))" }}>{`class BreakError(Exception): pass
 class ContinueError(Exception): pass
@@ -288,49 +288,36 @@ def execute_while(self, node: While) -> None:
             continue`}</pre>
       </div>
 
-      {/* CLI layer */}
-      <H2 id="cli-layer">The CLI layer</H2>
-      <P>
-        The <Code>kem</Code> binary is a thin wrapper over the pipeline. It handles argument parsing,
-        file I/O, error formatting, and exit codes. It does not add any language semantics.
-      </P>
-
-      <div className="rounded-xl border overflow-hidden mb-8" style={{ background: "hsl(var(--code-bg))" }}>
-        <pre className="px-5 py-4 font-mono text-xs leading-relaxed" style={{ color: "hsl(var(--code-fg))" }}>{`# cli.py — what "kem run file.jsk" actually does:
-
-source = Path(file).read_text()          # 1. read the file
-tokens = Lexer(source).tokenize()         # 2. lex
-ast    = Parser(tokens).parse()           # 3. parse
-exit_code = Interpreter().run(ast)        # 4. execute
-raise typer.Exit(exit_code)              # 5. set exit code`}</pre>
-      </div>
-
       {/* Tech stack */}
       <H2 id="tech-stack">Tech stack</H2>
       <P>
-        kemlang-py is deliberately minimal — the interpreter itself has zero runtime dependencies.
-        Every library below is either a dev tool or a CLI convenience layer.
+        The interpreter itself has <strong>zero runtime dependencies</strong> — <Code>lexer.py</Code>, <Code>parser.py</Code>,
+        <Code>interpreter.py</Code>, <Code>types.py</Code>, and <Code>errors.py</Code> import nothing outside the Python standard library.
+        Everything else is a CLI layer, dev tool, or distribution mechanism.
       </P>
 
+      <DiagramWrap label="full dependency map">
+        <MermaidDiagram chart={STACK_CHART} />
+      </DiagramWrap>
+
       <div className="rounded-xl border overflow-hidden mb-8">
-        <div className="grid grid-cols-[140px_80px_1fr] border-b px-5 py-2.5" style={{ background: "hsl(var(--code-bg))", borderColor: "hsl(var(--border))" }}>
+        <div className="grid grid-cols-[130px_80px_1fr] border-b px-5 py-2.5" style={{ background: "hsl(var(--code-bg))", borderColor: "hsl(var(--border))" }}>
           <span className="font-mono text-xs text-muted-foreground">library</span>
           <span className="font-mono text-xs text-muted-foreground">version</span>
           <span className="font-mono text-xs text-muted-foreground">used for</span>
         </div>
         {[
-          ["Python",       "≥ 3.10",  "Runtime. Uses match/case syntax, union types (X | Y), dataclasses. No older Python supported."],
-          ["Typer",        "≥ 0.9",   "CLI argument parsing for kem run / repl / fmt / tokens / ast / version. Generates --help automatically."],
-          ["Rich",         "≥ 13",    "Terminal output — syntax highlighting in the REPL, coloured error messages, formatted tables."],
-          ["pytest",       "dev",     "Test runner for all unit and integration tests."],
-          ["Hypothesis",   "dev",     "Property-based / fuzz testing in test_prop_fuzz.py. Generates random programs to find edge cases."],
-          ["ruff",         "dev",     "Linter + formatter. Replaces flake8 + isort + black in one fast tool."],
-          ["mypy",         "dev",     "Static type checker. lexer.py, types.py, errors.py, fmt.py, cli.py are fully typed."],
-          ["Node.js",      "≥ 18",    "npm wrapper only (npm-package/). Calls pip install kemlang-py on postinstall."],
-          ["Next.js 14",   "website", "This documentation site. App Router, server components, no database."],
-          ["Vercel",       "website", "Hosting for the docs site. Auto-deploys on every push to main."],
+          ["Python",      "≥ 3.10",  "Runtime. Uses match/case, union types (X | Y), dataclasses. No older Python supported."],
+          ["Typer",       "≥ 0.9",   "CLI argument parsing for kem run / repl / fmt / tokens / ast. Auto-generates --help."],
+          ["Rich",        "≥ 13",    "Coloured error messages, REPL output, formatted tables in the terminal."],
+          ["pytest",      "dev",     "Test runner for all unit and integration tests."],
+          ["Hypothesis",  "dev",     "Property-based fuzz testing in test_prop_fuzz.py. Generates random programs to find edge cases."],
+          ["ruff",        "dev",     "Linter + formatter in one tool. Replaces flake8 + isort + black."],
+          ["mypy",        "dev",     "Static type checker. lexer.py, types.py, errors.py, fmt.py, cli.py are fully typed."],
+          ["Node.js",     "≥ 18",    "npm wrapper only. postinstall script calls pip install kemlang-py."],
+          ["Next.js 14",  "website", "This documentation site. App Router, server components, deployed on Vercel."],
         ].map(([lib, ver, desc], i) => (
-          <div key={lib} className="grid grid-cols-[140px_80px_1fr] px-5 py-2.5 text-xs gap-2" style={{ background: "hsl(var(--code-bg))", borderTop: i > 0 ? "1px solid hsl(var(--border))" : undefined }}>
+          <div key={lib} className="grid grid-cols-[130px_80px_1fr] px-5 py-2.5 text-xs gap-2" style={{ background: "hsl(var(--code-bg))", borderTop: i > 0 ? "1px solid hsl(var(--border))" : undefined }}>
             <code className="font-mono" style={{ background: "transparent", color: "hsl(var(--kw))", padding: 0 }}>{lib}</code>
             <span className="text-muted-foreground font-mono">{ver}</span>
             <span style={{ color: "hsl(var(--cmt))" }}>{desc}</span>
@@ -340,55 +327,55 @@ raise typer.Exit(exit_code)              # 5. set exit code`}</pre>
 
       {/* File map */}
       <H2 id="file-map">File map</H2>
-      <P>Every file in <Code>kemlang/</Code> has a single job. Here&apos;s exactly what each one contains.</P>
+      <P>Every file in <Code>kemlang/</Code> has a single job.</P>
 
       <div className="space-y-3 mb-8">
         {[
           {
             file: "kemlang/types.py",
             role: "Shared data definitions",
-            contains: "TokenType enum (all token kinds), Token dataclass, all AST node dataclasses (Program, Print, Declaration, Assignment, If, While, Break, Continue, Literal, Variable, Binary, Unary), and the KemValue type alias.",
+            contains: "TokenType enum, Token dataclass, all AST node dataclasses, and the KemValue type alias. Imported by every other module — never imports from them.",
           },
           {
             file: "kemlang/errors.py",
             role: "Exception classes + diagnostics",
-            contains: "LexerError, ParseError, RuntimeError subclasses. The render() function formats errors with line/column pointers for Rich output.",
+            contains: "LexerError, ParseError, RuntimeError subclasses. render() formats errors with line/column pointers via Rich.",
           },
           {
             file: "kemlang/lexer.py",
             role: "Tokenizer",
-            contains: "Lexer class. __init__ sets up keyword dicts. tokenize() drives the scan loop. Separate methods for strings, numbers, identifiers, and multi-word keyword detection.",
+            contains: "Lexer class. tokenize() drives the scan loop. Separate methods handle strings, numbers, identifiers, and multi-word keyword detection.",
           },
           {
             file: "kemlang/parser.py",
             role: "Recursive-descent parser",
-            contains: "Parser class. parse() → Program. parse_statement() dispatches to parse_print(), parse_declaration(), parse_if(), parse_while(), parse_break(), parse_continue(). parse_expression() / parse_comparison() / parse_term() / parse_factor() handle operator precedence.",
+            contains: "Parser class with one method per grammar rule. parse_expression() → parse_comparison() → parse_term() → parse_factor() handles operator precedence.",
           },
           {
             file: "kemlang/interpreter.py",
             role: "Tree-walking interpreter",
-            contains: "Interpreter class. Environment inner class. execute() dispatches by node type. evaluate() returns a KemValue. Arithmetic coercion, string concatenation, and I/O (bhai bol / bapu tame bolo) all live here.",
+            contains: "Interpreter class + Environment. execute() dispatches by node type. evaluate() returns KemValue. All arithmetic coercion, string concatenation, and I/O live here.",
           },
           {
             file: "kemlang/fmt.py",
             role: "Code formatter",
-            contains: "Formatter class. Reads source, runs the lexer, re-emits tokens with normalised indentation, operator spacing, and trailing whitespace removed.",
+            contains: "Formatter class. Runs the lexer then re-emits tokens with normalised indentation, operator spacing, and trailing whitespace removed.",
           },
           {
             file: "kemlang/cli.py",
             role: "CLI entry point",
-            contains: "Typer app with run, repl, fmt, tokens, ast, version subcommands. Calls lexer/parser/interpreter in sequence. REPL loop reads multiline input until Ctrl+D/Ctrl+Z.",
+            contains: "Typer app with run, repl, fmt, tokens, ast, version commands. REPL loop reads multiline input until Ctrl+D/Ctrl+Z.",
           },
           {
             file: "kemlang/version.py",
             role: "Version string",
-            contains: '__version__ = "0.1.3" — single source of truth imported by cli.py and referenced in pyproject.toml.',
+            contains: '__version__ = "0.1.3" — single source of truth imported by cli.py.',
           },
         ].map(({ file, role, contains }) => (
           <div key={file} className="rounded-xl border p-4 bg-muted/10">
-            <div className="flex items-center gap-3 mb-2">
+            <div className="flex flex-wrap items-center gap-3 mb-2">
               <code className="font-mono text-xs" style={{ color: "hsl(var(--kw))" }}>{file}</code>
-              <span className="text-xs text-muted-foreground">{role}</span>
+              <span className="text-xs text-muted-foreground border px-2 py-0.5 rounded-full">{role}</span>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">{contains}</p>
           </div>
@@ -397,31 +384,16 @@ raise typer.Exit(exit_code)              # 5. set exit code`}</pre>
 
       {/* Design decisions */}
       <H2 id="design">Design decisions</H2>
-      <div className="space-y-4 mb-8">
+      <div className="space-y-3 mb-8">
         {[
-          {
-            decision: "Tree-walking interpreter, not bytecode",
-            reason: "The simplest correct implementation. A tree-walker is easy to debug, easy to extend, and fast enough for a scripting language. Bytecode compilation would add significant complexity with no user-visible benefit at kemlang-py's current scale.",
-          },
-          {
-            decision: "Python exceptions for break/continue",
-            reason: "Rather than threading a 'should_break' flag through every execute call, raising BreakError/ContinueError lets the while executor catch them at exactly the right stack frame. This is the same technique CPython uses internally.",
-          },
-          {
-            decision: "Dataclasses for AST nodes",
-            reason: "Python dataclasses give free __repr__, __eq__, and type annotations without boilerplate. They make the AST easy to inspect in tests and in kem ast output.",
-          },
-          {
-            decision: "No runtime dependencies",
-            reason: "Typer and Rich are CLI conveniences — the interpreter itself (lexer.py + parser.py + interpreter.py + types.py + errors.py) imports nothing outside the standard library. This keeps kemlang-py installable anywhere Python runs.",
-          },
-          {
-            decision: "Multi-word keywords scanned first",
-            reason: "Languages like Gujarati naturally form phrases. 'bhai bol' (print) reads more naturally as a two-word phrase than as two separate tokens. The lexer handles this by always trying multi-word matches before single-word ones.",
-          },
-        ].map(({ decision, reason }) => (
-          <div key={decision} className="flex gap-4 items-start rounded-xl border p-4 bg-muted/10">
-            <span className="text-primary shrink-0 font-mono text-xs mt-0.5">›</span>
+          ["Tree-walking, not bytecode", "The simplest correct implementation. A tree-walker is easy to debug and extend. Bytecode compilation would add significant complexity with no user-visible benefit at kemlang-py's current scale."],
+          ["Python exceptions for break/continue", "Raising BreakError/ContinueError lets the while executor catch them at exactly the right stack frame, avoiding a 'should_break' flag threaded through every call. CPython uses the same technique internally."],
+          ["Dataclasses for AST nodes", "Free __repr__, __eq__, and type annotations without boilerplate. Makes the AST easy to inspect in tests and in kem ast output."],
+          ["Zero runtime dependencies", "The interpreter (lexer + parser + interpreter + types + errors) imports nothing outside stdlib. Typer and Rich are CLI conveniences only — kemlang-py is installable anywhere Python runs."],
+          ["Multi-word keywords scanned first", "Gujarati naturally forms phrases. 'bhai bol' reads more naturally as a two-word phrase. The lexer always tries multi-word matches before single-word ones to handle this correctly."],
+        ].map(([decision, reason]) => (
+          <div key={decision as string} className="flex gap-4 items-start rounded-xl border p-4 bg-muted/10">
+            <span className="text-primary shrink-0 font-mono text-sm mt-0.5">›</span>
             <div>
               <p className="font-medium text-sm mb-1">{decision}</p>
               <p className="text-xs text-muted-foreground leading-relaxed">{reason}</p>
