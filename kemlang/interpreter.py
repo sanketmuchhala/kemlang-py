@@ -167,9 +167,9 @@ class Interpreter:
 
         # Arithmetic operators
         if op == TokenType.PLUS:
-            if isinstance(left, str) or isinstance(right, str):
-                return self.stringify(left) + self.stringify(right)
-            elif isinstance(left, (int, float)) and isinstance(right, (int, float)):
+            if (isinstance(left, str) and isinstance(right, str)) or (
+                isinstance(left, (int, float)) and isinstance(right, (int, float))
+            ):
                 return left + right
             else:
                 raise RuntimeError(

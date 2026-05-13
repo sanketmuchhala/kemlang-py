@@ -167,6 +167,7 @@ class Lexer:
         value = ""
         while self.peek() != quote_char and not self.is_at_end():
             if self.peek() == "\n":
+                value += self.advance()
                 self.line += 1
                 self.col = 1
             elif self.peek() == "\\":
@@ -216,6 +217,9 @@ class Lexer:
         remaining_source = self.source[self.start :]
 
         for keyword, token_type in self.multiword_keywords:
+            if keyword == "nahi to" and not self.can_start_else_keyword():
+                continue
+
             if remaining_source.startswith(keyword):
                 # Check if this is a complete word boundary
                 end_pos = self.start + len(keyword)
@@ -235,6 +239,12 @@ class Lexer:
         text = self.source[self.start : self.current]
         token_type = self.keywords.get(text, TokenType.IDENTIFIER)
         self.add_token(token_type)
+
+    def can_start_else_keyword(self) -> bool:
+        index = self.start - 1
+        while index >= 0 and self.source[index] in " \t\r\n":
+            index -= 1
+        return index < 0 or self.source[index] == "}"
 
     def add_token(self, token_type: TokenType, literal=None):
         text = self.source[self.start : self.current]

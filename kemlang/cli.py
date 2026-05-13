@@ -88,13 +88,14 @@ def run(
             console.print(tree)
             console.print()
 
-        exit_code = interpret(source)
-        raise typer.Exit(exit_code)
+        raise typer.Exit(interpret(source))
 
     except KemError as e:
         diagnostic = render_diagnostic(source, e.line, e.col, e.message, type(e).__name__)
         console.print(f"[red]{diagnostic}[/red]")
         raise typer.Exit(1) from e
+    except typer.Exit:
+        raise
     except Exception as e:
         console.print(f"[red]Error: {str(e)}[/red]")
         raise typer.Exit(1) from e
@@ -110,13 +111,18 @@ def repl():
 
     while True:
         try:
-            lines = []
+            lines: list[str] = []
             console.print("[yellow]>>> [/yellow]", end="")
 
             # Read multi-line input
             while True:
                 try:
                     line = input()
+                    if line in {"\x04", "\x1a"}:
+                        if not lines:
+                            console.print("\n[yellow]Goodbye![/yellow]")
+                            return
+                        break
                     lines.append(line)
                 except EOFError:
                     if not lines:

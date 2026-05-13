@@ -48,29 +48,24 @@ class Parser:
 
     def statement(self) -> Stmt | None:
         """Parse a statement."""
-        try:
-            if self.match(TokenType.BHAI_BOL):
-                return self.print_statement()
-            if self.match(TokenType.AA):
-                return self.declaration()
-            if self.match(TokenType.JO):
-                return self.if_statement()
-            if self.match(TokenType.FARVU):
-                return self.while_statement()
-            if self.match(TokenType.TAME_JAO):
-                return Break()
-            if self.match(TokenType.AAGAL_VADO):
-                return Continue()
-            if self.check(TokenType.IDENTIFIER):
-                return self.assignment()
+        if self.match(TokenType.BHAI_BOL):
+            return self.print_statement()
+        if self.match(TokenType.AA):
+            return self.declaration()
+        if self.match(TokenType.JO):
+            return self.if_statement()
+        if self.match(TokenType.FARVU):
+            return self.while_statement()
+        if self.match(TokenType.TAME_JAO):
+            return Break()
+        if self.match(TokenType.AAGAL_VADO):
+            return Continue()
+        if self.check(TokenType.IDENTIFIER):
+            return self.assignment()
 
-            # Skip unknown tokens for error recovery
-            self.advance()
-            return None
-
-        except ParseError:
-            self.synchronize()
-            return None
+        # Skip unknown tokens for error recovery
+        self.advance()
+        return None
 
     def print_statement(self) -> Print:
         """Parse: bhai bol <expr>"""
@@ -213,6 +208,9 @@ class Parser:
             return Literal(False)
 
         if self.match(TokenType.INTEGER):
+            return Literal(self.previous().literal)
+
+        if self.match(TokenType.FLOAT):
             return Literal(self.previous().literal)
 
         if self.match(TokenType.STRING):
