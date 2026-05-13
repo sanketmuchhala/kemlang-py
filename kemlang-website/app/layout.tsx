@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Serif_Display, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Analytics } from "@vercel/analytics/next";
@@ -23,25 +23,43 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "600"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gujju-py.vercel.app"),
+  metadataBase: new URL("https://kemlang.cloud"),
   title: {
     default: "kemlang-py - Gujarati Programming Language",
     template: "%s | kemlang-py",
   },
   description:
     "kemlang-py lets you write programs using Gujarati keywords. Install in seconds with npm or pip.",
-  keywords: ["kemlang-py", "Gujarati", "programming language", "interpreter", "esolang"],
+  keywords: [
+    "kemlang-py",
+    "Gujarati programming language",
+    "interpreter",
+    "esolang",
+    "learn to code in Gujarati",
+    "Gujarati language",
+  ],
   authors: [{ name: "Sanket Muchhala" }],
   creator: "Sanket Muchhala",
   openGraph: {
     type: "website",
-    url: "https://gujju-py.vercel.app",
+    url: "https://kemlang.cloud",
     title: "kemlang-py - Gujarati Programming Language",
-    description: "Write programs using Gujarati keywords. Install in seconds.",
+    description: "Write programs using Gujarati keywords. Install in seconds with npm or pip.",
     siteName: "kemlang-py",
   },
-  robots: { index: true, follow: true },
+  twitter: {
+    card: "summary_large_image",
+    title: "kemlang-py - Gujarati Programming Language",
+    description: "Write programs using Gujarati keywords. Install with npm or pip.",
+    creator: "@sanketmuchhala",
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

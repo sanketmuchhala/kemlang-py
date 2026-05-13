@@ -3,11 +3,9 @@ export function GET() {
     `User-agent: *
 Allow: /
 
-Sitemap: https://kemlang.dev/sitemap.xml`,
+Sitemap: https://kemlang.cloud/sitemap.xml`,
     {
-      headers: {
-        'Content-Type': 'text/plain',
-      },
+      headers: { "Content-Type": "text/plain" },
     }
   );
 }
