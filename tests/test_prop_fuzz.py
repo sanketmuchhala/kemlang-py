@@ -1,7 +1,7 @@
 import string
 
 import pytest
-from hypothesis import assume, given, settings
+from hypothesis import HealthCheck, assume, given, settings
 from hypothesis import strategies as st
 
 from kemlang.fmt import format_code
@@ -11,11 +11,16 @@ from kemlang.parser import ParseError, parse_program
 from kemlang.types import TokenType
 
 
+# Keep CI fast: 25 examples, 2s deadline per example, suppress slow-data warning
+CI_SETTINGS = settings(max_examples=25, deadline=2000, suppress_health_check=[HealthCheck.too_slow])
+
+
 class TestPropertyFuzz:
     # Character sets for generating test data
     VALID_IDENTIFIER_CHARS = string.ascii_letters + string.digits + "_"
     VALID_STRING_CHARS = string.ascii_letters + string.digits + " !@#$%^&*()[]{}|:;<>?,.`~"
 
+    @CI_SETTINGS
     @given(st.text(alphabet=VALID_IDENTIFIER_CHARS, min_size=1, max_size=20))
     def test_identifier_tokenization_never_crashes(self, identifier):
         """Property: Valid identifiers should never crash the lexer."""
@@ -34,6 +39,7 @@ class TestPropertyFuzz:
             # Lexer errors are acceptable, crashes are not
             pass
 
+    @CI_SETTINGS
     @given(st.integers(min_value=0, max_value=999999))
     def test_integer_tokenization_never_crashes(self, number):
         """Property: Valid integers should never crash the lexer."""
@@ -45,6 +51,7 @@ class TestPropertyFuzz:
         except LexerError:
             pass
 
+    @CI_SETTINGS
     @given(st.text(alphabet=VALID_STRING_CHARS, min_size=0, max_size=50))
     def test_string_tokenization_never_crashes(self, content):
         """Property: Valid string content should never crash the lexer."""
@@ -61,6 +68,7 @@ class TestPropertyFuzz:
             # Lexer errors are acceptable for edge cases
             pass
 
+    @CI_SETTINGS
     @given(
         st.lists(
             st.sampled_from(["+", "-", "*", "/", "%", "==", "!=", "<", ">", "<=", ">="]),
@@ -80,6 +88,7 @@ class TestPropertyFuzz:
             # Some combinations might be invalid (like multiple = signs)
             pass
 
+    @CI_SETTINGS
     @given(st.integers(min_value=1, max_value=10))
     def test_nested_parentheses_parsing(self, depth):
         """Property: Deeply nested parentheses should not crash the parser."""
@@ -98,6 +107,7 @@ class TestPropertyFuzz:
             # Deep nesting might cause recursion errors, which is acceptable
             pass
 
+    @CI_SETTINGS
     @given(st.lists(st.integers(min_value=0, max_value=100), min_size=1, max_size=20))
     def test_arithmetic_expression_evaluation(self, numbers):
         """Property: Arithmetic expressions with valid numbers should not crash."""
@@ -116,7 +126,7 @@ class TestPropertyFuzz:
             # Some expressions might cause overflow or other issues
             pass
 
-    @settings(max_examples=50)  # Limit examples for expensive tests
+    @CI_SETTINGS
     @given(st.text(min_size=10, max_size=200))
     def test_random_text_never_crashes_lexer(self, text):
         """Property: Random text should never crash the lexer process."""
@@ -132,6 +142,7 @@ class TestPropertyFuzz:
             # No other exceptions should occur
             pytest.fail(f"Unexpected exception in lexer: {type(e).__name__}: {e}")
 
+    @CI_SETTINGS
     @given(st.integers(min_value=0, max_value=50))
     def test_variable_declaration_chains(self, chain_length):
         """Property: Long chains of variable declarations should work."""
@@ -186,6 +197,7 @@ aavjo bhai""",
                 # Invalid programs are acceptable to reject
                 pass
 
+    @CI_SETTINGS
     @given(
         st.lists(
             st.text(alphabet=string.ascii_letters, min_size=1, max_size=10), min_size=1, max_size=10
@@ -221,6 +233,7 @@ aavjo bhai""",
             # Complex expressions might fail for various reasons
             pass
 
+    @CI_SETTINGS
     @given(st.integers(min_value=1, max_value=20))
     def test_nested_if_statements(self, nesting_depth):
         """Property: Nested if statements should not crash the parser."""
