@@ -107,7 +107,7 @@ aavjo bhai`} />
       {/* Parse errors */}
       <H2 id="parse">ParseError</H2>
       <P>
-        Parse errors mean the token stream is syntactically invalid — the structure of your program doesn&apos;t
+        Parse errors mean the token stream is syntactically invalid - the structure of your program doesn&apos;t
         match the grammar. The parser tells you what it expected and what it found instead.
       </P>
 
@@ -181,7 +181,7 @@ aavjo bhai`} />
       {/* Runtime errors */}
       <H2 id="runtime">RuntimeError</H2>
       <P>
-        Runtime errors occur while the program is executing — the syntax is valid but something goes wrong
+        Runtime errors occur while the program is executing - the syntax is valid but something goes wrong
         at evaluation time. These are the errors you&apos;ll encounter most often.
       </P>
 
@@ -194,7 +194,7 @@ aavjo bhai`} />
   bhai bol score
 aavjo bhai`} />
         <Fix>Declare the variable with <code>aa name che value</code> before using it.</Fix>
-        <Fix>Check spelling — kemlang-py identifiers are case-sensitive.</Fix>
+        <Fix>Check spelling - kemlang-py identifiers are case-sensitive.</Fix>
         <Fix>Make sure the variable is not declared inside a block that has already exited.</Fix>
       </ErrorBlock>
 
@@ -206,7 +206,7 @@ aavjo bhai`} />
         <CodeSample highlight={false} language="jsk" code={`kem bhai
   aa x che 10 - "five"
 aavjo bhai`} />
-        <Fix>Arithmetic operators (<code>- * / %</code>) only work on numbers. Use <code>+</code> for string concatenation — it auto-converts the other operand.</Fix>
+        <Fix>Arithmetic operators (<code>- * / %</code>) only work on numbers. Use <code>+</code> for string concatenation - it auto-converts the other operand.</Fix>
       </ErrorBlock>
 
       <H3>Division by zero</H3>
@@ -246,7 +246,7 @@ aavjo bhai`} />
   bhai bol n * 2
 aavjo bhai`} />
         <Fix>
-          <code>bapu tame bolo</code> reads input as a string. If you need a number, kemlang-py attempts implicit conversion when the value is used in arithmetic — if the user types something non-numeric, you get this error. Currently there is no built-in <code>parseInt</code>; validate input with a condition and re-prompt if needed.
+          <code>bapu tame bolo</code> reads input as a string. If you need a number, kemlang-py attempts implicit conversion when the value is used in arithmetic - if the user types something non-numeric, you get this error. Currently there is no built-in <code>parseInt</code>; validate input with a condition and re-prompt if needed.
         </Fix>
       </ErrorBlock>
 
@@ -280,8 +280,8 @@ aavjo bhai`} />
       <ul className="space-y-3 mb-6">
         {[
           ["Use --trace", "kem run file.jsk --trace prints the token stream and AST before running. If the token stream looks wrong, the bug is in the lexer. If the AST looks wrong, the bug is in the parser. If both look right, it's a runtime issue."],
-          ["Use kem tokens", "kem tokens file.jsk shows exactly how the lexer sees your code — useful for diagnosing unexpected character errors."],
-          ["Use kem ast", "kem ast file.jsk pretty-prints the AST — useful for checking whether your conditionals and loops parsed as you intended."],
+          ["Use kem tokens", "kem tokens file.jsk shows exactly how the lexer sees your code - useful for diagnosing unexpected character errors."],
+          ["Use kem ast", "kem ast file.jsk pretty-prints the AST - useful for checking whether your conditionals and loops parsed as you intended."],
           ["Check line:column", "Every error includes a position. Open your file and go to that exact line and column. The error character is usually right there."],
           ["REPL for quick tests", "Paste a suspect expression into kem repl to evaluate it interactively without running the whole file."],
         ].map(([title, desc]) => (

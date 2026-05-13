@@ -5,7 +5,7 @@ import { MermaidDiagram } from "@/components/mermaid-diagram";
 
 export const metadata: Metadata = {
   title: "How it works",
-  description: "A detailed look at kemlang-py's internals — the pipeline, data structures, and tech stack.",
+  description: "A detailed look at kemlang-py's internals - the pipeline, data structures, and tech stack.",
 };
 
 const H2 = ({ id, children }: { id?: string; children: React.ReactNode }) => (
@@ -31,61 +31,61 @@ const DiagramWrap = ({ label, children }: { label: string; children: React.React
 
 const PIPELINE_CHART = `
 flowchart LR
-  A(["📄 Source\\n.jsk file"]):::io
-  B["🔍 Lexer\\nlexer.py"]:::stage
-  C["🌳 Parser\\nparser.py"]:::stage
-  D["⚙️ Interpreter\\ninterpreter.py"]:::stage
-  E(["🖥️ Output\\nstdout"]):::io
+  A(["Source\\n.jsk file"]):::io
+  B["Lexer\\nlexer.py"]:::stage
+  C["Parser\\nparser.py"]:::stage
+  D["Interpreter\\ninterpreter.py"]:::stage
+  E(["stdout\\n+ exit code"]):::io
 
   A -->|"raw text"| B
   B -->|"List[Token]"| C
   C -->|"Program AST"| D
   D -->|"print / exit"| E
 
-  classDef io fill:#0d2b1e,stroke:#34d399,stroke-width:2px,color:#e2e8f0,rx:20
+  classDef io fill:#0d2b1e,stroke:#34d399,stroke-width:2px,color:#e2e8f0
   classDef stage fill:#0d1f18,stroke:#34d39966,stroke-width:1px,color:#e2e8f0
 `.trim();
 
 const LEXER_CHART = `
 flowchart TD
-  SRC["Source text\\n\\"jo x > 5 { ... }\\""]:::input
+  SRC["Source text"]:::input
 
-  MW{"multi-word\\nkeyword?"}:::decision
-  SW{"single-word\\nkeyword?"}:::decision
+  MW{"multi-word keyword?"}:::decision
+  SW{"single-word keyword?"}:::decision
   ID{"identifier?"}:::decision
   LIT{"literal?"}:::decision
-  OP{"operator /\\npunct?"}:::decision
+  OP{"operator or punct?"}:::decision
   ERR["LexerError"]:::error
 
   SRC --> MW
-  MW -->|yes| T1["KEM_BHAI\\nBHAI_BOL\\netc."]:::token
+  MW -->|yes| T1["KEM_BHAI / BHAI_BOL\\nAAVJO_BHAI / etc."]:::token
   MW -->|no| SW
-  SW -->|yes| T2["JO AA CHE\\nFARVU etc."]:::token
+  SW -->|yes| T2["JO / AA / CHE\\nFARVU / etc."]:::token
   SW -->|no| ID
   ID -->|yes| T3["IDENTIFIER"]:::token
   ID -->|no| LIT
-  LIT -->|yes| T4["STRING\\nINTEGER\\nFLOAT"]:::token
+  LIT -->|yes| T4["STRING / INTEGER\\nFLOAT / BOOL"]:::token
   LIT -->|no| OP
-  OP -->|yes| T5["PLUS MINUS\\nEQEQ etc."]:::token
+  OP -->|yes| T5["PLUS / MINUS\\nEQEQ / etc."]:::token
   OP -->|no| ERR
 
   classDef input fill:#0d2b1e,stroke:#34d399,stroke-width:2px,color:#e2e8f0
-  classDef decision fill:#1a2535,stroke:#34d39966,color:#94a3b8,stroke-width:1px
+  classDef decision fill:#111827,stroke:#34d39966,color:#94a3b8,stroke-width:1px
   classDef token fill:#0d1f18,stroke:#34d39944,color:#34d399,stroke-width:1px
-  classDef error fill:#2b0d0d,stroke:#f8717166,color:#fca5a5,stroke-width:1px
+  classDef error fill:#2b0d0d,stroke:#f8717155,color:#fca5a5,stroke-width:1px
 `.trim();
 
 const AST_CHART = `
 graph TD
   P["Program"]:::root
-  D["Declaration\\nname = x"]:::node
-  L1["Literal\\nvalue = 10"]:::leaf
+  D["Declaration  x"]:::node
+  L1["Literal  10"]:::leaf
   IF["If"]:::node
-  COND["Binary\\nop = >"]:::node
-  VAR["Variable\\nname = x"]:::leaf
-  L2["Literal\\nvalue = 5"]:::leaf
+  COND["Binary  op=gt"]:::node
+  VAR["Variable  x"]:::leaf
+  L2["Literal  5"]:::leaf
   THEN["Print"]:::node
-  L3["Literal\\nvalue = 'big'"]:::leaf
+  L3["Literal  'big'"]:::leaf
 
   P --> D
   P --> IF
@@ -98,41 +98,40 @@ graph TD
 
   classDef root fill:#0d2b1e,stroke:#34d399,stroke-width:2px,color:#e2e8f0
   classDef node fill:#0d1f18,stroke:#34d39966,color:#e2e8f0,stroke-width:1px
-  classDef leaf fill:#111827,stroke:#34d39933,color:#94a3b8,stroke-width:1px
+  classDef leaf fill:#111827,stroke:#34d39933,color:#64748b,stroke-width:1px
 `.trim();
 
 const ENV_CHART = `
 flowchart TD
-  G["Global Environment\\n{ x: 10, n: 5 }"]:::env
-  B1["Block Environment (if)\\n{ temp: 'big' }"]:::child
-  B2["Block Environment (while)\\n{ i: 3 }"]:::child
+  G["Global Environment\\nx=10  n=5"]:::env
+  B1["Block Env - if body\\ntemp='big'"]:::child
+  B2["Block Env - while body\\ni=3"]:::child
+  MISS["RuntimeError\\nundefined variable"]:::error
 
   B1 -->|"parent lookup"| G
   B2 -->|"parent lookup"| G
-
-  MISS["Variable not found\\n→ RuntimeError"]:::error
-  G -->|"not in global"| MISS
+  G -->|"not found anywhere"| MISS
 
   classDef env fill:#0d2b1e,stroke:#34d399,stroke-width:2px,color:#e2e8f0
   classDef child fill:#0d1f18,stroke:#34d39966,color:#e2e8f0,stroke-width:1px
-  classDef error fill:#2b0d0d,stroke:#f8717166,color:#fca5a5,stroke-width:1px
+  classDef error fill:#2b0d0d,stroke:#f8717155,color:#fca5a5,stroke-width:1px
 `.trim();
 
 const STACK_CHART = `
 flowchart LR
-  subgraph Runtime["Runtime"]
+  subgraph RT["Runtime"]
     PY["Python 3.10+"]:::core
     TY["Typer"]:::lib
     RI["Rich"]:::lib
   end
-  subgraph Dev["Development"]
+  subgraph DV["Dev tooling"]
     RU["ruff"]:::dev
     MY["mypy"]:::dev
     PT["pytest"]:::dev
     HY["Hypothesis"]:::dev
   end
-  subgraph Deploy["Distribution"]
-    NX["Next.js\\n(docs site)"]:::web
+  subgraph DS["Distribution"]
+    NX["Next.js docs"]:::web
     VE["Vercel"]:::web
     NP["npm wrapper"]:::web
     PP["PyPI"]:::web
@@ -140,8 +139,8 @@ flowchart LR
 
   classDef core fill:#0d2b1e,stroke:#34d399,stroke-width:2px,color:#e2e8f0
   classDef lib fill:#0d1f18,stroke:#34d39966,color:#e2e8f0,stroke-width:1px
-  classDef dev fill:#1a1f2e,stroke:#6366f166,color:#a5b4fc,stroke-width:1px
-  classDef web fill:#1a1a2e,stroke:#818cf866,color:#c4b5fd,stroke-width:1px
+  classDef dev fill:#111827,stroke:#6366f166,color:#a5b4fc,stroke-width:1px
+  classDef web fill:#0f172a,stroke:#818cf866,color:#c4b5fd,stroke-width:1px
 `.trim();
 
 export default function InternalsPage() {
@@ -154,8 +153,8 @@ export default function InternalsPage() {
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
           kemlang-py is a tree-walking interpreter written in pure Python.
-          This page walks through every stage of the pipeline — from raw source text
-          to executed output — with diagrams, data structures, and design decisions.
+          This page walks through every stage of the pipeline - from raw source text
+          to executed output - with diagrams, data structures, and design decisions.
         </p>
       </div>
 
@@ -163,7 +162,7 @@ export default function InternalsPage() {
       <H2 id="pipeline">The full pipeline</H2>
       <P>
         When you run <Code>kem run hello.jsk</Code>, your source file passes through three sequential stages.
-        Each stage transforms one data structure into the next — nothing is shared between stages except the output of the previous one.
+        Each stage transforms one data structure into the next - nothing is shared between stages except the output of the previous one.
       </P>
 
       <DiagramWrap label="pipeline overview">
@@ -182,9 +181,9 @@ raise typer.Exit(exit_code)`}</pre>
       </div>
 
       {/* Lexer */}
-      <H2 id="lexer">Stage 1 — Lexer</H2>
+      <H2 id="lexer">Stage 1 - Lexer</H2>
       <P>
-        The lexer reads source text character by character and groups characters into tokens —
+        The lexer reads source text character by character and groups characters into tokens -
         the smallest meaningful units of the language. It handles multi-word Gujarati keywords
         (like <Code>bhai bol</Code> and <Code>aavjo bhai</Code>) by always trying multi-word matches before single-word ones.
       </P>
@@ -216,9 +215,9 @@ class Token:
       </div>
 
       {/* Parser */}
-      <H2 id="parser">Stage 2 — Parser</H2>
+      <H2 id="parser">Stage 2 - Parser</H2>
       <P>
-        The parser consumes the token stream with a hand-written recursive-descent approach —
+        The parser consumes the token stream with a hand-written recursive-descent approach -
         one method per grammar rule. It builds an Abstract Syntax Tree (AST): a tree of
         immutable Python <Code>@dataclass</Code> nodes defined in <Code>types.py</Code>.
       </P>
@@ -247,14 +246,14 @@ Unary(op: str, operand: Expression)`}</pre>
       </div>
 
       {/* Interpreter */}
-      <H2 id="interpreter">Stage 3 — Interpreter</H2>
+      <H2 id="interpreter">Stage 3 - Interpreter</H2>
       <P>
         The interpreter walks the AST recursively. Statements call <Code>execute()</Code> for side
         effects (printing, mutating variables). Expressions call <Code>evaluate()</Code> and return
         a <Code>KemValue</Code>. Variable scope is managed by a chain of <Code>Environment</Code> dicts.
       </P>
 
-      <DiagramWrap label="variable scope — Environment chain">
+      <DiagramWrap label="variable scope - Environment chain">
         <MermaidDiagram chart={ENV_CHART} />
       </DiagramWrap>
 
@@ -264,12 +263,12 @@ Unary(op: str, operand: Expression)`}</pre>
 KemValue = int | float | str | bool | None
 
 # Every kemlang-py value at runtime is one of these five Python types.
-# No wrapper classes — Python's int/float/str ARE the runtime types.`}</pre>
+# No wrapper classes - Python's int/float/str ARE the runtime types.`}</pre>
       </div>
 
       <p className="text-sm font-semibold mb-3">Control flow via exceptions</p>
       <P>
-        Break and continue are implemented by raising Python exceptions — <Code>BreakError</Code> and <Code>ContinueError</Code>.
+        Break and continue are implemented by raising Python exceptions - <Code>BreakError</Code> and <Code>ContinueError</Code>.
         The enclosing <Code>execute_while</Code> catches them at exactly the right stack frame. This avoids threading
         a flag through every recursive call.
       </P>
@@ -291,7 +290,7 @@ def execute_while(self, node: While) -> None:
       {/* Tech stack */}
       <H2 id="tech-stack">Tech stack</H2>
       <P>
-        The interpreter itself has <strong>zero runtime dependencies</strong> — <Code>lexer.py</Code>, <Code>parser.py</Code>,
+        The interpreter itself has <strong>zero runtime dependencies</strong> - <Code>lexer.py</Code>, <Code>parser.py</Code>,
         <Code>interpreter.py</Code>, <Code>types.py</Code>, and <Code>errors.py</Code> import nothing outside the Python standard library.
         Everything else is a CLI layer, dev tool, or distribution mechanism.
       </P>
@@ -334,7 +333,7 @@ def execute_while(self, node: While) -> None:
           {
             file: "kemlang/types.py",
             role: "Shared data definitions",
-            contains: "TokenType enum, Token dataclass, all AST node dataclasses, and the KemValue type alias. Imported by every other module — never imports from them.",
+            contains: "TokenType enum, Token dataclass, all AST node dataclasses, and the KemValue type alias. Imported by every other module - never imports from them.",
           },
           {
             file: "kemlang/errors.py",
@@ -369,7 +368,7 @@ def execute_while(self, node: While) -> None:
           {
             file: "kemlang/version.py",
             role: "Version string",
-            contains: '__version__ = "0.1.3" — single source of truth imported by cli.py.',
+            contains: '__version__ = "0.1.3" - single source of truth imported by cli.py.',
           },
         ].map(({ file, role, contains }) => (
           <div key={file} className="rounded-xl border p-4 bg-muted/10">
@@ -389,7 +388,7 @@ def execute_while(self, node: While) -> None:
           ["Tree-walking, not bytecode", "The simplest correct implementation. A tree-walker is easy to debug and extend. Bytecode compilation would add significant complexity with no user-visible benefit at kemlang-py's current scale."],
           ["Python exceptions for break/continue", "Raising BreakError/ContinueError lets the while executor catch them at exactly the right stack frame, avoiding a 'should_break' flag threaded through every call. CPython uses the same technique internally."],
           ["Dataclasses for AST nodes", "Free __repr__, __eq__, and type annotations without boilerplate. Makes the AST easy to inspect in tests and in kem ast output."],
-          ["Zero runtime dependencies", "The interpreter (lexer + parser + interpreter + types + errors) imports nothing outside stdlib. Typer and Rich are CLI conveniences only — kemlang-py is installable anywhere Python runs."],
+          ["Zero runtime dependencies", "The interpreter (lexer + parser + interpreter + types + errors) imports nothing outside stdlib. Typer and Rich are CLI conveniences only - kemlang-py is installable anywhere Python runs."],
           ["Multi-word keywords scanned first", "Gujarati naturally forms phrases. 'bhai bol' reads more naturally as a two-word phrase. The lexer always tries multi-word matches before single-word ones to handle this correctly."],
         ].map(([decision, reason]) => (
           <div key={decision as string} className="flex gap-4 items-start rounded-xl border p-4 bg-muted/10">

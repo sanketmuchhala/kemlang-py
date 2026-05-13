@@ -5,7 +5,7 @@ import { CodeSample } from "@/components/code-sample";
 
 export const metadata: Metadata = {
   title: "Roadmap",
-  description: "Planned features for kemlang-py — what's coming next and why.",
+  description: "Planned features for kemlang-py - what's coming next and why.",
 };
 
 const H2 = ({ id, children }: { id?: string; children: React.ReactNode }) => (
@@ -80,7 +80,7 @@ export default function RoadmapPage() {
           What&apos;s coming next
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          kemlang-py is a working interpreter — the core language is complete and stable.
+          kemlang-py is a working interpreter - the core language is complete and stable.
           These are the features on the horizon, roughly in priority order.
         </p>
       </div>
@@ -104,7 +104,7 @@ export default function RoadmapPage() {
         title="Functions"
         status="planned"
         gujarati="kaam / aapo"
-        why="Functions are the biggest missing piece. Right now every kemlang-py program is a single flat sequence of statements — you can't extract reusable logic without copy-pasting code. Functions let you define named blocks of code, call them with arguments, and return values."
+        why="Functions are the biggest missing piece. Right now every kemlang-py program is a single flat sequence of statements - you can't extract reusable logic without copy-pasting code. Functions let you define named blocks of code, call them with arguments, and return values."
         example={`kem bhai
   kaam factorial n aapo {
     jo n <= 1 {
@@ -134,7 +134,7 @@ aavjo bhai`}
         <P>
           The design goal is to keep the Gujarati flavour. Functions should feel like natural extensions
           of the existing keyword style, not bolted-on Python syntax. The exact keyword set is still
-          being finalised — open an issue if you have opinions.
+          being finalised - open an issue if you have opinions.
         </P>
       </Feature>
 
@@ -142,7 +142,7 @@ aavjo bhai`}
         id="assignment-operator"
         title="Assignment operator"
         status="planned"
-        why="Today you reassign a variable by repeating the full declaration form: aa x che 10, then x che x + 1. The '=' shorthand would make mutation cleaner — especially inside loops where reassignment is common. The implementation is small; the design question is whether '=' should replace 'che' entirely or be an alternative."
+        why="Today you reassign a variable by repeating the full declaration form: aa x che 10, then x che x + 1. The '=' shorthand would make mutation cleaner - especially inside loops where reassignment is common. The implementation is small; the design question is whether '=' should replace 'che' entirely or be an alternative."
         example={`kem bhai
   aa count che 0
   farvu {
@@ -154,7 +154,7 @@ aavjo bhai`}
         <P>
           The current reassignment syntax (<code>x che x + 1</code>) is unambiguous but verbose. An <code>=</code>
           operator would make loops and mutation-heavy programs much more concise. Open a PR or issue if you
-          want to take this one — the interpreter change is a one-liner in <code>interpreter.py</code>.
+          want to take this one - the interpreter change is a one-liner in <code>interpreter.py</code>.
         </P>
       </Feature>
 
@@ -216,7 +216,7 @@ aavjo bhai`}
         title="Maps / dictionaries"
         status="planned"
         gujarati="naksha"
-        why="Arrays solve ordered collections; maps solve named ones. A grade tracker, a word-frequency counter, a config store — these all need key-value lookup. Maps would pair naturally with arrays to make kemlang-py capable of handling realistic data-processing programs."
+        why="Arrays solve ordered collections; maps solve named ones. A grade tracker, a word-frequency counter, a config store - these all need key-value lookup. Maps would pair naturally with arrays to make kemlang-py capable of handling realistic data-processing programs."
         example={`kem bhai
   aa grades che naksha {
     "math"    : 92,
@@ -232,7 +232,7 @@ aavjo bhai`}
         title="Error handling"
         status="planned"
         gujarati="bhai sambhal"
-        why="Right now any runtime error crashes the whole program. A try/catch equivalent would let programs handle invalid input gracefully — especially important for the number-guessing game and grade calculator patterns where user input can be wrong."
+        why="Right now any runtime error crashes the whole program. A try/catch equivalent would let programs handle invalid input gracefully - especially important for the number-guessing game and grade calculator patterns where user input can be wrong."
         example={`kem bhai
   bhai sambhal {
     aa n che bapu tame bolo
@@ -246,8 +246,8 @@ aavjo bhai`}
           <p className="font-semibold text-sm mb-2">Proposed keywords</p>
           <div className="space-y-2">
             {[
-              ["bhai sambhal", "'watch out, friend' — the try block"],
-              ["pakad",        "'catch' — handles the error"],
+              ["bhai sambhal", "'watch out, friend' - the try block"],
+              ["pakad",        "'catch' - handles the error"],
             ].map(([kw, desc]) => (
               <div key={kw} className="flex gap-3 text-xs">
                 <code className="font-mono shrink-0" style={{ color: "hsl(var(--kw))" }}>{kw}</code>
@@ -263,7 +263,7 @@ aavjo bhai`}
         title="For-each loop"
         status="considering"
         gujarati="drek mate"
-        why="Iterating over an array with a manual index counter is verbose and error-prone. A for-each form would be the natural companion to arrays — once arrays land, a for-each becomes the obvious next step."
+        why="Iterating over an array with a manual index counter is verbose and error-prone. A for-each form would be the natural companion to arrays - once arrays land, a for-each becomes the obvious next step."
         example={`kem bhai
   aa nums che yaadi [1, 2, 3, 4, 5]
   drek mate num aa nums {
@@ -291,7 +291,7 @@ aavjo bhai`}
       {/* How to contribute */}
       <H2 id="contribute">Help build these features</H2>
       <P>
-        kemlang-py is a small, readable codebase. The interpreter is ~500 lines across three files —
+        kemlang-py is a small, readable codebase. The interpreter is ~500 lines across three files -
         a great size for a first contribution to a real language implementation.
       </P>
       <div className="space-y-3">
@@ -317,7 +317,7 @@ aavjo bhai`}
           <Link href="https://github.com/sanketmuchhala/kemlang-py/issues" target="_blank" rel="noreferrer" className="text-primary underline underline-offset-4">
             Open an issue on GitHub
           </Link>
-          {" "}— all design discussion happens in the open.
+          {" "}- all design discussion happens in the open.
         </p>
       </div>
 

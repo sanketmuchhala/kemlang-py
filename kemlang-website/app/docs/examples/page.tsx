@@ -55,7 +55,7 @@ aavjo bhai`,
   },
   {
     title: "FizzBuzz",
-    desc: "The classic interview problem — print Fizz, Buzz, or FizzBuzz.",
+    desc: "The classic interview problem - print Fizz, Buzz, or FizzBuzz.",
     code: `kem bhai
   aa n che 1
   farvu {

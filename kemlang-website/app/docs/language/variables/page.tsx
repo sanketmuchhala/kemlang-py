@@ -5,7 +5,7 @@ import { CodeSample } from "@/components/code-sample";
 
 export const metadata: Metadata = {
   title: "Variables",
-  description: "How variables work in kemlang-py — declaration, reassignment, scope, and types.",
+  description: "How variables work in kemlang-py - declaration, reassignment, scope, and types.",
 };
 
 const H2 = ({ children }: { children: React.ReactNode }) => (
@@ -31,7 +31,7 @@ export default function VariablesPage() {
         <P>
           Use <code>aa x che val</code> to declare a new variable.{" "}
           <em>aa</em> means &ldquo;this&rdquo;, <em>che</em> means &ldquo;is&rdquo;.
-          Types are inferred — you never write them explicitly.
+          Types are inferred - you never write them explicitly.
         </P>
         <CodeSample highlight code={`kem bhai\n  aa name    che "Sanket"     // string\n  aa age     che 25           // integer\n  aa balance che 9.99         // float\n  aa active  che bhai chhe   // boolean\n\n  bhai bol name\n  bhai bol age\naavjo bhai`} />
       </section>
@@ -39,7 +39,7 @@ export default function VariablesPage() {
       <section>
         <H2>Reassigning a variable</H2>
         <P>
-          Drop the <code>aa</code> to reassign. You cannot reassign a variable that hasn&apos;t been declared yet —
+          Drop the <code>aa</code> to reassign. You cannot reassign a variable that hasn&apos;t been declared yet -
           kemlang-py will throw an error.
         </P>
         <CodeSample highlight code={`kem bhai\n  aa count che 0\n  bhai bol count    // 0\n\n  count che 10\n  bhai bol count    // 10\n\n  count che count + 5\n  bhai bol count    // 15\naavjo bhai`} />

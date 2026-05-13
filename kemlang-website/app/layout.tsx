@@ -26,7 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://gujju-py.vercel.app"),
   title: {
-    default: "kemlang-py — Gujarati Programming Language",
+    default: "kemlang-py - Gujarati Programming Language",
     template: "%s | kemlang-py",
   },
   description:
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://gujju-py.vercel.app",
-    title: "kemlang-py — Gujarati Programming Language",
+    title: "kemlang-py - Gujarati Programming Language",
     description: "Write programs using Gujarati keywords. Install in seconds.",
     siteName: "kemlang-py",
   },

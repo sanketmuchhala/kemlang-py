@@ -80,7 +80,7 @@ Options:
           <span className="font-mono text-xs text-muted-foreground">description</span>
         </div>
         {[
-          ["--trace", "Print the token stream and AST before running the program — useful for debugging"],
+          ["--trace", "Print the token stream and AST before running the program - useful for debugging"],
           ["--help",  "Show usage information for this command"],
         ].map(([flag, desc], i) => (
           <div key={flag} className="grid grid-cols-[140px_1fr] px-5 py-2.5 text-xs" style={{ background: "hsl(var(--code-bg))", borderTop: i > 0 ? "1px solid hsl(var(--border))" : undefined }}>
@@ -91,7 +91,7 @@ Options:
       </div>
 
       <h3 className="font-semibold text-sm mt-6 mb-3">Running with trace</h3>
-      <P>The <code>--trace</code> flag is invaluable when a program isn&apos;t behaving as expected — it shows you exactly how the interpreter sees your code.</P>
+      <P>The <code>--trace</code> flag is invaluable when a program isn&apos;t behaving as expected - it shows you exactly how the interpreter sees your code.</P>
       <Block
         cmd="kem run hello.jsk --trace"
         desc="Run with token + AST output"
@@ -133,7 +133,7 @@ Type your code and press Ctrl+D (Unix) or Ctrl+Z (Windows) to execute.
 >>> `}
       />
 
-      <P>The REPL automatically wraps your input in <code>kem bhai</code> / <code>aavjo bhai</code> if you don&apos;t include them — so you can skip the boilerplate when experimenting.</P>
+      <P>The REPL automatically wraps your input in <code>kem bhai</code> / <code>aavjo bhai</code> if you don&apos;t include them - so you can skip the boilerplate when experimenting.</P>
 
       {/* kem fmt */}
       <H2 id="fmt">kem fmt</H2>
@@ -143,7 +143,7 @@ Type your code and press Ctrl+D (Unix) or Ctrl+Z (Windows) to execute.
       <Block cmd="kem fmt ." desc="Format all .jsk files in current directory" output={`Formatted examples/hello.jsk\nFormatted examples/loop_and_if.jsk\nAlready formatted examples/errors.jsk`} />
 
       <h3 className="font-semibold text-sm mt-6 mb-3">Check mode</h3>
-      <P>Use <code>--check</code> to verify formatting without modifying files — useful in CI or pre-commit hooks.</P>
+      <P>Use <code>--check</code> to verify formatting without modifying files - useful in CI or pre-commit hooks.</P>
       <Block
         cmd="kem fmt --check ."
         desc="Check without modifying"
@@ -190,17 +190,17 @@ Type your code and press Ctrl+D (Unix) or Ctrl+Z (Windows) to execute.
           <span className="font-mono text-xs text-muted-foreground">what it represents</span>
         </div>
         {[
-          ["KEM_BHAI",      "kem bhai — program start"],
-          ["AAVJO_BHAI",    "aavjo bhai — program end"],
-          ["BHAI_BOL",      "bhai bol — print keyword"],
-          ["AA",            "aa — variable declaration keyword"],
-          ["CHE",           "che — assignment keyword"],
-          ["JO",            "jo — if keyword"],
-          ["NAHI_TO",       "nahi to — else keyword"],
-          ["FARVU",         "farvu — loop body keyword"],
-          ["JYA_SUDHI",     "jya sudhi — loop condition keyword"],
-          ["TAME_JAO",      "tame jao — break"],
-          ["AAGAL_VADO",    "aagal vado — continue"],
+          ["KEM_BHAI",      "kem bhai - program start"],
+          ["AAVJO_BHAI",    "aavjo bhai - program end"],
+          ["BHAI_BOL",      "bhai bol - print keyword"],
+          ["AA",            "aa - variable declaration keyword"],
+          ["CHE",           "che - assignment keyword"],
+          ["JO",            "jo - if keyword"],
+          ["NAHI_TO",       "nahi to - else keyword"],
+          ["FARVU",         "farvu - loop body keyword"],
+          ["JYA_SUDHI",     "jya sudhi - loop condition keyword"],
+          ["TAME_JAO",      "tame jao - break"],
+          ["AAGAL_VADO",    "aagal vado - continue"],
           ["BHAI_CHHE",     "bhai chhe / true"],
           ["BHAI_NATHI",    "bhai nathi / false"],
           ["STRING",        "a string literal"],
@@ -257,9 +257,9 @@ Program
           <span className="font-mono text-xs text-muted-foreground">meaning</span>
         </div>
         {[
-          ["0", "Success — program ran without errors"],
-          ["1", "Error — lexer, parser, or runtime error occurred"],
-          ["2", "Usage error — wrong command or missing argument"],
+          ["0", "Success - program ran without errors"],
+          ["1", "Error - lexer, parser, or runtime error occurred"],
+          ["2", "Usage error - wrong command or missing argument"],
         ].map(([code, desc], i) => (
           <div key={code} className="grid grid-cols-[80px_1fr] px-5 py-2.5 text-xs" style={{ background: "hsl(var(--code-bg))", borderTop: i > 0 ? "1px solid hsl(var(--border))" : undefined }}>
             <code className="font-mono" style={{ background: "transparent", color: "hsl(var(--kw))", padding: 0, fontSize: "0.75rem" }}>{code}</code>

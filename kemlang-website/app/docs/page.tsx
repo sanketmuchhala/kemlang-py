@@ -5,7 +5,7 @@ import { CodeSample } from "@/components/code-sample";
 
 export const metadata: Metadata = {
   title: "Documentation",
-  description: "Learn how to write programs with kemlang-py — the Gujarati programming language.",
+  description: "Learn how to write programs with kemlang-py - the Gujarati programming language.",
 };
 
 const quickStartCode = `kem bhai
@@ -38,11 +38,11 @@ const cards = [
 ];
 
 const features = [
-  ["Gujarati keywords", "Write kem bhai, bhai bol, jo, farvu — real Gujarati words that map directly to programming concepts."],
-  ["Familiar logic", "Same control flow as Python or JavaScript — if, else, while, break, continue — just spelled differently."],
+  ["Gujarati keywords", "Write kem bhai, bhai bol, jo, farvu - real Gujarati words that map directly to programming concepts."],
+  ["Familiar logic", "Same control flow as Python or JavaScript - if, else, while, break, continue - just spelled differently."],
   ["Zero setup", "One npm or pip install, then kem run. No project files, no config, no toolchain."],
-  ["Full CLI", "kem run · kem repl · kem fmt · kem tokens · kem ast — everything you need in one binary."],
-  ["Open source", "MIT licensed, written in Python. Small, readable codebase — easy to contribute to."],
+  ["Full CLI", "kem run · kem repl · kem fmt · kem tokens · kem ast - everything you need in one binary."],
+  ["Open source", "MIT licensed, written in Python. Small, readable codebase - easy to contribute to."],
   ["Educational", "Designed for Gujarati speakers learning programming, and programmers curious about language design."],
 ];
 
@@ -50,7 +50,7 @@ const steps = [
   {
     n: "1",
     title: "Install kemlang-py",
-    body: "Pick npm or pip — both give you the same kem command globally.",
+    body: "Pick npm or pip - both give you the same kem command globally.",
     code: "npm install -g kemlang-py",
     href: "/docs/installation",
   },
@@ -142,19 +142,19 @@ export default function DocsPage() {
         <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
           <li className="flex gap-2">
             <span className="text-primary shrink-0">›</span>
-            <span><code>kem bhai</code> — opens the program (&quot;hello, brother&quot;)</span>
+            <span><code>kem bhai</code> - opens the program (&quot;hello, brother&quot;)</span>
           </li>
           <li className="flex gap-2">
             <span className="text-primary shrink-0">›</span>
-            <span><code>aa naam che &quot;kemlang-py&quot;</code> — declares a variable (<em>aa = this, che = is</em>)</span>
+            <span><code>aa naam che &quot;kemlang-py&quot;</code> - declares a variable (<em>aa = this, che = is</em>)</span>
           </li>
           <li className="flex gap-2">
             <span className="text-primary shrink-0">›</span>
-            <span><code>bhai bol ...</code> — prints to stdout (<em>bhai = brother, bol = say</em>)</span>
+            <span><code>bhai bol ...</code> - prints to stdout (<em>bhai = brother, bol = say</em>)</span>
           </li>
           <li className="flex gap-2">
             <span className="text-primary shrink-0">›</span>
-            <span><code>aavjo bhai</code> — closes the program (&quot;goodbye, brother&quot;)</span>
+            <span><code>aavjo bhai</code> - closes the program (&quot;goodbye, brother&quot;)</span>
           </li>
         </ul>
       </section>

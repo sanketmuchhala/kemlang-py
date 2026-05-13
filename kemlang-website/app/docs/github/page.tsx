@@ -4,7 +4,7 @@ import { Github, GitPullRequest, Bug, Star, GitBranch, ArrowRight } from "lucide
 
 export const metadata: Metadata = {
   title: "GitHub",
-  description: "kemlang-py on GitHub — source code, issues, contributing, and releases.",
+  description: "kemlang-py on GitHub - source code, issues, contributing, and releases.",
 };
 
 export default function GitHubPage() {
@@ -16,8 +16,8 @@ export default function GitHubPage() {
           GitHub
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          kemlang-py is fully open source under the MIT license. The entire project — interpreter,
-          CLI, formatter, website — lives in one repository.
+          kemlang-py is fully open source under the MIT license. The entire project - interpreter,
+          CLI, formatter, website - lives in one repository.
         </p>
       </div>
 
@@ -75,7 +75,7 @@ export default function GitHubPage() {
           {
             icon: GitBranch,
             title: "Releases",
-            desc: "See what changed in each version — release notes and changelogs.",
+            desc: "See what changed in each version - release notes and changelogs.",
             href: "https://github.com/sanketmuchhala/kemlang-py/releases",
             label: "View releases",
           },
@@ -102,12 +102,12 @@ export default function GitHubPage() {
         <h2 className="font-display text-2xl md:text-3xl mb-5">Repository structure</h2>
         <div className="rounded-xl border overflow-hidden" style={{ background: "hsl(var(--code-bg))" }}>
           {[
-            ["kemlang/",           "Core interpreter package — lexer, parser, interpreter, CLI"],
+            ["kemlang/",           "Core interpreter package - lexer, parser, interpreter, CLI"],
             ["kemlang/lexer.py",   "Tokenizes source code into a token stream"],
             ["kemlang/parser.py",  "Recursive-descent parser → AST"],
             ["kemlang/interpreter.py", "Tree-walking interpreter"],
-            ["kemlang/cli.py",     "Typer CLI — kem run / repl / fmt / tokens / ast"],
-            ["tests/",             "pytest test suite — exec, CLI, lexer, parser, fuzz"],
+            ["kemlang/cli.py",     "Typer CLI - kem run / repl / fmt / tokens / ast"],
+            ["tests/",             "pytest test suite - exec, CLI, lexer, parser, fuzz"],
             ["npm-package/",       "Node.js wrapper that pip-installs kemlang-py"],
             ["kemlang-website/",   "This Next.js docs site"],
             ["docs/",              "Project status, design notes, roadmap"],
@@ -133,7 +133,7 @@ export default function GitHubPage() {
       <section className="mb-12">
         <h2 className="font-display text-2xl md:text-3xl mb-4">Contributing</h2>
         <p className="text-muted-foreground leading-relaxed mb-6">
-          kemlang-py is a small, readable codebase — a good place to learn how programming language interpreters work.
+          kemlang-py is a small, readable codebase - a good place to learn how programming language interpreters work.
           Here&apos;s how to get started:
         </p>
         <div className="space-y-4">
@@ -141,7 +141,7 @@ export default function GitHubPage() {
             ["1", "Fork and clone", "git clone https://github.com/sanketmuchhala/kemlang-py"],
             ["2", "Install dev deps", "pip install -e .[dev,test]"],
             ["3", "Run the tests",    "pytest -m \"not slow\""],
-            ["4", "Make your change", "Edit kemlang/ files — lexer, parser, or interpreter"],
+            ["4", "Make your change", "Edit kemlang/ files - lexer, parser, or interpreter"],
             ["5", "Check quality",    "ruff check kemlang tests && ruff format kemlang tests"],
             ["6", "Open a PR",        "Push your branch and open a pull request on GitHub"],
           ].map(([n, title, cmd]) => (
@@ -168,7 +168,7 @@ export default function GitHubPage() {
           <p className="font-semibold text-sm mb-1">MIT License</p>
           <p className="text-sm text-muted-foreground leading-relaxed">
             kemlang-py is free and open source software. You can use it, modify it, and distribute it freely
-            — even commercially — as long as you include the original license notice.
+            - even commercially - as long as you include the original license notice.
           </p>
           <Link
             href="https://github.com/sanketmuchhala/kemlang-py/blob/main/LICENSE"

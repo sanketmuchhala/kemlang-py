@@ -39,7 +39,7 @@ aavjo bhai`,
   },
   {
     title: "Print something",
-    desc: "bhai bol means \"brother, say\" — it prints whatever comes after it. Strings go in double or single quotes.",
+    desc: "bhai bol means \"brother, say\" - it prints whatever comes after it. Strings go in double or single quotes.",
     code: `kem bhai
   bhai bol "kem cho, duniya!"
 aavjo bhai`,
@@ -56,7 +56,7 @@ aavjo bhai`,
   },
   {
     title: "Read user input",
-    desc: "bapu tame bolo means \"father, you say\" — it waits for the user to type something and returns it as a string.",
+    desc: "bapu tame bolo means \"father, you say\" - it waits for the user to type something and returns it as a string.",
     code: `kem bhai
   bhai bol "What is your name?"
   aa naam che bapu tame bolo
@@ -66,21 +66,21 @@ aavjo bhai`,
   },
   {
     title: "Add a conditional",
-    desc: "jo means \"if\", nahi to means \"otherwise\". Braces wrap the block — no colons, no indentation rules.",
+    desc: "jo means \"if\", nahi to means \"otherwise\". Braces wrap the block - no colons, no indentation rules.",
     code: `kem bhai
   aa score che 88
 
   jo score >= 90 {
-    bhai bol "A grade — saras!"
+    bhai bol "A grade - saras!"
   } nahi to {
     jo score >= 75 {
-      bhai bol "B grade — thik che"
+      bhai bol "B grade - thik che"
     } nahi to {
       bhai bol "Keep practising"
     }
   }
 aavjo bhai`,
-    output: "B grade — thik che",
+    output: "B grade - thik che",
   },
   {
     title: "Loop with farvu",
@@ -130,12 +130,12 @@ const roadmap: [string, string][] = [
 ];
 
 const features = [
-  { icon: Terminal, title: "Gujarati keywords",  body: "Real Gujarati words mapped to real programming concepts — kem bhai, bhai bol, jo, nahi to, farvu." },
+  { icon: Terminal, title: "Gujarati keywords",  body: "Real Gujarati words mapped to real programming concepts - kem bhai, bhai bol, jo, nahi to, farvu." },
   { icon: Zap,      title: "Zero config",        body: "One install command, one run command. No runtimes to configure, no project files to create." },
   { icon: Package,  title: "npm & PyPI",         body: "Install via npm or pip. The same kem CLI on macOS, Linux, and Windows." },
   { icon: BookOpen, title: "Full CLI toolkit",   body: "kem run · kem repl · kem fmt · kem tokens · kem ast. Everything in one binary." },
   { icon: GitBranch,title: "Open source",        body: "MIT licensed, built in Python with Typer and Rich. Small, readable codebase." },
-  { icon: Heart,    title: "Community first",    body: "Built for Gujarati speakers learning to code — and programmers curious about language design." },
+  { icon: Heart,    title: "Community first",    body: "Built for Gujarati speakers learning to code - and programmers curious about language design." },
 ];
 
 // ── Shared styles ─────────────────────────────────────────────────────────────
@@ -228,7 +228,7 @@ export default function Home() {
             <SectionLabel>Translation</SectionLabel>
             <SectionHeading>If you know Python,<br />you already get it.</SectionHeading>
             <SectionDesc>
-              kemlang-py follows the same logic as Python — just with Gujarati words in place of English ones. Every concept maps one-to-one.
+              kemlang-py follows the same logic as Python - just with Gujarati words in place of English ones. Every concept maps one-to-one.
             </SectionDesc>
           </div>
 
@@ -266,7 +266,7 @@ export default function Home() {
             <SectionLabel>Learn by building</SectionLabel>
             <SectionHeading>Write your first program,<br />one line at a time.</SectionHeading>
             <SectionDesc>
-              Every concept introduced step by step — from the bare skeleton to a full interactive program with input, conditionals, and loops.
+              Every concept introduced step by step - from the bare skeleton to a full interactive program with input, conditionals, and loops.
             </SectionDesc>
           </div>
 
@@ -314,7 +314,7 @@ export default function Home() {
             <SectionLabel>Language reference</SectionLabel>
             <SectionHeading>13 keywords.<br />That&apos;s the whole language.</SectionHeading>
             <SectionDesc>
-              kemlang-py is intentionally small. Every keyword has a clear Gujarati meaning — no guessing, no arbitrary symbols to memorise.
+              kemlang-py is intentionally small. Every keyword has a clear Gujarati meaning - no guessing, no arbitrary symbols to memorise.
             </SectionDesc>
           </div>
 
@@ -389,7 +389,7 @@ export default function Home() {
             <SectionLabel>CLI</SectionLabel>
             <SectionHeading>One binary.<br />Five commands.</SectionHeading>
             <SectionDesc>
-              The <code>kem</code> CLI covers running, formatting, inspecting tokens, and visualising the AST — all out of the box.
+              The <code>kem</code> CLI covers running, formatting, inspecting tokens, and visualising the AST - all out of the box.
             </SectionDesc>
           </div>
 
@@ -416,7 +416,7 @@ export default function Home() {
           <div className="max-w-2xl mx-auto text-center mb-14">
             <SectionLabel>Installation</SectionLabel>
             <SectionHeading>Running in under a minute.</SectionHeading>
-            <SectionDesc>Pick npm or pip — both install the same <code>kem</code> binary. Works on macOS, Linux, and Windows.</SectionDesc>
+            <SectionDesc>Pick npm or pip - both install the same <code>kem</code> binary. Works on macOS, Linux, and Windows.</SectionDesc>
           </div>
           <div className="max-w-xl mx-auto">
             <InstallTabs />
@@ -430,7 +430,7 @@ export default function Home() {
           <div className="max-w-2xl mx-auto text-center mb-14">
             <SectionLabel>Features</SectionLabel>
             <SectionHeading>Everything included.</SectionHeading>
-            <SectionDesc>A complete language environment — interpreter, formatter, REPL, and token inspector — all in one install.</SectionDesc>
+            <SectionDesc>A complete language environment - interpreter, formatter, REPL, and token inspector - all in one install.</SectionDesc>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px border rounded-xl overflow-hidden bg-border max-w-5xl mx-auto">
             {features.map(({ icon: Icon, title, body }) => (

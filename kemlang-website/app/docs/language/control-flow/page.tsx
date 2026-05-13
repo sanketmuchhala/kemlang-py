@@ -5,7 +5,7 @@ import { CodeSample } from "@/components/code-sample";
 
 export const metadata: Metadata = {
   title: "Control Flow",
-  description: "Conditionals and loops in kemlang-py — jo, nahi to, farvu, tame jao, aagal vado.",
+  description: "Conditionals and loops in kemlang-py - jo, nahi to, farvu, tame jao, aagal vado.",
 };
 
 const H2 = ({ children }: { children: React.ReactNode }) => (
@@ -33,13 +33,13 @@ export default function ControlFlowPage() {
         <p className="font-mono text-xs text-primary uppercase tracking-widest mb-3">Language guide</p>
         <h1 className="font-display text-4xl md:text-5xl leading-tight tracking-tight mb-4">Control Flow</h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Conditionals and loops — the building blocks of any real program.
+          Conditionals and loops - the building blocks of any real program.
         </p>
       </div>
 
       {/* if */}
       <section>
-        <H2>If statement — <code className="font-mono text-xl font-normal text-primary">jo</code></H2>
+        <H2>If statement - <code className="font-mono text-xl font-normal text-primary">jo</code></H2>
         <P><code>jo</code> means &ldquo;if&rdquo;. The condition goes between <code>jo</code> and the opening brace. No parentheses required.</P>
         <CodeSample highlight code={`kem bhai\n  aa temp che 38\n\n  jo temp > 37 {\n    bhai bol "Fever!"\n  }\naavjo bhai`} />
         <Output text="Fever!" />
@@ -47,7 +47,7 @@ export default function ControlFlowPage() {
 
       {/* if-else */}
       <section>
-        <H2>If-Else — <code className="font-mono text-xl font-normal text-primary">jo / nahi to</code></H2>
+        <H2>If-Else - <code className="font-mono text-xl font-normal text-primary">jo / nahi to</code></H2>
         <P><code>nahi to</code> means &ldquo;otherwise&rdquo;. It must immediately follow the closing brace of the <code>jo</code> block.</P>
         <CodeSample highlight code={`kem bhai\n  aa age che 16\n\n  jo age >= 18 {\n    bhai bol "Can vote"\n  } nahi to {\n    bhai bol "Cannot vote yet"\n  }\naavjo bhai`} />
         <Output text="Cannot vote yet" />
@@ -63,10 +63,10 @@ export default function ControlFlowPage() {
 
       {/* while */}
       <section>
-        <H2>While loop — <code className="font-mono text-xl font-normal text-primary">farvu / jya sudhi</code></H2>
+        <H2>While loop - <code className="font-mono text-xl font-normal text-primary">farvu / jya sudhi</code></H2>
         <P>
           <code>farvu</code> means &ldquo;to do&rdquo;. <code>jya sudhi</code> means &ldquo;as long as&rdquo;.
-          The body executes first, then the condition is checked — similar to a do-while in other languages.
+          The body executes first, then the condition is checked - similar to a do-while in other languages.
         </P>
         <CodeSample highlight code={`kem bhai\n  aa i che 1\n  farvu {\n    bhai bol i\n    i che i + 1\n  } jya sudhi i <= 5\naavjo bhai`} />
         <Output text={"1\n2\n3\n4\n5"} />
@@ -79,7 +79,7 @@ export default function ControlFlowPage() {
 
       {/* break */}
       <section>
-        <H2>Break — <code className="font-mono text-xl font-normal text-primary">tame jao</code></H2>
+        <H2>Break - <code className="font-mono text-xl font-normal text-primary">tame jao</code></H2>
         <P><code>tame jao</code> (you go) exits the innermost loop immediately. Execution resumes after the loop.</P>
         <CodeSample highlight code={`kem bhai\n  aa i che 0\n  farvu {\n    i che i + 1\n    jo i == 5 {\n      bhai bol "Found 5!"\n      tame jao\n    }\n  } jya sudhi i < 100\n  bhai bol "Loop ended at: " + i\naavjo bhai`} />
         <Output text={"Found 5!\nLoop ended at: 5"} />
@@ -87,7 +87,7 @@ export default function ControlFlowPage() {
 
       {/* continue */}
       <section>
-        <H2>Continue — <code className="font-mono text-xl font-normal text-primary">aagal vado</code></H2>
+        <H2>Continue - <code className="font-mono text-xl font-normal text-primary">aagal vado</code></H2>
         <P><code>aagal vado</code> (move forward) skips the rest of the current iteration and jumps straight to the condition check.</P>
         <CodeSample highlight code={`kem bhai\n  // print only odd numbers 1-9\n  aa i che 0\n  farvu {\n    i che i + 1\n    jo i % 2 == 0 { aagal vado }\n    bhai bol i\n  } jya sudhi i < 10\naavjo bhai`} />
         <Output text={"1\n3\n5\n7\n9"} />
@@ -96,7 +96,7 @@ export default function ControlFlowPage() {
       {/* truthiness */}
       <section>
         <H2>Truthy and falsy values</H2>
-        <P>Conditions accept any value — not just booleans. The following values are falsy; everything else is truthy.</P>
+        <P>Conditions accept any value - not just booleans. The following values are falsy; everything else is truthy.</P>
         <div className="rounded-xl border overflow-hidden mb-4">
           <div className="grid grid-cols-2 border-b px-5 py-3" style={{ background: "hsl(var(--code-bg))", borderColor: "hsl(var(--border))" }}>
             <span className="font-mono text-xs text-muted-foreground">falsy values</span>

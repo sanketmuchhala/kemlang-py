@@ -52,7 +52,7 @@ export default function InstallationPage() {
       {/* npm */}
       <section>
         <h2 className={S.h2}>Install via npm <span className="text-primary text-sm font-mono font-normal ml-2">recommended</span></h2>
-        <p className={S.p}>The fastest way — works on any machine with Node.js installed. Automatically installs Python dependencies.</p>
+        <p className={S.p}>The fastest way - works on any machine with Node.js installed. Automatically installs Python dependencies.</p>
         <CodeSample code="npm install -g kemlang-py" highlight={false} language="bash" />
         <p className="text-sm text-muted-foreground mt-3 mb-2">Verify it worked:</p>
         <CodeSample code="kem version" highlight={false} language="bash" />
@@ -83,7 +83,7 @@ export default function InstallationPage() {
           language="bash"
         />
         <p className="text-sm text-muted-foreground mt-3">
-          The <code>-e</code> flag installs in editable mode — changes to the source are reflected immediately without reinstalling.
+          The <code>-e</code> flag installs in editable mode - changes to the source are reflected immediately without reinstalling.
         </p>
       </section>
 
@@ -96,11 +96,11 @@ export default function InstallationPage() {
           {[
             ["npm", "Run npm bin -g to find the global bin path and add it to your PATH."],
             ["pip",  "Run python -m site --user-base to find the user base, then add /bin to PATH."],
-            ["Windows", "Restart your terminal — PATH changes take effect on new sessions."],
+            ["Windows", "Restart your terminal - PATH changes take effect on new sessions."],
           ].map(([k, v]) => (
             <li key={k} className={S.li}>
               <span className="text-primary shrink-0">›</span>
-              <span><strong>{k}</strong> — {v}</span>
+              <span><strong>{k}</strong> - {v}</span>
             </li>
           ))}
         </ul>

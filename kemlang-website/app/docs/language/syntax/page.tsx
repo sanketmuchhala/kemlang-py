@@ -27,7 +27,7 @@ export default function SyntaxPage() {
           Syntax & Keywords
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Every keyword, operator, and construct in kemlang-py — with examples.
+          Every keyword, operator, and construct in kemlang-py - with examples.
         </p>
       </div>
 
@@ -38,13 +38,13 @@ export default function SyntaxPage() {
         <CodeSample highlight code={`kem bhai\n  // your code here\naavjo bhai`} />
         <ul className="mt-4 space-y-2">
           {[
-            ["kem bhai", "Opens the program — literally \"hello, brother\""],
-            ["aavjo bhai", "Closes the program — literally \"goodbye, brother\""],
-            ["//", "Single-line comment — ignored by the interpreter"],
+            ["kem bhai", "Opens the program - literally \"hello, brother\""],
+            ["aavjo bhai", "Closes the program - literally \"goodbye, brother\""],
+            ["//", "Single-line comment - ignored by the interpreter"],
           ].map(([kw, desc]) => (
             <li key={kw} className="flex gap-2 text-sm text-muted-foreground">
               <span className="text-primary shrink-0">›</span>
-              <span><code>{kw}</code> — {desc}</span>
+              <span><code>{kw}</code> - {desc}</span>
             </li>
           ))}
         </ul>
@@ -53,11 +53,11 @@ export default function SyntaxPage() {
       {/* Variables */}
       <section>
         <H2>Variables</H2>
-        <H3>Declaration — <code className="font-mono text-sm font-normal text-primary">aa x che val</code></H3>
+        <H3>Declaration - <code className="font-mono text-sm font-normal text-primary">aa x che val</code></H3>
         <P>Declare a new variable with <code>aa</code> (this) and <code>che</code> (is). Every type is inferred automatically.</P>
         <CodeSample highlight code={`kem bhai\n  aa naam  che "Sanket"      // string\n  aa age   che 25            // integer\n  aa pi    che 3.14          // float\n  aa flag  che bhai chhe     // boolean\naavjo bhai`} />
 
-        <H3>Reassignment — <code className="font-mono text-sm font-normal text-primary">x che val</code></H3>
+        <H3>Reassignment - <code className="font-mono text-sm font-normal text-primary">x che val</code></H3>
         <P>Reassign an existing variable using <code>che</code> without <code>aa</code>.</P>
         <CodeSample highlight code={`kem bhai\n  aa count che 0\n  count che 1\n  count che count + 1\n  bhai bol count   // 2\naavjo bhai`} />
       </section>
@@ -76,7 +76,7 @@ export default function SyntaxPage() {
             ["integer", "42 · -7 · 0",          "whole numbers"],
             ["float",   "3.14 · -0.5",          "decimal numbers"],
             ["boolean", "bhai chhe · bhai nathi", "also: true / false"],
-            ["none",    "—",                    "result of failed input"],
+            ["none",    "-",                    "result of failed input"],
           ].map(([type, ex, note], i) => (
             <div key={type} className="grid grid-cols-[100px_1fr_1fr] px-5 py-3 text-xs" style={{ background: "hsl(var(--code-bg))", borderTop: i > 0 ? "1px solid hsl(var(--border))" : undefined }}>
               <code className="font-mono" style={{ background: "transparent", color: "hsl(var(--kw))", padding: 0, fontSize: "0.75rem" }}>{type}</code>
@@ -89,7 +89,7 @@ export default function SyntaxPage() {
 
       {/* Output */}
       <section>
-        <H2>Output — <code className="font-mono text-2xl font-normal text-primary">bhai bol</code></H2>
+        <H2>Output - <code className="font-mono text-2xl font-normal text-primary">bhai bol</code></H2>
         <P><code>bhai bol</code> (brother, say) prints any value to stdout. It automatically converts numbers and booleans to strings.</P>
         <CodeSample highlight code={`kem bhai\n  bhai bol "Hello, World!"\n  bhai bol 42\n  bhai bol 3.14\n  bhai bol bhai chhe\naavjo bhai`} />
         <div className="mt-3 rounded-xl border overflow-hidden" style={{ background: "hsl(var(--code-bg))" }}>
@@ -104,7 +104,7 @@ export default function SyntaxPage() {
 
       {/* Input */}
       <section>
-        <H2>Input — <code className="font-mono text-2xl font-normal text-primary">bapu tame bolo</code></H2>
+        <H2>Input - <code className="font-mono text-2xl font-normal text-primary">bapu tame bolo</code></H2>
         <P><code>bapu tame bolo</code> (father, you say) reads a line from stdin and returns it as a string.</P>
         <CodeSample highlight code={`kem bhai\n  bhai bol "What is your name?"\n  aa naam che bapu tame bolo\n  bhai bol "kem cho, " + naam + "!"\naavjo bhai`} />
       </section>
@@ -150,14 +150,14 @@ export default function SyntaxPage() {
 
       {/* If */}
       <section>
-        <H2>Conditionals — <code className="font-mono text-2xl font-normal text-primary">jo / nahi to</code></H2>
-        <P><code>jo</code> means &ldquo;if&rdquo;, <code>nahi to</code> means &ldquo;otherwise&rdquo;. Braces are required. There is no <code>else if</code> — nest another <code>jo</code> inside.</P>
+        <H2>Conditionals - <code className="font-mono text-2xl font-normal text-primary">jo / nahi to</code></H2>
+        <P><code>jo</code> means &ldquo;if&rdquo;, <code>nahi to</code> means &ldquo;otherwise&rdquo;. Braces are required. There is no <code>else if</code> - nest another <code>jo</code> inside.</P>
         <CodeSample highlight code={`kem bhai\n  aa score che 82\n\n  jo score >= 90 {\n    bhai bol "A grade"\n  } nahi to {\n    jo score >= 75 {\n      bhai bol "B grade"\n    } nahi to {\n      bhai bol "C grade"\n    }\n  }\naavjo bhai`} />
       </section>
 
       {/* While */}
       <section>
-        <H2>Loops — <code className="font-mono text-2xl font-normal text-primary">farvu / jya sudhi</code></H2>
+        <H2>Loops - <code className="font-mono text-2xl font-normal text-primary">farvu / jya sudhi</code></H2>
         <P><code>farvu</code> means &ldquo;to do&rdquo;, <code>jya sudhi</code> means &ldquo;as long as&rdquo;. The body runs first, then the condition is checked.</P>
         <CodeSample highlight code={`kem bhai\n  aa i che 1\n  farvu {\n    bhai bol i\n    i che i + 1\n  } jya sudhi i <= 5\naavjo bhai`} />
         <div className="mt-3 rounded-xl border overflow-hidden" style={{ background: "hsl(var(--code-bg))" }}>
@@ -171,11 +171,11 @@ export default function SyntaxPage() {
       {/* Break / Continue */}
       <section>
         <H2>Loop control</H2>
-        <H3><code>tame jao</code> — break</H3>
+        <H3><code>tame jao</code> - break</H3>
         <P>Exit the nearest loop immediately.</P>
         <CodeSample highlight code={`kem bhai\n  aa i che 1\n  farvu {\n    jo i == 4 { tame jao }\n    bhai bol i\n    i che i + 1\n  } jya sudhi bhai chhe\naavjo bhai`} />
 
-        <H3><code>aagal vado</code> — continue</H3>
+        <H3><code>aagal vado</code> - continue</H3>
         <P>Skip the rest of the current iteration and move to the next.</P>
         <CodeSample highlight code={`kem bhai\n  aa i che 0\n  farvu {\n    i che i + 1\n    jo i % 2 == 0 { aagal vado }  // skip evens\n    bhai bol i\n  } jya sudhi i < 10\naavjo bhai`} />
       </section>
