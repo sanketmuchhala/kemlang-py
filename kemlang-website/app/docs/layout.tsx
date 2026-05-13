@@ -7,9 +7,19 @@ const navigation = [
     title: "Getting Started",
     href: "/docs",
     items: [
-      { title: "Introduction",   href: "/docs" },
-      { title: "How it works",  href: "/docs/internals" },
+      { title: "Introduction",  href: "/docs" },
       { title: "Installation",  href: "/docs/installation" },
+    ],
+  },
+  {
+    title: "How it works",
+    href: "/docs/how-it-works",
+    items: [
+      { title: "Overview",         href: "/docs/how-it-works" },
+      { title: "The Lexer",        href: "/docs/how-it-works/lexer" },
+      { title: "The Parser",       href: "/docs/how-it-works/parser" },
+      { title: "The Interpreter",  href: "/docs/how-it-works/interpreter" },
+      { title: "Runtime & Types",  href: "/docs/how-it-works/runtime" },
     ],
   },
   {
