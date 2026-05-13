@@ -11,6 +11,9 @@ from kemlang.parser import ParseError, parse_program
 from kemlang.types import TokenType
 
 
+slow = pytest.mark.slow
+
+
 # Keep CI fast: 25 examples, 2s deadline per example, suppress slow-data warning
 CI_SETTINGS = settings(max_examples=25, deadline=2000, suppress_health_check=[HealthCheck.too_slow])
 
@@ -20,6 +23,7 @@ class TestPropertyFuzz:
     VALID_IDENTIFIER_CHARS = string.ascii_letters + string.digits + "_"
     VALID_STRING_CHARS = string.ascii_letters + string.digits + " !@#$%^&*()[]{}|:;<>?,.`~"
 
+    @slow
     @CI_SETTINGS
     @given(st.text(alphabet=VALID_IDENTIFIER_CHARS, min_size=1, max_size=20))
     def test_identifier_tokenization_never_crashes(self, identifier):
@@ -39,6 +43,7 @@ class TestPropertyFuzz:
             # Lexer errors are acceptable, crashes are not
             pass
 
+    @slow
     @CI_SETTINGS
     @given(st.integers(min_value=0, max_value=999999))
     def test_integer_tokenization_never_crashes(self, number):
@@ -51,6 +56,7 @@ class TestPropertyFuzz:
         except LexerError:
             pass
 
+    @slow
     @CI_SETTINGS
     @given(st.text(alphabet=VALID_STRING_CHARS, min_size=0, max_size=50))
     def test_string_tokenization_never_crashes(self, content):
@@ -68,6 +74,7 @@ class TestPropertyFuzz:
             # Lexer errors are acceptable for edge cases
             pass
 
+    @slow
     @CI_SETTINGS
     @given(
         st.lists(
@@ -88,6 +95,7 @@ class TestPropertyFuzz:
             # Some combinations might be invalid (like multiple = signs)
             pass
 
+    @slow
     @CI_SETTINGS
     @given(st.integers(min_value=1, max_value=10))
     def test_nested_parentheses_parsing(self, depth):
@@ -107,6 +115,7 @@ class TestPropertyFuzz:
             # Deep nesting might cause recursion errors, which is acceptable
             pass
 
+    @slow
     @CI_SETTINGS
     @given(st.lists(st.integers(min_value=0, max_value=100), min_size=1, max_size=20))
     def test_arithmetic_expression_evaluation(self, numbers):
@@ -126,6 +135,7 @@ class TestPropertyFuzz:
             # Some expressions might cause overflow or other issues
             pass
 
+    @slow
     @CI_SETTINGS
     @given(st.text(min_size=10, max_size=200))
     def test_random_text_never_crashes_lexer(self, text):
@@ -142,6 +152,7 @@ class TestPropertyFuzz:
             # No other exceptions should occur
             pytest.fail(f"Unexpected exception in lexer: {type(e).__name__}: {e}")
 
+    @slow
     @CI_SETTINGS
     @given(st.integers(min_value=0, max_value=50))
     def test_variable_declaration_chains(self, chain_length):
@@ -165,6 +176,7 @@ class TestPropertyFuzz:
             # Very long chains might cause recursion issues
             pass
 
+    @slow
     def test_format_idempotency_fuzzing(self):
         """Property: Formatting should be idempotent for valid programs."""
         valid_programs = [
@@ -197,6 +209,7 @@ aavjo bhai""",
                 # Invalid programs are acceptable to reject
                 pass
 
+    @slow
     @CI_SETTINGS
     @given(
         st.lists(
@@ -233,6 +246,7 @@ aavjo bhai""",
             # Complex expressions might fail for various reasons
             pass
 
+    @slow
     @CI_SETTINGS
     @given(st.integers(min_value=1, max_value=20))
     def test_nested_if_statements(self, nesting_depth):
@@ -259,6 +273,7 @@ aavjo bhai""",
             # Deep nesting might cause various resource issues
             pass
 
+    @slow
     def test_smoke_test_examples(self):
         """Smoke test: All example files should process without crashing."""
         examples = [

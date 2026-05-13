@@ -56,6 +56,11 @@ Issues = "https://github.com/sanketmuchhala/kemlang-py/issues"
 [tool.hatch.build.targets.wheel]
 packages = ["kemlang"]
 
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow — excluded from CI (run locally with pytest or pytest -m slow)",
+]
+
 [tool.coverage.run]
 source = ["kemlang"]
 omit = [

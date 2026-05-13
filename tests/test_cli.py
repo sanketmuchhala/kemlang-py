@@ -14,7 +14,6 @@ class TestCLI:
         result = self.runner.invoke(app, ["version"])
         assert result.exit_code == 0
         assert "KemLang" in result.stdout
-        assert "KemLang" in result.stdout
 
     def test_run_valid_file(self):
         with tempfile.NamedTemporaryFile(mode="w", suffix=".jsk", delete=False) as f:

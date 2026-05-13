@@ -103,7 +103,7 @@ def run(
 @app.command()
 def repl():
     """Start an interactive KemLang REPL."""
-    console.print("[bold green]KemLang REPL v{__version__}[/bold green]")
+    console.print(f"[bold green]KemLang REPL v{__version__}[/bold green]")
     console.print("Type your code and press Ctrl+D (Unix) or Ctrl+Z (Windows) to execute.")
     console.print("Add 'kem bhai' and 'aavjo bhai' if not present.")
     console.print()
