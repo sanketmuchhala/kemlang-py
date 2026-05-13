@@ -16,15 +16,24 @@ const navigation = [
     href: "/docs/language",
     items: [
       { title: "Syntax & Keywords", href: "/docs/language/syntax" },
+      { title: "Variables",         href: "/docs/language/variables" },
+      { title: "Control Flow",      href: "/docs/language/control-flow" },
     ],
   },
   {
-    title: "More",
+    title: "Examples",
+    href: "/docs/examples",
+    items: [
+      { title: "All Examples", href: "/docs/examples" },
+    ],
+  },
+  {
+    title: "Resources",
     href: "/playground",
     items: [
-      { title: "Playground",  href: "/playground" },
-      { title: "Changelog",   href: "/changelog" },
-      { title: "GitHub",      href: "https://github.com/sanketmuchhala/kemlang-py" },
+      { title: "Playground", href: "/playground" },
+      { title: "Changelog",  href: "/changelog" },
+      { title: "GitHub",     href: "/docs/github" },
     ],
   },
 ];
