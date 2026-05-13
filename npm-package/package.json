@@ -1,5 +1,5 @@
 {
-  "name": "kemlang",
+  "name": "kemlang-py",
   "version": "0.1.0",
   "description": "KemLang - A Gujarati-flavored programming language",
   "main": "index.js",
