@@ -23,18 +23,10 @@ export function MermaidDiagram({ chart }: { chart: string }) {
         theme: dark ? "dark" : "neutral",
         fontFamily: "JetBrains Mono, ui-monospace, monospace",
         fontSize: 12,
-        flowchart: { curve: "basis", padding: 20, useMaxWidth: true },
+        flowchart: { curve: "basis", padding: 16, useMaxWidth: true },
         themeVariables: dark
-          ? {
-              lineColor: "#34d399",
-              primaryBorderColor: "#34d39966",
-              edgeLabelBackground: "transparent",
-            }
-          : {
-              lineColor: "#059669",
-              primaryBorderColor: "#10b98166",
-              edgeLabelBackground: "transparent",
-            },
+          ? { lineColor: "#34d399", primaryBorderColor: "#34d39966", edgeLabelBackground: "transparent" }
+          : { lineColor: "#059669", primaryBorderColor: "#10b98166", edgeLabelBackground: "transparent" },
       });
 
       try {
@@ -44,8 +36,11 @@ export function MermaidDiagram({ chart }: { chart: string }) {
           ref.current.innerHTML = svg;
           const el = ref.current.querySelector("svg");
           if (el) {
-            el.style.maxWidth = "100%";
+            // Remove Mermaid's fixed pixel height so the diagram scales naturally
+            el.removeAttribute("height");
+            el.style.width = "100%";
             el.style.height = "auto";
+            el.style.maxHeight = "360px";
           }
         }
       } catch {
@@ -56,5 +51,5 @@ export function MermaidDiagram({ chart }: { chart: string }) {
     return () => { alive = false; };
   }, [chart, uid, resolvedTheme]);
 
-  return <div ref={ref} className="flex justify-center min-h-[80px] py-2" />;
+  return <div ref={ref} className="flex justify-center min-h-[80px]" />;
 }

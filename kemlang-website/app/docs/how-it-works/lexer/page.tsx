@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { H2, H3, P, Diagram, Block, StageStats } from "@/components/hiw";
+import { H2, H3, P, Diagram, Block, StageStats, MermaidChart } from "@/components/hiw";
 
 export const metadata: Metadata = {
   title: "The Lexer",
@@ -151,20 +151,20 @@ aavjo bhai`}</Block>
   └──────────────┴──────────────────────┴───────┘`}</Diagram>
 
       <H2 id="scanning-order">Scanning priority</H2>
-      <Diagram label="scan_token() decision order - first match wins">{`
-  On each new character:
-
-  1.  whitespace     space / tab / \r           skip, advance
-  2.  newline        \n                          emit NEWLINE, next line
-  3.  multi-word kw  "bhai bol", "kem bhai"...  emit keyword token
-  4.  comment        //                          skip to end of line
-  5.  operator       + - * / % ( ) { }          emit operator token
-  6.  two-char op    == != <= >=  (peek next)    emit operator token
-  7.  string         "                           scan to closing "
-  8.  digit          0-9                         scan integer or float
-  9.  letter         a-z A-Z _                   scan word, check keywords
-                                                 -> keyword token or IDENTIFIER
-  10. (no match)     any other character         raise LexerError`}</Diagram>
+      <MermaidChart label="scan_token() decision order - first match wins" chart={`flowchart LR
+    A([char]) --> B{whitespace\nor newline?}
+    B -->|yes| SK[skip / emit\nNEWLINE]
+    B -->|no| C{multi-word\nkeyword?}
+    C -->|match| MK[emit KEM_BHAI\nBHAI_BOL etc.]
+    C -->|no| D{comment\nor operator?}
+    D -->|match| OP[skip comment\nor emit op token]
+    D -->|no| E{quote?}
+    E -->|yes| STR[scan string\nemit STRING]
+    E -->|no| F{digit?}
+    F -->|yes| NUM[scan number\nemit INTEGER\nor FLOAT]
+    F -->|no| G{letter?}
+    G -->|yes| ID[scan word\nemit keyword\nor IDENTIFIER]
+    G -->|no| ERR(["LexerError"])`} />
 
       <H2 id="all-tokens">All token types</H2>
       <div className="rounded-xl border overflow-hidden mb-8">

@@ -189,17 +189,17 @@ def comparison(self) -> Expr:
   }
 aavjo bhai`}</Block>
 
-      <MermaidChart label="resulting AST" chart={`graph TD
+      <MermaidChart label="resulting AST" chart={`graph LR
     P["Program"]
-    D["Declaration\nname = x"]
+    D["Declaration\nx = ..."]
     L1["Literal(10)"]
     I["If"]
-    C["Binary\nop: >"]
+    C["Binary >"]
     V["Variable(x)"]
     L2["Literal(5)"]
-    TB["then: Print"]
+    TB["Print"]
     L3["Literal('big')"]
-    EB["else: Print"]
+    EB["Print"]
     L4["Literal('small')"]
 
     P --> D & I

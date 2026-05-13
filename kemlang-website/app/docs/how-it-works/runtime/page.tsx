@@ -143,15 +143,15 @@ aavjo bhai`}</Block>
   bhai nathi == 0 ->  bhai chhe    (True  - False == 0 in Python)`}</Diagram>
 
       <H2 id="lifecycle">Full execution lifecycle</H2>
-      <MermaidChart label="from kem run to process exit" chart={`flowchart TD
-    A(["kem run file.jsk"]) --> B["1. CLI\nread source text"]
-    B --> C["2. Lexer\ntokenize()"]
-    C -->|LexerError| ERR(["exit code 1\nprint error message"])
-    C --> D["3. Parser\nparse()"]
+      <MermaidChart label="from kem run to process exit" chart={`flowchart LR
+    A(["kem run"]) --> B["read\nfile"]
+    B --> C["Lexer"]
+    C -->|LexerError| ERR(["exit 1"])
+    C --> D["Parser"]
     D -->|ParseError| ERR
-    D --> E["4. Interpreter\ninterpret()"]
+    D --> E["Interpreter"]
     E -->|RuntimeError| ERR
-    E --> F(["exit code 0"])`} />
+    E --> F(["exit 0"])`} />
 
       <H2 id="error-propagation">Error propagation</H2>
       <div className="rounded-xl border overflow-hidden mb-8">

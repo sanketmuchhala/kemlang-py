@@ -110,15 +110,10 @@ def evaluate(self, expr: Expr) -> KemValue:
             return
         raise RuntimeError(f"Undefined variable '{name}'")`}</Block>
 
-      <MermaidChart label="environment chain - variable lookup walks up to parent" chart={`flowchart TD
-    F["If-body Environment\nvalues: { t: 1 }"]
-    W["While-body Environment\nvalues: { i: 1 }"]
-    G["Global Environment\nvalues: { x: 10, n: 5 }"]
-    E(["RuntimeError\nundefined variable"])
-
-    F -->|"parent lookup"| W
-    W -->|"parent lookup"| G
-    G -->|"not found anywhere"| E`} />
+      <MermaidChart label="environment chain - variable lookup walks up to parent" chart={`flowchart LR
+    F["If-body Env\nt = 1"] -->|parent| W["While-body Env\ni = 1"]
+    W -->|parent| G["Global Env\nx = 10, n = 5"]
+    G -->|not found| E(["RuntimeError"])`} />
 
       <Block label="kemlang/interpreter.py - execute_block pushes and pops scope">{`def execute_block(self, stmt: Block):
     previous = self.environment
