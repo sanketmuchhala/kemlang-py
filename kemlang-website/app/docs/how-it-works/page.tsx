@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { H2, P, Diagram, Block } from "@/components/hiw";
+import { H2, P, Diagram, Block, MermaidChart } from "@/components/hiw";
 
 export const metadata: Metadata = {
   title: "How it works - Overview",
@@ -90,52 +90,11 @@ export default function HowItWorksPage() {
         travels through three sequential stages. Each stage receives the output of the previous one.
       </P>
 
-      <Diagram label="the full pipeline">{`
-  ┌──────────────────────────────────────────────────────────────────┐
-  │  Source file  (hello.jsk)                                        │
-  │                                                                  │
-  │  kem bhai                                                        │
-  │    bhai bol "kem cho, duniya!"                                   │
-  │  aavjo bhai                                                      │
-  └────────────────────────────┬─────────────────────────────────────┘
-                               │  raw UTF-8 text
-                               ▼
-  ┌──────────────────────────────────────────────────────────────────┐
-  │  Stage 1: Lexer  (kemlang/lexer.py)                              │
-  │                                                                  │
-  │  Scans characters left-to-right. Groups them into tokens.        │
-  │  Handles multi-word Gujarati keywords. Skips whitespace.         │
-  └────────────────────────────┬─────────────────────────────────────┘
-                               │  List[Token]
-                               │
-                               │  KEM_BHAI    'kem bhai'            1:0
-                               │  BHAI_BOL    'bhai bol'            2:2
-                               │  STRING      '"kem cho, duniya!"'  2:10
-                               │  AAVJO_BHAI  'aavjo bhai'         3:0
-                               │  EOF         ''                    4:0
-                               ▼
-  ┌──────────────────────────────────────────────────────────────────┐
-  │  Stage 2: Parser  (kemlang/parser.py)                            │
-  │                                                                  │
-  │  Consumes tokens one at a time. Checks grammar rules.            │
-  │  Builds a tree of dataclass nodes (the AST).                     │
-  └────────────────────────────┬─────────────────────────────────────┘
-                               │  Program (AST)
-                               │
-                               │  Program
-                               │  └── Print
-                               │      └── Literal("kem cho, duniya!")
-                               ▼
-  ┌──────────────────────────────────────────────────────────────────┐
-  │  Stage 3: Interpreter  (kemlang/interpreter.py)                  │
-  │                                                                  │
-  │  Walks the AST recursively. Executes each node. Manages          │
-  │  variable scope via Environment. Handles I/O and errors.         │
-  └────────────────────────────┬─────────────────────────────────────┘
-                               │
-                               ▼
-                       stdout: kem cho, duniya!
-                       exit code: 0`}</Diagram>
+      <MermaidChart label="the full pipeline" chart={`flowchart LR
+    A([".jsk\\nsource file"]) -->|"raw text"| B["Lexer\\nlexer.py"]
+    B -->|"List[Token]"| C["Parser\\nparser.py"]
+    C -->|"Program AST"| D["Interpreter\\ninterpreter.py"]
+    D -->|"stdout + exit"| E(["output"])`} />
 
       <H2 id="in-code">What the CLI actually does</H2>
       <Block label="kemlang/cli.py - kem run (simplified)">{`source    = Path(file).read_text(encoding="utf-8")

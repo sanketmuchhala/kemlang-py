@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { H2, P, Diagram, Block, StageStats } from "@/components/hiw";
+import { H2, P, Diagram, Block, StageStats, MermaidChart } from "@/components/hiw";
 
 export const metadata: Metadata = {
   title: "The Interpreter",
@@ -110,38 +110,15 @@ def evaluate(self, expr: Expr) -> KemValue:
             return
         raise RuntimeError(f"Undefined variable '{name}'")`}</Block>
 
-      <Diagram label="environment chain for nested blocks">{`
-  kem bhai
-    aa x che 10      <- Global env
-    aa n che 5       <- Global env
-    farvu {
-      aa i che 1     <- While-body env  (local)
-      jo i > 0 {
-        aa t che i   <- If-body env     (local to if)
-      }
-    } jya sudhi i <= n
+      <MermaidChart label="environment chain - variable lookup walks up to parent" chart={`flowchart TD
+    F["If-body Environment\nvalues: { t: 1 }"]
+    W["While-body Environment\nvalues: { i: 1 }"]
+    G["Global Environment\nvalues: { x: 10, n: 5 }"]
+    E(["RuntimeError\nundefined variable"])
 
-  ┌──────────────────────────────────────────────┐
-  │  If-body Environment                         │
-  │  values: { t: 1 }                            │
-  │  enclosing ──────────────────────────────┐   │
-  └──────────────────────────────────────────┼───┘
-                                             │ parent lookup
-  ┌──────────────────────────────────────────▼───┐
-  │  While-body Environment                      │
-  │  values: { i: 1 }                            │
-  │  enclosing ──────────────────────────────┐   │
-  └──────────────────────────────────────────┼───┘
-                                             │
-  ┌──────────────────────────────────────────▼───┐
-  │  Global Environment                          │
-  │  values: { x: 10, n: 5 }                    │
-  │  enclosing: None                             │
-  └──────────────────────────────────────────────┘
-
-  Reading 'n' from inside the while body:
-    while-env.get("n")  ->  not found
-    -> global.get("n")  ->  found! returns 5`}</Diagram>
+    F -->|"parent lookup"| W
+    W -->|"parent lookup"| G
+    G -->|"not found anywhere"| E`} />
 
       <Block label="kemlang/interpreter.py - execute_block pushes and pops scope">{`def execute_block(self, stmt: Block):
     previous = self.environment

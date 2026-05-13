@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { H2, P, Diagram, Block } from "@/components/hiw";
+import { H2, P, Diagram, Block, MermaidChart } from "@/components/hiw";
 
 export const metadata: Metadata = {
   title: "Runtime and Types",
@@ -143,41 +143,15 @@ aavjo bhai`}</Block>
   bhai nathi == 0 ->  bhai chhe    (True  - False == 0 in Python)`}</Diagram>
 
       <H2 id="lifecycle">Full execution lifecycle</H2>
-      <Diagram label="from kem run to process exit">{`
-  $ kem run hello.jsk
-
-  ┌─ 1. CLI (kemlang/cli.py) ────────────────────────────────────────┐
-  │  typer parses command and file argument                           │
-  │  validates .jsk extension (warns if different)                   │
-  │  reads file: Path(file).read_text(encoding="utf-8")              │
-  └──────────────────────────────────────────────────────────────────┘
-                               │ raw source string
-  ┌─ 2. Lexer (kemlang/lexer.py) ────────────────────────────────────┐
-  │  Lexer(source).tokenize()                                         │
-  │  scans left-to-right, emits tokens                               │
-  │  LexerError on bad character -> CLI prints error, exit code 1    │
-  └──────────────────────────────────────────────────────────────────┘
-                               │ List[Token]
-  ┌─ 3. Parser (kemlang/parser.py) ──────────────────────────────────┐
-  │  Parser(tokens).parse()                                           │
-  │  filters NEWLINE tokens, recursive descent builds AST            │
-  │  ParseError on grammar violation -> CLI prints error, exit code 1│
-  └──────────────────────────────────────────────────────────────────┘
-                               │ Program (AST root)
-  ┌─ 4. Interpreter (kemlang/interpreter.py) ────────────────────────┐
-  │  Interpreter().interpret(program)                                 │
-  │  walks AST, calls execute() on each statement                    │
-  │  Print -> calls output_fn (print) -> stdout                      │
-  │  Input -> calls input_fn (input)  <- stdin                       │
-  │  RuntimeError caught at top level -> exit code 1                 │
-  └──────────────────────────────────────────────────────────────────┘
-                               │ int (0 or 1)
-  ┌─ 5. CLI exit ─────────────────────────────────────────────────────┐
-  │  raise typer.Exit(exit_code)                                      │
-  └──────────────────────────────────────────────────────────────────┘
-
-  $ echo $?
-  0`}</Diagram>
+      <MermaidChart label="from kem run to process exit" chart={`flowchart TD
+    A(["kem run file.jsk"]) --> B["1. CLI\nread source text"]
+    B --> C["2. Lexer\ntokenize()"]
+    C -->|LexerError| ERR(["exit code 1\nprint error message"])
+    C --> D["3. Parser\nparse()"]
+    D -->|ParseError| ERR
+    D --> E["4. Interpreter\ninterpret()"]
+    E -->|RuntimeError| ERR
+    E --> F(["exit code 0"])`} />
 
       <H2 id="error-propagation">Error propagation</H2>
       <div className="rounded-xl border overflow-hidden mb-8">

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { H2, P, Diagram, Block, StageStats } from "@/components/hiw";
+import { H2, P, Diagram, Block, StageStats, MermaidChart } from "@/components/hiw";
 
 export const metadata: Metadata = {
   title: "The Parser",
@@ -189,22 +189,25 @@ def comparison(self) -> Expr:
   }
 aavjo bhai`}</Block>
 
-      <Diagram label="resulting AST">{`
-  Program
-  ├── Declaration
-  │   ├── name:         "x"
-  │   └── initializer:  Literal(10)
-  └── If
-      ├── condition:    Binary
-      │                  ├── left:     Variable("x")
-      │                  ├── operator: Token(GREATER, ">")
-      │                  └── right:    Literal(5)
-      ├── then_branch:  Block
-      │   └── Print
-      │       └── expression: Literal("big")
-      └── else_branch:  Block
-          └── Print
-              └── expression: Literal("small")`}</Diagram>
+      <MermaidChart label="resulting AST" chart={`graph TD
+    P["Program"]
+    D["Declaration\nname = x"]
+    L1["Literal(10)"]
+    I["If"]
+    C["Binary\nop: >"]
+    V["Variable(x)"]
+    L2["Literal(5)"]
+    TB["then: Print"]
+    L3["Literal('big')"]
+    EB["else: Print"]
+    L4["Literal('small')"]
+
+    P --> D & I
+    D --> L1
+    I --> C & TB & EB
+    C --> V & L2
+    TB --> L3
+    EB --> L4`} />
 
       <P>
         The AST contains no braces, no <code className="font-mono text-xs">che</code>,

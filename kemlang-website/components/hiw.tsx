@@ -1,6 +1,31 @@
 // Shared components for all "How it works" pages.
 // Line-height on <pre> is 1.3 so box-drawing characters connect properly.
 
+import dynamic from "next/dynamic";
+
+const MermaidInner = dynamic(
+  () => import("./mermaid-diagram").then((m) => ({ default: m.MermaidDiagram })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-40 rounded animate-pulse" style={{ background: "hsl(var(--muted) / 0.15)" }} />
+    ),
+  }
+);
+
+// Mermaid diagram wrapped in the same styled container as Diagram.
+export function MermaidChart({ label, chart }: { label: string; chart: string }) {
+  return (
+    <div className="rounded-xl border overflow-hidden mb-8" style={{ background: "hsl(var(--code-bg))" }}>
+      <div className="px-4 py-2 border-b font-mono text-xs text-muted-foreground"
+        style={{ borderColor: "hsl(var(--border))" }}>{label}</div>
+      <div className="px-4 py-5">
+        <MermaidInner chart={chart} />
+      </div>
+    </div>
+  );
+}
+
 export const H2 = ({ id, children }: { id?: string; children: React.ReactNode }) => (
   <h2 id={id} className="font-display text-2xl md:text-3xl mt-12 mb-4 pt-8 border-t scroll-mt-20">{children}</h2>
 );
