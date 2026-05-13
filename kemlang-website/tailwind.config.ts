@@ -9,6 +9,11 @@ const config: Config = {
   darkMode: ["class"],
   theme: {
     extend: {
+      fontFamily: {
+        display: ["var(--font-syne)", "sans-serif"],
+        body: ["var(--font-dm-sans)", "sans-serif"],
+        mono: ["var(--font-ibm-plex-mono)", "monospace"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -35,10 +40,6 @@ const config: Config = {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
@@ -52,29 +53,19 @@ const config: Config = {
       typography: {
         DEFAULT: {
           css: {
-            maxWidth: 'none',
-            color: 'hsl(var(--foreground))',
-            h1: {
-              color: 'hsl(var(--foreground))',
-            },
-            h2: {
-              color: 'hsl(var(--foreground))',
-            },
-            h3: {
-              color: 'hsl(var(--foreground))',
-            },
-            h4: {
-              color: 'hsl(var(--foreground))',
-            },
+            maxWidth: "none",
+            color: "hsl(var(--foreground))",
+            h1: { color: "hsl(var(--foreground))", fontFamily: "var(--font-syne)" },
+            h2: { color: "hsl(var(--foreground))", fontFamily: "var(--font-syne)" },
+            h3: { color: "hsl(var(--foreground))", fontFamily: "var(--font-syne)" },
+            h4: { color: "hsl(var(--foreground))" },
             code: {
-              color: 'hsl(var(--foreground))',
+              color: "hsl(var(--foreground))",
+              fontFamily: "var(--font-ibm-plex-mono)",
             },
-            'code::before': {
-              content: '""',
-            },
-            'code::after': {
-              content: '""',
-            },
+            "code::before": { content: '""' },
+            "code::after": { content: '""' },
+            a: { color: "hsl(var(--primary))" },
           },
         },
       },
