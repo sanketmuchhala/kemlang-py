@@ -4,7 +4,7 @@
 
 [![npm](https://img.shields.io/npm/v/kemlang-py.svg)](https://www.npmjs.com/package/kemlang-py)
 [![PyPI](https://img.shields.io/pypi/v/kemlang-py.svg)](https://pypi.org/project/kemlang-py/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/sanketmuchhala/Gujju.py/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/sanketmuchhala/kemlang-py/blob/main/LICENSE)
 
 ---
 
@@ -175,10 +175,10 @@ pip install kemlang-py
 
 ## Links
 
-- **GitHub**: [github.com/sanketmuchhala/Gujju.py](https://github.com/sanketmuchhala/Gujju.py)
+- **GitHub**: [github.com/sanketmuchhala/kemlang-py](https://github.com/sanketmuchhala/kemlang-py)
 - **PyPI**: [pypi.org/project/kemlang-py](https://pypi.org/project/kemlang-py/)
 - **Website & Playground**: [gujju-py.vercel.app](https://gujju-py.vercel.app)
-- **Issues**: [github.com/sanketmuchhala/Gujju.py/issues](https://github.com/sanketmuchhala/Gujju.py/issues)
+- **Issues**: [github.com/sanketmuchhala/kemlang-py/issues](https://github.com/sanketmuchhala/kemlang-py/issues)
 
 ---
 

@@ -49,9 +49,9 @@ dev = [
 kem = "kemlang.cli:app"
 
 [project.urls]
-Homepage = "https://github.com/sanketmuchhala/Gujju.py"
-Repository = "https://github.com/sanketmuchhala/Gujju.py"
-Issues = "https://github.com/sanketmuchhala/Gujju.py/issues"
+Homepage = "https://github.com/sanketmuchhala/kemlang-py"
+Repository = "https://github.com/sanketmuchhala/kemlang-py"
+Issues = "https://github.com/sanketmuchhala/kemlang-py/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["kemlang"]

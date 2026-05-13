@@ -4,7 +4,7 @@
 
 KemLang is a fun, educational programming language inspired by Bhailang, featuring Gujarati keywords and expressions while maintaining English-based syntax. It's designed to be approachable for Gujarati speakers learning programming concepts.
 
-[![CI](https://github.com/sanketmuchhala/Gujju.py/actions/workflows/ci.yml/badge.svg)](https://github.com/sanketmuchhala/Gujju.py/actions/workflows/ci.yml)
+[![CI](https://github.com/sanketmuchhala/kemlang-py/actions/workflows/ci.yml/badge.svg)](https://github.com/sanketmuchhala/kemlang-py/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/kemlang-py.svg)](https://pypi.org/project/kemlang-py/)
 [![npm](https://img.shields.io/npm/v/kemlang-py.svg)](https://www.npmjs.com/package/kemlang-py)
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
@@ -337,13 +337,13 @@ pip install kemlang-py
 
 #### **One-liner Install Script**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/sanketmuchhala/Gujju.py/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sanketmuchhala/kemlang-py/main/install.sh | bash
 ```
 
 #### **Developer Setup**
 ```bash
-git clone https://github.com/sanketmuchhala/Gujju.py
-cd Gujju.py
+git clone https://github.com/sanketmuchhala/kemlang-py
+cd kemlang-py
 pip install -e ".[dev,test]"
 ```
 
@@ -580,7 +580,7 @@ Runtime Error: TypeError: cannot + int and str
 ### Setup
 
 ```bash
-git clone https://github.com/sanketmuchhala/Gujju.py
+git clone https://github.com/sanketmuchhala/kemlang-py
 cd kemlang
 pip install -e ".[dev,test]"
 pre-commit install
@@ -700,8 +700,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/sanketmuchhala/Gujju.py/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/sanketmuchhala/Gujju.py/discussions)
+- **Issues**: [GitHub Issues](https://github.com/sanketmuchhala/kemlang-py/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/sanketmuchhala/kemlang-py/discussions)
 - **Website**: [gujju-py.vercel.app](https://gujju-py.vercel.app)
 - **npm**: [npmjs.com/package/kemlang-py](https://www.npmjs.com/package/kemlang-py)
 - **PyPI**: [pypi.org/project/kemlang-py](https://pypi.org/project/kemlang-py/)
