@@ -7,60 +7,26 @@ const navigation = [
     title: "Getting Started",
     href: "/docs",
     items: [
-      {
-        title: "Introduction",
-        href: "/docs"
-      },
-      {
-        title: "Installation",
-        href: "/docs/installation"
-      },
-      {
-        title: "Quick Start",
-        href: "/docs/quick-start"
-      }
-    ]
+      { title: "Introduction",  href: "/docs" },
+      { title: "Installation",  href: "/docs/installation" },
+    ],
   },
   {
     title: "Language Guide",
     href: "/docs/language",
     items: [
-      {
-        title: "Syntax",
-        href: "/docs/language/syntax"
-      },
-      {
-        title: "Variables",
-        href: "/docs/language/variables"
-      },
-      {
-        title: "Functions",
-        href: "/docs/language/functions"
-      },
-      {
-        title: "Control Flow",
-        href: "/docs/language/control-flow"
-      }
-    ]
+      { title: "Syntax & Keywords", href: "/docs/language/syntax" },
+    ],
   },
   {
-    title: "Examples",
-    href: "/docs/examples",
+    title: "More",
+    href: "/playground",
     items: [
-      {
-        title: "Hello World",
-        href: "/docs/examples/hello-world"
-      },
-      {
-        title: "Variables",
-        href: "/docs/examples/variables"
-      },
-      {
-        title: "Loops",
-        href: "/docs/examples/loops"
-      }
-    ]
-  }
+      { title: "Playground",  href: "/playground" },
+      { title: "Changelog",   href: "/changelog" },
+      { title: "GitHub",      href: "https://github.com/sanketmuchhala/kemlang-py" },
+    ],
+  },
 ];
 
 export default function DocsLayoutComponent({
