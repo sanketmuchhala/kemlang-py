@@ -28,9 +28,18 @@ const navigation = [
     ],
   },
   {
-    title: "Resources",
-    href: "/playground",
+    title: "CLI & Tooling",
+    href: "/docs/cli",
     items: [
+      { title: "CLI Reference", href: "/docs/cli" },
+      { title: "Error Reference", href: "/docs/errors" },
+    ],
+  },
+  {
+    title: "Project",
+    href: "/docs/roadmap",
+    items: [
+      { title: "Roadmap",    href: "/docs/roadmap" },
       { title: "Playground", href: "/playground" },
       { title: "Changelog",  href: "/changelog" },
       { title: "GitHub",     href: "/docs/github" },
