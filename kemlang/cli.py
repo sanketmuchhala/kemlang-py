@@ -58,7 +58,9 @@ def pretty_print_ast(node, tree=None, name="Program") -> Tree:
 @app.command()
 def run(
     file: Annotated[Path, typer.Argument(help="KemLang file to run")],
-    trace: Annotated[bool, typer.Option("--trace", help="Show tokens and AST before execution")] = False,
+    trace: Annotated[
+        bool, typer.Option("--trace", help="Show tokens and AST before execution")
+    ] = False,
 ):
     """Run a KemLang file."""
     if not file.exists():
@@ -146,7 +148,9 @@ def repl():
 @app.command()
 def fmt(
     path: Annotated[Path, typer.Argument(help="File or directory to format")],
-    check: Annotated[bool, typer.Option("--check", help="Check if files are formatted without modifying them")] = False,
+    check: Annotated[
+        bool, typer.Option("--check", help="Check if files are formatted without modifying them")
+    ] = False,
 ):
     """Format KemLang files."""
     if path.is_file():
